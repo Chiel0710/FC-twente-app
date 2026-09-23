@@ -1,0 +1,265 @@
+// Prisma-schema voor de FC Twente fanapp.
+// Let op: geen SQLite-specifieke features en geen enums (segmenten/statussen zijn
+// gewoon String) — dit schema moet in fase 2 zonder gedoe naar Postgres (Supabase)
+// kunnen door alleen `provider` en `DATABASE_URL` te wisselen.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Sportdata
+// ---------------------------------------------------------------------------
+
+// Team is niet expliciet gevraagd in de briefing, maar is nodig als koppelpunt
+// tussen Match (thuis/uit) en de stand (GET /api/standings moet uit de DB komen).
+// Bevat ook de Europese tegenstanders uit het speelschema — die hebben geen
+// Eredivisie-stand, vandaar dat de standcijfers nullable zijn.
+model Team {
+  id        String  @id @default(cuid())
+  name      String  @unique
+  shortName String
+  logoUrl   String // pad naar het echte clublogo in frontend/public/logos
+  isTwente  Boolean @default(false)
+
+  // Eredivisie-standcijfers (echte data — null voor Europese tegenstanders).
+  position       Int?
+  played         Int?
+  goalDifference Int?
+  points         Int?
+  zone           String? // bv. "degradatie" of "play-offs promotie/degradatie"
+
+  thuisWedstrijden Match[]      @relation("ThuisTeam")
+  uitWedstrijden   Match[]      @relation("UitTeam")
+  matchEvents      MatchEvent[]
+}
+
+// Uitsluitend echte data uit selectie-fc-twente-2026-2027.json. positie en
+// fotoUrl zijn nullable omdat de bron ze voor veel spelers nog niet invult —
+// nooit zelf aanvullen, in de UI tonen we dan een streepje.
+model Player {
+  id        String  @id @default(cuid())
+  naam      String
+  rugnummer Int
+  positie   String?
+  fotoUrl   String?
+
+  motmVotes MotmVote[]
+}
+
+model Match {
+  id           String   @id @default(cuid())
+  competition  String   @default("Eredivisie")
+  matchday     Int? // alleen bekend/relevant voor Eredivisie-duels
+  kickoff      DateTime
+  aftrapBekend Boolean  @default(true) // false = kickoff is een placeholdertijd, tijd nog niet vastgesteld
+  venue        String
+  status       String // "gepland" of "gespeeld"
+
+  thuisTeamId String
+  thuisTeam   Team   @relation("ThuisTeam", fields: [thuisTeamId], references: [id])
+  uitTeamId   String
+  uitTeam     Team   @relation("UitTeam", fields: [uitTeamId], references: [id])
+
+  thuisScore Int?
+  uitScore   Int?
+
+  // Uit wedstrijd-details.json — null/false zolang de bron dit nog niet heeft
+  // ingevuld of gecontroleerd. Nooit zelf een waarde invullen.
+  toeschouwers Int?
+  bron         String? // brontekst/URL van de doelpunten-data, indien bekend
+  compleet     Boolean @default(false)
+
+  events      MatchEvent[]
+  predictions Prediction[]
+  motmVotes   MotmVote[]
+  checkIns    CheckIn[]
+  stickers    StickerCard[]
+}
+
+model MatchEvent {
+  id     String @id @default(cuid())
+  matchId String
+  match   Match  @relation(fields: [matchId], references: [id])
+
+  minute     Int
+  type       String // "goal" / "geel" / "rood" / "wissel"
+  teamId     String
+  team       Team   @relation(fields: [teamId], references: [id])
+  playerName String // werkt voor zowel Twente- als tegenstanderspelers
+}
+
+model NewsItem {
+  id          String   @id @default(cuid())
+  title       String
+  summary     String
+  body        String
+  imageUrl    String // placehold.co — geen clubfoto's
+  publishedAt DateTime @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Profiel & personalisatie
+// ---------------------------------------------------------------------------
+
+model Profile {
+  id     String @id @default(cuid())
+  naam   String // schermnaam voor demo-profielen, bv. "Daan"
+  fantype String // sectie 2: hardekern / seizoenskaarthouder / gemiddeld / losbezoek / afstand / gezin
+
+  // Antwoorden uit de onboarding (sectie 5) — nu alleen geseed, nog geen onboarding-flow.
+  bezoekfrequentie String?
+  woonregio        String?
+  volgtVia         String?
+  metWie           String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  predictions  Prediction[]
+  motmVotes    MotmVote[]
+  pollVotes    PollVote[]
+  events       Event[]
+  seasonTicket SeasonTicket?
+  checkIns     CheckIn[]
+  stickers     StickerCard[]
+}
+
+// ---------------------------------------------------------------------------
+// Fan-interactie
+// ---------------------------------------------------------------------------
+
+// @@unique zorgt dat je je stem kunt wijzigen (upsert) i.p.v. dubbel te stemmen.
+model Prediction {
+  id        String   @id @default(cuid())
+  matchId   String
+  match     Match    @relation(fields: [matchId], references: [id])
+  profileId String
+  profile   Profile  @relation(fields: [profileId], references: [id])
+  keuze     String // "thuis" / "gelijk" / "uit"
+  createdAt DateTime @default(now())
+
+  @@unique([matchId, profileId])
+}
+
+model MotmVote {
+  id        String   @id @default(cuid())
+  matchId   String
+  match     Match    @relation(fields: [matchId], references: [id])
+  profileId String
+  profile   Profile  @relation(fields: [profileId], references: [id])
+  playerId  String
+  player    Player   @relation(fields: [playerId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([matchId, profileId])
+}
+
+model Poll {
+  id        String   @id @default(cuid())
+  question  String
+  options   String // JSON-array as string, bv. ["Optie A", "Optie B"]
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  votes PollVote[]
+}
+
+model PollVote {
+  id          String   @id @default(cuid())
+  pollId      String
+  poll        Poll     @relation(fields: [pollId], references: [id])
+  profileId   String
+  profile     Profile  @relation(fields: [profileId], references: [id])
+  optionIndex Int
+  createdAt   DateTime @default(now())
+
+  @@unique([pollId, profileId])
+}
+
+// Gedrag (welke tabs/spelers/recaps een profiel opent) — bepaalt later de
+// blokvolgorde op Home. Los van MatchEvent (dat is wedstrijdgedrag op het veld).
+model Event {
+  id        String   @id @default(cuid())
+  profileId String
+  profile   Profile  @relation(fields: [profileId], references: [id])
+  type      String // bv. "tab_open" / "player_view" / "recap_open" / "quiz_answer"
+  payload   String? // JSON-string met details
+  createdAt DateTime @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Tickets (nep)
+// ---------------------------------------------------------------------------
+
+model SeasonTicket {
+  id        String  @id @default(cuid())
+  profileId String  @unique
+  profile   Profile @relation(fields: [profileId], references: [id])
+
+  vak      String
+  rij      String
+  stoel    String
+  qrData   String // nep-ID dat de QR-code encodeert
+
+  geldigVan  DateTime
+  geldigTot  DateTime
+}
+
+// ---------------------------------------------------------------------------
+// Digitaal plakboek
+// ---------------------------------------------------------------------------
+
+// Een check-in (gesimuleerd via de admin-demoknop) maakt meteen een
+// ongeclaimde StickerCard aan voor diezelfde wedstrijd.
+model CheckIn {
+  id        String   @id @default(cuid())
+  profileId String
+  profile   Profile  @relation(fields: [profileId], references: [id])
+  matchId   String
+  match     Match    @relation(fields: [matchId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model StickerCard {
+  id        String  @id @default(cuid())
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id])
+  matchId   String
+  match     Match   @relation(fields: [matchId], references: [id])
+
+  type String // "attended" / "followed" / "milestone"
+
+  // Het volgnummer wordt uitsluitend door de server bepaald, bij het claimen
+  // (volgorde van claimen per wedstrijd, over alle profielen heen). 0 = nog
+  // niet geclaimd — serialNumber is bewust niet nullable, dus dit is de
+  // sentinelwaarde vóór claimedAt gezet wordt.
+  serialNumber Int    @default(0)
+  seed         String
+
+  claimedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@unique([profileId, matchId])
+}
+
+// ---------------------------------------------------------------------------
+// Fanshop (Castore)
+// ---------------------------------------------------------------------------
+
+// Eén rij per doorklik naar Castore — vanuit de fanshop zelf, vanaf de
+// MOTM-kaart ("Shirt van ...") of vanuit het plakboek ("Maak er een poster
+// van"). Geen relatie naar Profile: exact het platte model zoals aangeleverd.
+model ShopKlik {
+  id        String   @id @default(cuid())
+  profileId String
+  productId String
+  naam      String?
+  bron      String // "fanshop" | "motm" | "plakboek"
+  createdAt DateTime @default(now())
+}

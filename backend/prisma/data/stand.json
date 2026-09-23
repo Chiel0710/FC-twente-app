@@ -1,0 +1,171 @@
+{
+  "competitie": "Eredivisie",
+  "seizoen": "2026-2027",
+  "naSpeelronde": 7,
+  "bijgewerkt": "2026-09-22",
+  "toelichting": "Stand na 7 speelrondes. Nummers 17 en 18 degraderen direct, nummer 16 speelt play-offs. Winst/gelijk/verlies en doelpunten voor/tegen niet opgenomen.",
+  "stand": [
+    {
+      "positie": 1,
+      "club": "AZ",
+      "logo": "/logos/az.png",
+      "gespeeld": 7,
+      "doelsaldo": 12,
+      "punten": 19,
+      "zone": null
+    },
+    {
+      "positie": 2,
+      "club": "Feyenoord",
+      "logo": "/logos/feyenoord.png",
+      "gespeeld": 7,
+      "doelsaldo": 18,
+      "punten": 17,
+      "zone": null
+    },
+    {
+      "positie": 3,
+      "club": "PSV",
+      "logo": "/logos/psv.png",
+      "gespeeld": 7,
+      "doelsaldo": 14,
+      "punten": 16,
+      "zone": null
+    },
+    {
+      "positie": 4,
+      "club": "FC Twente",
+      "logo": "/logos/fc-twente.png",
+      "gespeeld": 7,
+      "doelsaldo": 8,
+      "punten": 16,
+      "zone": null
+    },
+    {
+      "positie": 5,
+      "club": "Ajax",
+      "logo": "/logos/ajax.png",
+      "gespeeld": 7,
+      "doelsaldo": 12,
+      "punten": 14,
+      "zone": null
+    },
+    {
+      "positie": 6,
+      "club": "Fortuna Sittard",
+      "logo": "/logos/fortuna-sittard.png",
+      "gespeeld": 7,
+      "doelsaldo": -1,
+      "punten": 13,
+      "zone": null
+    },
+    {
+      "positie": 7,
+      "club": "Excelsior",
+      "logo": "/logos/excelsior.png",
+      "gespeeld": 7,
+      "doelsaldo": 6,
+      "punten": 11,
+      "zone": null
+    },
+    {
+      "positie": 8,
+      "club": "FC Groningen",
+      "logo": "/logos/fc-groningen.png",
+      "gespeeld": 7,
+      "doelsaldo": 2,
+      "punten": 11,
+      "zone": null
+    },
+    {
+      "positie": 9,
+      "club": "Go Ahead Eagles",
+      "logo": "/logos/go-ahead-eagles.png",
+      "gespeeld": 7,
+      "doelsaldo": 2,
+      "punten": 10,
+      "zone": null
+    },
+    {
+      "positie": 10,
+      "club": "sc Heerenveen",
+      "logo": "/logos/sc-heerenveen.png",
+      "gespeeld": 7,
+      "doelsaldo": 2,
+      "punten": 9,
+      "zone": null
+    },
+    {
+      "positie": 11,
+      "club": "NEC",
+      "logo": "/logos/nec.png",
+      "gespeeld": 7,
+      "doelsaldo": -1,
+      "punten": 8,
+      "zone": null
+    },
+    {
+      "positie": 12,
+      "club": "Sparta",
+      "logo": "/logos/sparta.png",
+      "gespeeld": 7,
+      "doelsaldo": -7,
+      "punten": 5,
+      "zone": null
+    },
+    {
+      "positie": 13,
+      "club": "Telstar",
+      "logo": "/logos/telstar.png",
+      "gespeeld": 7,
+      "doelsaldo": -7,
+      "punten": 5,
+      "zone": null
+    },
+    {
+      "positie": 14,
+      "club": "SC Cambuur",
+      "logo": "/logos/sc-cambuur.png",
+      "gespeeld": 7,
+      "doelsaldo": -9,
+      "punten": 5,
+      "zone": null
+    },
+    {
+      "positie": 15,
+      "club": "FC Utrecht",
+      "logo": "/logos/fc-utrecht.png",
+      "gespeeld": 7,
+      "doelsaldo": -13,
+      "punten": 5,
+      "zone": null
+    },
+    {
+      "positie": 16,
+      "club": "PEC Zwolle",
+      "logo": "/logos/pec-zwolle.png",
+      "gespeeld": 7,
+      "doelsaldo": -14,
+      "punten": 4,
+      "zone": "play-offs promotie/degradatie"
+    },
+    {
+      "positie": 17,
+      "club": "ADO Den Haag",
+      "logo": "/logos/ado-den-haag.png",
+      "gespeeld": 7,
+      "doelsaldo": -10,
+      "punten": 2,
+      "zone": "degradatie"
+    },
+    {
+      "positie": 18,
+      "club": "Willem II",
+      "logo": "/logos/willem-ii.png",
+      "gespeeld": 7,
+      "doelsaldo": -14,
+      "punten": 2,
+      "zone": "degradatie"
+    }
+  ]
+}

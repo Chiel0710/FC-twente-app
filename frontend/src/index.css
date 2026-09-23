@@ -1,0 +1,2278 @@
+/* ==========================================================================
+   Design tokens — FC Twente huisstijl.
+   Kleurwaarden, fonts en logoregels liggen vast in de brand guideline en
+   worden hier 1-op-1 overgenomen (niet aangepast/"verbeterd").
+   ========================================================================== */
+:root {
+  /* Merkkleuren (exact uit de brand guideline) */
+  --rood: #d81e1e;
+  --rood-diep: #a6120c;
+  --wit: #ffffff;
+  --zwart: #101010;
+  --grijs: #7c7c80;
+  --lichtgrijs: #edecea;
+
+  /* Oppervlakken: een laagjessysteem (basis → kaart → zwevend) i.p.v. alles
+     op hetzelfde vlak. */
+  --surface-0: var(--lichtgrijs);
+  --surface-1: var(--wit);
+  --surface-2: var(--wit);
+
+  /* Tekst */
+  --tekst: var(--zwart);
+  --tekst-zacht: var(--grijs);
+  --tekst-op-rood: var(--wit);
+
+  /* Spacing-schaal (4px-basis) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 32px;
+  --sp-8: 40px;
+  --sp-9: 48px;
+  --sp-10: 64px;
+
+  /* Radius */
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --r-pill: 999px;
+
+  /* Laag-schaduwen: zacht + met een vleugje kleur, nooit platte shadow-md */
+  --shadow-card:
+    0 1px 2px rgba(16, 16, 16, 0.05),
+    0 10px 24px -14px rgba(16, 16, 16, 0.22);
+  --shadow-floating:
+    0 4px 10px -4px rgba(16, 16, 16, 0.18),
+    0 20px 36px -16px rgba(16, 16, 16, 0.32);
+  --shadow-glow-rood:
+    0 0 0 1px rgba(216, 30, 30, 0.16),
+    0 18px 40px -16px rgba(216, 30, 30, 0.55);
+
+  /* Typografie */
+  --font-kop: 'Oswald', 'Arial Narrow', sans-serif;
+  --font-body: 'Open Sans', system-ui, sans-serif;
+
+  color-scheme: light;
+  font-family: var(--font-body);
+  color: var(--tekst);
+  background: var(--surface-0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* Donkerrode fallback (voorkomt een flits van de oude lichte kleur terwijl
+     de achtergrondfoto laadt) — de foto zelf komt via ::before hieronder. */
+  background: #2b0a0a;
+  min-height: 100svh;
+  position: relative;
+}
+
+/* Algemene app-achtergrond. position:fixed + inset:0 i.p.v.
+   background-attachment:fixed op body zelf, zodat de foto altijd op het
+   scherm past (cover t.o.v. de viewport) ongeacht hoe lang de pagina wordt. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url('/achtergrond.png') center top / cover no-repeat;
+}
+
+#root {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-kop);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--tekst);
+}
+
+p {
+  margin: 0;
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+}
+
+.eyebrow {
+  font-family: var(--font-kop);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--rood);
+}
+
+/* ==========================================================================
+   App-layout
+   ========================================================================== */
+.app-shell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 520px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+}
+
+.app-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-5) var(--sp-5) var(--sp-4);
+}
+
+.app-topbar__logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.app-topbar__title {
+  font-family: var(--font-kop);
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--wit);
+}
+
+.app-main {
+  flex: 1;
+  padding: 0 var(--sp-5) var(--sp-10);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+/* ==========================================================================
+   Bottom navigatie — zwevende pill, surface-2
+   ========================================================================== */
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-1);
+  margin: 0 var(--sp-4) var(--sp-4);
+  padding: var(--sp-2);
+  background: var(--surface-2);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-floating);
+}
+
+.bottom-nav__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: var(--sp-2) var(--sp-1);
+  border: none;
+  background: transparent;
+  border-radius: var(--r-md);
+  color: var(--tekst-zacht);
+  cursor: pointer;
+  transition:
+    transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.bottom-nav__item svg {
+  width: 21px;
+  height: 21px;
+}
+
+.bottom-nav__item span {
+  font-family: var(--font-kop);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.bottom-nav__item:hover {
+  color: var(--zwart);
+}
+
+.bottom-nav__item:focus-visible {
+  outline: 2px solid var(--rood);
+  outline-offset: 2px;
+}
+
+.bottom-nav__item:active {
+  transform: scale(0.94);
+}
+
+.bottom-nav__item--active {
+  background: var(--rood);
+  color: var(--tekst-op-rood);
+}
+
+.bottom-nav__item--active:hover {
+  color: var(--tekst-op-rood);
+}
+
+/* ==========================================================================
+   Kaartsysteem
+   ========================================================================== */
+.card {
+  background: var(--surface-1);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--sp-5);
+}
+
+.section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  margin-bottom: var(--sp-3);
+}
+
+.section-heading h2 {
+  font-size: 20px;
+}
+
+/* .section-heading staat vrijwel overal rechtstreeks op de app-achtergrond
+   (geen kaart eromheen) — dus lichte tekst, anders onleesbaar op de rode
+   achtergrondfoto. In Admin staat 'm wél in een witte kaart: daar zetten we
+   'm hieronder specifiek terug naar de gewone (donkere/rode) kleuren. */
+.section-heading .eyebrow {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.section-heading h2 {
+  color: var(--wit);
+}
+
+.card .section-heading .eyebrow {
+  color: var(--rood);
+}
+
+.card .section-heading h2 {
+  color: var(--tekst);
+}
+
+/* ==========================================================================
+   Scorebord — signature-element voor de eerstvolgende wedstrijd.
+   Verwijst naar een stadion-scorebord: donker vlak, gloeiende rode cijfers.
+   ========================================================================== */
+.scoreboard {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(5, 5, 5, 0.55) 0%, rgba(5, 5, 5, 0.8) 65%, rgba(5, 5, 5, 0.92) 100%),
+    url('/achtergrond-wedstrijdenschema.png') center / cover no-repeat;
+  border-radius: var(--r-lg);
+  padding: var(--sp-6) var(--sp-5) var(--sp-5);
+  color: var(--wit);
+  box-shadow: var(--shadow-glow-rood);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Subtiele korrel/textuur voor diepte, geen platte kleurvlek. */
+.scoreboard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+}
+
+.scoreboard::after {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 60%;
+  height: 80%;
+  background: radial-gradient(circle, rgba(216, 30, 30, 0.35), transparent 70%);
+  z-index: -1;
+}
+
+.scoreboard__eyebrow {
+  color: #ff8a7a;
+  display: block;
+  margin-bottom: var(--sp-3);
+}
+
+.scoreboard__teams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.scoreboard__team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  flex: 1;
+  min-width: 0;
+}
+
+.scoreboard__team-name {
+  font-family: var(--font-kop);
+  font-size: 13px;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.scoreboard__vs {
+  font-family: var(--font-kop);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+  padding-top: 24px;
+}
+
+.scoreboard__clock {
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-2);
+  margin: var(--sp-6) 0 var(--sp-4);
+}
+
+.scoreboard__clock-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 46px;
+}
+
+.scoreboard__clock-value {
+  font-family: var(--font-kop);
+  font-size: 28px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: #ff5b45;
+  text-shadow: 0 0 18px rgba(255, 91, 69, 0.65);
+}
+
+.scoreboard__clock-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.scoreboard__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-3);
+  padding-top: var(--sp-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.scoreboard__empty {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  padding: var(--sp-4) 0;
+}
+
+/* ==========================================================================
+   Teambadge — monogram i.p.v. clubfoto's/echte crests.
+   ========================================================================== */
+.team-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-pill);
+  font-family: var(--font-kop);
+  font-weight: 600;
+  color: var(--wit);
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+
+.team-badge--md {
+  width: 44px;
+  height: 44px;
+  font-size: 13px;
+}
+
+.team-badge--sm {
+  width: 28px;
+  height: 28px;
+  font-size: 10px;
+}
+
+.team-badge--logo {
+  background: var(--wit);
+  padding: 6px;
+}
+
+.team-badge--logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   Laatste uitslag
+   ========================================================================== */
+.result-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.result-card__team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  flex: 1;
+  min-width: 0;
+}
+
+.result-card__team-name {
+  font-family: var(--font-kop);
+  font-size: 12px;
+  text-transform: uppercase;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.result-card__score {
+  font-family: var(--font-kop);
+  font-size: 32px;
+  font-variant-numeric: tabular-nums;
+  color: var(--rood);
+  padding: 0 var(--sp-2);
+}
+
+.result-card__meta {
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--lichtgrijs);
+  font-size: 13px;
+  color: var(--tekst-zacht);
+}
+
+/* ==========================================================================
+   Stand
+   ========================================================================== */
+.table-scroll {
+  overflow-x: auto;
+  margin: 0 calc(var(--sp-5) * -1);
+  padding: 0 var(--sp-5);
+}
+
+.standings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 420px;
+}
+
+.standings-table th {
+  text-align: left;
+  font-family: var(--font-kop);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--tekst-zacht);
+  padding: var(--sp-2) var(--sp-2);
+  font-weight: 500;
+}
+
+.standings-table th.num,
+.standings-table td.num {
+  text-align: center;
+}
+
+.standings-table td {
+  padding: var(--sp-2) var(--sp-2);
+  border-top: 1px solid var(--lichtgrijs);
+}
+
+.standings-table td.punten {
+  font-family: var(--font-kop);
+  font-weight: 600;
+}
+
+.standings-table__team {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  white-space: nowrap;
+}
+
+.standings-table tr.is-twente td {
+  background: rgba(216, 30, 30, 0.06);
+  position: relative;
+}
+
+.standings-table tr.is-twente td:first-child {
+  box-shadow: inset 3px 0 0 var(--rood);
+}
+
+.standings-table__zone-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: var(--rood);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Programma — resterende tegenstanders dit seizoen.
+   ========================================================================== */
+.fixture-list {
+  padding: var(--sp-2) var(--sp-3);
+  display: flex;
+  flex-direction: column;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.fixture-row {
+  display: grid;
+  grid-template-columns: 64px 1fr auto 1fr;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-2);
+  border-bottom: 1px solid var(--lichtgrijs);
+  font-size: 12px;
+}
+
+.fixture-row:last-child {
+  border-bottom: none;
+}
+
+.fixture-row__datum {
+  font-family: var(--font-kop);
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--tekst-zacht);
+}
+
+.fixture-row__nnb {
+  color: var(--rood);
+}
+
+.fixture-row__team {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.fixture-row__team span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fixture-row__vs {
+  color: var(--tekst-zacht);
+}
+
+.fixture-row__competitie {
+  grid-column: 1 / -1;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--grijs);
+}
+
+/* ==========================================================================
+   Jouw speler van de wedstrijd (Home) — toont de eigen MOTM-stem
+   ========================================================================== */
+.jouw-speler-kaart {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  background: var(--surface-1);
+  border-radius: var(--r-lg);
+  padding: var(--sp-4) var(--sp-5);
+  box-shadow: var(--shadow-card);
+}
+
+.jouw-speler-kaart .speler-avatar {
+  width: 72px;
+}
+
+.jouw-speler-kaart__tekst {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.jouw-speler-kaart__eyebrow {
+  color: var(--rood);
+}
+
+.jouw-speler-kaart__tekst h3 {
+  font-size: 18px;
+}
+
+.jouw-speler-kaart__tekst p {
+  color: var(--tekst-zacht);
+  font-size: 13px;
+}
+
+/* ==========================================================================
+   "Ben je erbij?" — speelse tegel op Home, stadionfoto als achtergrond.
+   ========================================================================== */
+.ben-je-erbij {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  min-height: 160px;
+  background:
+    linear-gradient(180deg, rgba(5, 5, 5, 0.35) 0%, rgba(5, 5, 5, 0.75) 100%),
+    url('/achtergrond-wedstrijdenschema.png') center / cover no-repeat;
+  box-shadow: var(--shadow-floating);
+}
+
+.ben-je-erbij__overlay {
+  position: relative;
+  height: 100%;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-4);
+  padding: var(--sp-5);
+  text-align: center;
+}
+
+.ben-je-erbij__titel {
+  color: var(--wit);
+  font-size: 24px;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.ben-je-erbij__knoppen {
+  display: flex;
+  gap: var(--sp-3);
+}
+
+.ben-je-erbij__knop {
+  border: none;
+  border-radius: var(--r-pill);
+  padding: var(--sp-3) var(--sp-7);
+  font-family: var(--font-kop);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.2s ease;
+}
+
+.ben-je-erbij__knop:hover {
+  filter: brightness(1.08);
+}
+
+.ben-je-erbij__knop:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 2px;
+}
+
+.ben-je-erbij__knop:active {
+  transform: scale(0.95);
+}
+
+.ben-je-erbij__knop--ja {
+  background: #4caf6d;
+  color: #063a1a;
+}
+
+.ben-je-erbij__knop--nee {
+  background: var(--rood);
+  color: var(--wit);
+}
+
+.ben-je-erbij__reactie {
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 18px;
+}
+
+/* ==========================================================================
+   Wedstrijdalbum-promo (Home) — bewust een tikje "los" t.o.v. de rest, geeft
+   het scherm iets minder statisch dan een stapel gelijke kaarten.
+   ========================================================================== */
+.album-promo {
+  display: block;
+  /* Doorbreekt bewust de zijmarge van de pagina — de speler mag groter en
+     opvallender ogen dan de rest van de tegels, niet even breed als de kolom. */
+  width: calc(100% + var(--sp-7) * 2);
+  margin: 0 calc(var(--sp-7) * -1);
+  max-width: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.album-promo:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 2px;
+  border-radius: var(--r-md);
+}
+
+.album-promo:hover {
+  transform: translateY(-2px);
+}
+
+.album-promo:active {
+  transform: scale(0.99);
+}
+
+/* Geen border-radius/overflow-hidden meer op deze afbeelding: het beeld heeft
+   nu zelf al transparante hoeken (achtergrond eruit gehaald) en de speler
+   steekt bewust buiten de afgeronde tegel — een vierkante afronding zou dat
+   net afsnijden. drop-shadow volgt de echte silhouet, niet de bounding box. */
+.album-promo__beeld {
+  display: block;
+  width: 100%;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.45));
+}
+
+/* ==========================================================================
+   Nieuws (Home)
+   ========================================================================== */
+.news-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.news-card {
+  display: flex;
+  gap: var(--sp-4);
+  background: var(--surface-1);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.news-card:hover {
+  box-shadow: var(--shadow-floating);
+}
+
+.news-card__image {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.news-card__body {
+  padding: var(--sp-3) var(--sp-4) var(--sp-3) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.news-card__meta {
+  font-family: var(--font-kop);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--rood);
+}
+
+.news-card__title {
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.news-card__summary {
+  font-size: 12px;
+  color: var(--tekst-zacht);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Fan-tab — voorspellen, MOTM, poll, quiz
+   ========================================================================== */
+.fan-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.fan-card__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.fan-card__intro p {
+  font-family: var(--font-kop);
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.motm-shirt-knop {
+  align-self: stretch;
+  border: none;
+  border-radius: var(--r-md);
+  background: var(--zwart);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  padding: var(--sp-3);
+  cursor: pointer;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.motm-shirt-knop:hover {
+  transform: translateY(-1px);
+}
+
+.motm-shirt-knop:focus-visible {
+  outline: 2px solid var(--rood);
+  outline-offset: 2px;
+}
+
+.motm-shirt-knop:active {
+  transform: scale(0.98);
+}
+
+.fan-card__wijzig {
+  align-self: flex-start;
+  border: none;
+  background: none;
+  color: var(--rood);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.15s ease;
+}
+
+.fan-card__wijzig:hover {
+  opacity: 0.7;
+}
+
+.fan-card__wijzig:focus-visible {
+  outline: 2px solid var(--rood);
+  outline-offset: 3px;
+}
+
+/* Stemknoppen */
+.vote-options {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.vote-options--verticaal {
+  flex-direction: column;
+}
+
+.vote-button {
+  flex: 1;
+  border: 1px solid var(--lichtgrijs);
+  background: var(--wit);
+  border-radius: var(--r-md);
+  padding: var(--sp-3) var(--sp-3);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tekst);
+  cursor: pointer;
+  text-align: center;
+  transition:
+    transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.vote-button:hover {
+  border-color: var(--rood);
+}
+
+.vote-button:focus-visible {
+  outline: 2px solid var(--rood);
+  outline-offset: 2px;
+}
+
+.vote-button:active {
+  transform: scale(0.97);
+}
+
+.vote-button--primary {
+  flex: none;
+  background: var(--rood);
+  border-color: var(--rood);
+  color: var(--wit);
+}
+
+.vote-button--primary:hover {
+  background: var(--rood-diep);
+  border-color: var(--rood-diep);
+}
+
+.vote-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Resultaatbalken */
+.stembalk-lijst {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.stembalk__label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 4px;
+  color: var(--tekst-zacht);
+}
+
+.stembalk--actief .stembalk__label {
+  color: var(--tekst);
+  font-weight: 700;
+}
+
+.stembalk__track {
+  height: 8px;
+  border-radius: var(--r-pill);
+  background: var(--lichtgrijs);
+  overflow: hidden;
+}
+
+.stembalk__fill {
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--rood-diep), var(--rood));
+  transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.stembalk:not(.stembalk--actief) .stembalk__fill {
+  background: var(--grijs);
+}
+
+/* Spelersfoto — "sticker"-kaart i.p.v. cirkel, met streepje-fallback als de
+   bron geen foto heeft. Rood verlopende plaat als achtergrond/lijst. */
+.speler-avatar {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: linear-gradient(155deg, var(--rood) 0%, var(--rood-diep) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow:
+    0 1px 2px rgba(16, 16, 16, 0.1),
+    0 6px 14px -6px rgba(216, 30, 30, 0.5);
+}
+
+.speler-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.speler-avatar__streepje {
+  color: rgba(255, 255, 255, 0.75);
+  font-family: var(--font-kop);
+  font-weight: 600;
+  font-size: 22px;
+}
+
+/* Man of the Match — groter vlak, spelerskeuze met echte foto's */
+.fan-card--motm {
+  padding: var(--sp-6) var(--sp-5);
+}
+
+.fan-card--motm .fan-card__intro p {
+  font-size: 17px;
+}
+
+.motm-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-4);
+  max-height: 480px;
+  overflow-y: auto;
+  padding: var(--sp-1);
+}
+
+.motm-speler {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  border: none;
+  background: none;
+  border-radius: var(--r-md);
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.motm-speler:hover .speler-avatar {
+  transform: translateY(-3px) rotate(-1deg);
+  box-shadow:
+    0 2px 4px rgba(16, 16, 16, 0.12),
+    0 12px 22px -8px rgba(216, 30, 30, 0.65);
+}
+
+.speler-avatar {
+  transition:
+    transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease;
+}
+
+.motm-speler:focus-visible {
+  outline: 2px solid var(--rood);
+  outline-offset: 3px;
+}
+
+.motm-speler:active {
+  transform: scale(0.96);
+}
+
+.motm-speler__naam {
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.25;
+}
+
+.motm-speler__rugnummer {
+  font-family: var(--font-kop);
+  font-size: 10px;
+  color: var(--tekst-zacht);
+}
+
+/* Uitgelichte eigen MOTM-keuze — komt "naar voren" na het stemmen */
+.motm-eigen-keuze {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding-bottom: var(--sp-4);
+  border-bottom: 1px solid var(--lichtgrijs);
+}
+
+.motm-eigen-keuze .speler-avatar {
+  width: 88px;
+}
+
+.motm-eigen-keuze__tekst {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.motm-eigen-keuze__tekst h3 {
+  font-size: 20px;
+}
+
+.motm-eigen-keuze__rugnummer {
+  font-family: var(--font-kop);
+  font-size: 12px;
+  color: var(--tekst-zacht);
+}
+
+/* Weekquiz — rood vlak, één vraag tegelijk */
+.quiz-kaart {
+  position: relative;
+  background: linear-gradient(155deg, var(--rood) 0%, var(--rood-diep) 100%);
+  border-radius: var(--r-lg);
+  padding: var(--sp-6) var(--sp-5) var(--sp-5);
+  color: var(--wit);
+  box-shadow: var(--shadow-glow-rood);
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.quiz-kaart::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+.quiz-kaart__eyebrow {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.quiz-kaart__voortgang {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.quiz-kaart__vraag {
+  font-family: var(--font-kop);
+  font-size: 19px;
+  line-height: 1.3;
+}
+
+.quiz-kaart__opties {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.quiz-kaart__optie {
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-md);
+  padding: var(--sp-3);
+  font-size: 13px;
+  color: var(--wit);
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.quiz-kaart__optie:hover:not(:disabled) {
+  border-color: var(--wit);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.quiz-kaart__optie:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 2px;
+}
+
+.quiz-kaart__optie:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.quiz-kaart__optie:disabled {
+  cursor: default;
+}
+
+.quiz-kaart__optie--goed {
+  border-color: #6fe694;
+  background: rgba(111, 230, 148, 0.22);
+  font-weight: 600;
+}
+
+.quiz-kaart__optie--fout {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0.2);
+  opacity: 0.7;
+}
+
+.quiz-kaart__uitleg {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--r-sm);
+  padding: var(--sp-3);
+}
+
+.quiz-kaart__volgende {
+  align-self: flex-start;
+  border: none;
+  background: var(--wit);
+  color: var(--rood-diep);
+  font-family: var(--font-kop);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: var(--r-pill);
+  padding: var(--sp-2) var(--sp-5);
+  cursor: pointer;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.quiz-kaart__volgende:hover {
+  transform: translateY(-1px);
+}
+
+.quiz-kaart__volgende:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 2px;
+}
+
+.quiz-kaart__volgende:active {
+  transform: scale(0.96);
+}
+
+.quiz-kaart__klaar {
+  font-family: var(--font-kop);
+  font-size: 16px;
+}
+
+/* ==========================================================================
+   Seizoenskaart-hero (Tickets)
+   ========================================================================== */
+.seizoenskaart-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+  text-align: center;
+  padding: var(--sp-2) 0 var(--sp-6);
+}
+
+.seizoenskaart-hero__tekst {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  max-width: 34ch;
+}
+
+/* Staat rechtstreeks op de app-achtergrond, dus lichte tekst i.p.v. de
+   standaard donkere kleuren. */
+.seizoenskaart-hero__tekst .eyebrow {
+  color: #ff8a7a;
+}
+
+.seizoenskaart-hero__tekst h2 {
+  color: var(--wit);
+}
+
+.seizoenskaart-hero__tekst p {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 13px;
+}
+
+/* ==========================================================================
+   Placeholder-schermen (Fan, Tickets)
+   ========================================================================== */
+.placeholder-page {
+  padding-top: var(--sp-6);
+}
+
+.placeholder-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-8) var(--sp-5);
+}
+
+.placeholder-card__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--r-pill);
+  background: var(--lichtgrijs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rood);
+}
+
+.placeholder-card__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.placeholder-card p {
+  color: var(--tekst-zacht);
+  font-size: 14px;
+  max-width: 32ch;
+}
+
+/* ==========================================================================
+   "Meer"-scherm
+   ========================================================================== */
+.meer-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.meer-list__item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--surface-1);
+  box-shadow: var(--shadow-card);
+  color: var(--tekst-zacht);
+  font-size: 14px;
+}
+
+.meer-list__item svg {
+  width: 18px;
+  height: 18px;
+  color: var(--rood);
+  flex-shrink: 0;
+}
+
+.meer-list__item--klikbaar {
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  color: var(--tekst);
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.meer-list__item--klikbaar:hover {
+  color: var(--rood-diep);
+}
+
+.meer-list__item--klikbaar:active {
+  transform: scale(0.99);
+}
+
+.meer-list__item--klikbaar span {
+  flex: 1;
+}
+
+.meer-list__pijl {
+  color: var(--grijs) !important;
+}
+
+.meer-terug {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-kop);
+  font-size: 13px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 0;
+  margin-bottom: var(--sp-4);
+}
+
+.meer-terug:hover {
+  color: var(--wit);
+}
+
+.meer-sub {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+/* Selectie */
+.selectie-raster {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-3);
+}
+
+.selectie-kaart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+  background: var(--surface-1);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-card);
+  padding: var(--sp-2);
+  text-align: center;
+}
+
+.selectie-kaart .speler-avatar {
+  width: 100%;
+}
+
+.selectie-kaart__naam {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.selectie-kaart__info {
+  font-size: 10px;
+  color: var(--tekst-zacht);
+}
+
+/* Media & interviews */
+.media-raster {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-3);
+}
+
+.media-tegel {
+  position: relative;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  aspect-ratio: 1;
+  box-shadow: var(--shadow-card);
+}
+
+.media-tegel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media-tegel__label {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: var(--sp-2);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.75), transparent);
+  color: var(--wit);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* Fanshop — lichte achtergrond eromheen, want fanshop.css zelf gaat uit van
+   een lichte pagina i.p.v. onze donkere app-achtergrond. */
+.fanshop-achtergrond {
+  background: var(--surface-1);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.fanshop-achtergrond .shop {
+  padding-bottom: var(--sp-6);
+}
+
+/* Meldingen */
+.meldingen-lijst {
+  display: flex;
+  flex-direction: column;
+}
+
+.meldingen-rij {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-3) 0;
+  border-bottom: 1px solid var(--lichtgrijs);
+}
+
+.meldingen-rij:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.meldingen-rij__tekst {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.meldingen-rij__label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.meldingen-rij__uitleg {
+  font-size: 12px;
+  color: var(--tekst-zacht);
+}
+
+.meldingen-toggle {
+  flex-shrink: 0;
+  width: 44px;
+  height: 26px;
+  border-radius: var(--r-pill);
+  border: none;
+  background: var(--lichtgrijs);
+  cursor: pointer;
+  padding: 3px;
+  display: flex;
+  transition: background-color 0.2s ease;
+}
+
+.meldingen-toggle--aan {
+  background: var(--rood);
+}
+
+.meldingen-toggle__bol {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--r-pill);
+  background: var(--wit);
+  box-shadow: 0 1px 3px rgba(16, 16, 16, 0.3);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.meldingen-toggle--aan .meldingen-toggle__bol {
+  transform: translateX(18px);
+}
+
+/* Jij / profiel */
+.jij-huidig {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.jij-huidig h3 {
+  font-size: 22px;
+}
+
+.jij-huidig__fantype {
+  font-size: 13px;
+  color: var(--tekst-zacht);
+}
+
+.jij-lijst {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.jij-profiel-rij {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  background: var(--surface-1);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-card);
+  padding: var(--sp-4);
+  text-align: left;
+  font: inherit;
+  color: var(--rood);
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.jij-profiel-rij:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.jij-profiel-rij:disabled {
+  cursor: default;
+}
+
+.jij-profiel-rij--actief {
+  box-shadow:
+    0 0 0 2px var(--rood) inset,
+    var(--shadow-card);
+}
+
+.jij-profiel-rij__tekst {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.jij-profiel-rij__naam {
+  font-family: var(--font-kop);
+  font-size: 15px;
+  color: var(--tekst);
+}
+
+.jij-profiel-rij__fantype {
+  font-size: 12px;
+  color: var(--tekst-zacht);
+}
+
+.jij-noot {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+
+/* Focus-states overal zichtbaar houden (toegankelijkheid) */
+:focus-visible {
+  outline: 2px solid var(--rood);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}
+
+/* ==========================================================================
+   Digitaal plakboek (Fan-tab). De kaart/overlay/animaties zelf komen uit het
+   aangeleverde plakboek.css (ongewijzigd) — dit is alleen de lay-out
+   eromheen (raster, claimbalk, tekst in lege/claimbare vakjes).
+   ========================================================================== */
+.plakboek {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.plakboek-raster {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-3);
+  /* Lichte "albumpagina" erachter — de doorschijnende vakjespatronen uit
+     plakboek.css zijn ontworpen op een lichte ondergrond, en die klopt niet
+     meer nu de algemene app-achtergrond een donkerrode foto is geworden. */
+  background: var(--surface-1);
+  border-radius: var(--r-lg);
+  padding: var(--sp-4);
+  box-shadow: var(--shadow-card);
+}
+
+@media (min-width: 640px) {
+  .plakboek-raster {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Zelfgemaakte sticker — zelfde kaartvorm als .kaart uit plakboek.css,
+   maar dan met de eigen afbeelding als volledige vulling. */
+.eigen-sticker {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 3px solid var(--wit);
+  box-shadow: 0 6px 14px rgba(166, 18, 12, 0.28);
+}
+
+/* Wrapper voor een geplakte sticker — relative zodat de posterknop er als
+   klein overlay-icoontje op kan liggen, zonder de rastercel hoger te maken. */
+.sticker-geplakt {
+  position: relative;
+}
+
+.sticker-poster-knop {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--r-pill);
+  background: rgba(16, 16, 16, 0.7);
+  color: var(--wit);
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sticker-poster-knop:hover {
+  background: var(--rood);
+  transform: scale(1.08);
+}
+
+.sticker-poster-knop:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 2px;
+}
+
+.sticker-poster-knop:active {
+  transform: scale(0.92);
+}
+
+.slot {
+  gap: var(--sp-2);
+}
+
+/* Groter badge dan de standaard "sm" — anders zwemt het rond in de vrij
+   hoge 3:4-vakjes van plakboek.css. */
+.slot .team-badge {
+  width: 44px;
+  height: 44px;
+  font-size: 14px;
+}
+
+button.slot {
+  cursor: pointer;
+  font: inherit;
+  color: var(--tekst);
+  appearance: none;
+  width: 100%;
+}
+
+.slot__datum {
+  font-family: var(--font-kop);
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--grijs);
+}
+
+.slot.claimbaar .slot__datum {
+  color: var(--rood-diep);
+}
+
+.slot__hint {
+  font-family: var(--font-kop);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--rood);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Claimbalk — bovenaan het plakboek, alleen zichtbaar bij ≥1 claimbare sticker */
+.claim-balk {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  background: linear-gradient(155deg, var(--rood) 0%, var(--rood-diep) 100%);
+  border-radius: var(--r-lg);
+  padding: var(--sp-4);
+  color: var(--wit);
+  box-shadow: var(--shadow-glow-rood);
+}
+
+.claim-balk__tekst {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.claim-balk .eyebrow {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.claim-balk__wedstrijd {
+  font-family: var(--font-kop);
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.claim-balk__datum {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.claim-balk__knop {
+  flex-shrink: 0;
+  border: none;
+  background: var(--wit);
+  color: var(--rood-diep);
+  font-family: var(--font-kop);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-radius: var(--r-pill);
+  padding: var(--sp-2) var(--sp-4);
+  cursor: pointer;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.claim-balk__knop:hover {
+  transform: translateY(-1px);
+}
+
+.claim-balk__knop:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 2px;
+}
+
+.claim-balk__knop:active {
+  transform: scale(0.96);
+}
+
+/* ==========================================================================
+   Plakboek-pagina (losse route /plakboek, geen bottom nav)
+   ========================================================================== */
+.plakboek-pagina {
+  max-width: 520px;
+  margin: 0 auto;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+.plakboek-pagina__header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-5) var(--sp-5) var(--sp-4);
+  font-family: var(--font-kop);
+  text-transform: uppercase;
+  font-size: 14px;
+  color: var(--wit);
+}
+
+.plakboek-pagina__terug {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--wit);
+  flex-shrink: 0;
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.plakboek-pagina__terug:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.plakboek-pagina__terug:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 2px;
+}
+
+.plakboek-pagina__terug:active {
+  transform: scale(0.92);
+}
+
+.plakboek-pagina__terug svg {
+  width: 18px;
+  height: 18px;
+}
+
+.plakboek-pagina__logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.plakboek-pagina__main {
+  flex: 1;
+  padding: 0 var(--sp-5) var(--sp-9);
+}
+
+/* ==========================================================================
+   Adminkant (minimaal — alleen de plakboek-demoknop voor nu)
+   ========================================================================== */
+.admin-pagina {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.admin-pagina__header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-family: var(--font-kop);
+  text-transform: uppercase;
+  font-size: 13px;
+  color: var(--tekst-zacht);
+}
+
+.admin-pagina__logo {
+  width: 32px;
+  height: 32px;
+}
+
+.admin-kaart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.admin-kaart__uitleg {
+  font-size: 13px;
+  color: var(--tekst-zacht);
+}
+
+.admin-select {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--lichtgrijs);
+  border-radius: var(--r-md);
+  padding: var(--sp-3);
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--tekst);
+  background: var(--wit);
+}
+
+.admin-select:focus-visible {
+  outline: 2px solid var(--rood);
+  outline-offset: 2px;
+}
+
+.admin-kaart__melding {
+  font-size: 13px;
+  background: var(--lichtgrijs);
+  border-radius: var(--r-sm);
+  padding: var(--sp-3);
+  color: var(--tekst);
+}
+
+.admin-kaart__subkop {
+  font-family: var(--font-kop);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tekst-zacht);
+  margin: var(--sp-2) 0 0;
+}
+
+.admin-shop-bronnen {
+  display: flex;
+  gap: var(--sp-3);
+}
+
+.admin-shop-bron {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: var(--lichtgrijs);
+  border-radius: var(--r-md);
+  padding: var(--sp-3) var(--sp-2);
+}
+
+.admin-shop-bron__aantal {
+  font-family: var(--font-kop);
+  font-size: 24px;
+  color: var(--rood);
+}
+
+.admin-shop-bron__label {
+  font-size: 11px;
+  color: var(--tekst-zacht);
+  text-align: center;
+}
+
+.admin-shop-producten {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-shop-producten li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-2) 0;
+  border-bottom: 1px solid var(--lichtgrijs);
+  font-size: 13px;
+}
+
+.admin-shop-producten li:last-child {
+  border-bottom: none;
+}
+
+.admin-shop-producten__aantal {
+  font-family: var(--font-kop);
+  font-weight: 600;
+  color: var(--tekst-zacht);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Fan-wereld — video met tikbare ballen (overgenomen uit fan-wereld.html:
+   scene-opbouw, balposities, ring-pols, zwevende labels, overlay-animatie).
+   Tegel-inhoud zelf blijft de bestaande VoorspelKaart/MotmKaart/PollKaart/
+   QuizKaart — alleen deze presentatielaag is nieuw.
+   ========================================================================== */
+.fan-wereld {
+  /* Breekt uit de zijmarge, net als de wedstrijdalbum-tegel — voelt zo
+     echt schermvullend aan binnen de Fan-tab. */
+  width: calc(100% + var(--sp-7) * 2);
+  margin: calc(var(--sp-5) * -1) calc(var(--sp-7) * -1) 0;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-4) 0;
+  background:
+    radial-gradient(60% 40% at 50% 0%, rgba(255, 238, 205, 0.16), transparent 70%),
+    radial-gradient(70% 50% at 50% 100%, rgba(216, 30, 30, 0.16), transparent 70%),
+    linear-gradient(180deg, #2a0d10 0%, #1d0a0c 42%, #160809 100%);
+}
+
+.fan-wereld__scene {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1080 / 1350;
+  box-shadow: 0 0 70px 20px rgba(0, 0, 0, 0.45);
+}
+
+.fan-wereld__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill; /* bewust geen cover — anders kloppen de balposities niet meer */
+  display: block;
+}
+
+.fan-wereld__overlay {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---- tikbare ballen ---- */
+.fan-plek {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 12%;
+  aspect-ratio: 1;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.fan-plek.zicht {
+  opacity: 1;
+}
+
+.fan-plek__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2.5px solid rgba(255, 255, 255, 0.75);
+  box-shadow:
+    0 0 16px rgba(255, 255, 255, 0.28),
+    0 0 0 4px rgba(216, 30, 30, 0.12);
+  transform-origin: 50% 50%;
+  animation: fan-pols 2.4s ease-in-out infinite;
+}
+
+/* de ring ligt op het gras, recht onder de bal */
+@keyframes fan-pols {
+  0%,
+  100% {
+    transform: translateY(62%) scale(1, 0.38);
+    opacity: 0.65;
+  }
+  50% {
+    transform: translateY(62%) scale(1.12, 0.43);
+    opacity: 1;
+  }
+}
+
+.fan-plek:hover .fan-plek__ring,
+.fan-plek:focus-visible .fan-plek__ring {
+  border-color: var(--wit);
+  opacity: 1;
+}
+
+.fan-plek:focus-visible {
+  outline: none;
+}
+
+/* ---- zwevende labels: platte laag, dus scherpe tekst ---- */
+.fan-label {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  z-index: 6;
+  pointer-events: none;
+  font-family: var(--font-kop);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.015em;
+  color: var(--wit);
+  white-space: nowrap;
+  padding: 7px 14px;
+  border-radius: var(--r-pill);
+  background: linear-gradient(165deg, rgba(9, 28, 13, 0.95), rgba(5, 17, 8, 0.95));
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.55),
+    0 0 0 4px rgba(216, 30, 30, 0.14);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.fan-label.zicht {
+  opacity: 1;
+  animation: fan-dobber 3.4s ease-in-out infinite;
+}
+
+@keyframes fan-dobber {
+  0%,
+  100% {
+    transform: translate(-50%, -100%);
+  }
+  50% {
+    transform: translate(-50%, -118%);
+  }
+}
+
+.fan-label::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  margin-left: -6px;
+  width: 11px;
+  height: 11px;
+  background: rgba(5, 17, 8, 0.95);
+  border-right: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.35);
+  transform: rotate(45deg);
+}
+
+/* ---- tegel-overlay ---- */
+.tegel-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-5);
+  perspective: 900px;
+  background: rgba(4, 14, 7, 0.65);
+  backdrop-filter: blur(2px);
+}
+
+.tegel-overlay__kaart {
+  position: relative;
+  width: min(100%, 380px);
+  max-height: 85vh;
+  overflow-y: auto;
+  transform-origin: 50% 100%;
+  animation: tegel-omhoog 0.55s cubic-bezier(0.2, 0.9, 0.25, 1.15) both;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+@keyframes tegel-omhoog {
+  0% {
+    transform: translateY(60vh) rotateX(42deg) scale(0.72);
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) rotateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.tegel-overlay__sluit {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  z-index: 1;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-pill);
+  border: none;
+  background: var(--wit);
+  color: var(--zwart);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.tegel-overlay__sluit:hover {
+  transform: scale(1.06);
+}
+
+.tegel-overlay__sluit:focus-visible {
+  outline: 2px solid var(--rood);
+  outline-offset: 2px;
+}
+
+.tegel-overlay__sluit:active {
+  transform: scale(0.94);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fan-plek__ring,
+  .fan-label.zicht,
+  .tegel-overlay__kaart {
+    animation: none !important;
+  }
+}

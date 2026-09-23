@@ -1,0 +1,63 @@
+/* Fanshop — huisstijl FC Twente, mobile-first. */
+
+.shop {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 18px 16px 90px;
+  color: #101010;
+}
+
+.shop-kop { margin: 0 0 16px; }
+.shop-label {
+  font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: #d81e1e; margin: 0 0 2px;
+}
+.shop-kop h1 { font-family: Oswald, sans-serif; font-size: 30px; margin: 0; line-height: 1; }
+.shop-sub { font-size: 13.5px; color: #5d5952; margin: 6px 0 0; line-height: 1.5; }
+
+/* filters */
+.shop-filters { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 14px; scrollbar-width: none; }
+.shop-filters::-webkit-scrollbar { display: none; }
+.shop-filters button {
+  flex: 0 0 auto; font: 600 13.5px "Open Sans", sans-serif; cursor: pointer;
+  border: 2px solid #e2ded6; background: #fff; color: #3b3833;
+  border-radius: 99px; padding: 8px 16px;
+}
+.shop-filters button.aan { background: #d81e1e; border-color: #d81e1e; color: #fff; }
+.shop-filters button:focus-visible { outline: 3px solid #101010; outline-offset: 2px; }
+
+/* secties */
+.shop-sectie { margin: 0 0 26px; }
+.shop-sectie h2 {
+  font-family: Oswald, sans-serif; font-size: 18px; margin: 0 0 10px;
+  padding: 0 0 6px; border-bottom: 2px solid #edecea;
+}
+
+/* raster */
+.shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+@media (min-width: 560px) { .shop-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.shop-kaart {
+  background: #fff; border: 1px solid #e9e6e0; border-radius: 14px; padding: 14px 12px 12px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  box-shadow: 0 1px 4px rgba(16, 16, 16, 0.05);
+}
+.shop-illu {
+  width: 74px; height: 74px; color: #d81e1e; margin: 2px 0 8px;
+  background: #f6f4f1; border-radius: 12px; padding: 8px;
+}
+.shop-kaart h3 {
+  font-family: Oswald, sans-serif; font-weight: 600; font-size: 14px;
+  margin: 0 0 4px; line-height: 1.2; min-height: 2.4em;
+}
+.shop-prijs { font-family: Oswald, sans-serif; font-size: 17px; margin: 0 0 10px; }
+.shop-uit { font-size: 11px; color: #9a948c; margin: -6px 0 8px; }
+.shop-kaart button {
+  width: 100%; font: 600 13px "Open Sans", sans-serif; cursor: pointer;
+  border: 0; border-radius: 8px; padding: 10px 12px; background: #d81e1e; color: #fff;
+}
+.shop-kaart button:hover { background: #a6120c; }
+.shop-kaart button:focus-visible { outline: 3px solid #101010; outline-offset: 2px; }
+
+.shop-leeg { text-align: center; color: #5d5952; font-size: 14px; padding: 40px 20px; }
+.shop-voet { font-size: 11.5px; color: #8a857e; text-align: center; margin: 4px 0 0; line-height: 1.5; }

@@ -1,0 +1,215 @@
+{
+  "club": "FC Twente",
+  "seizoen": "2026-2027",
+  "toelichting": "Echte data. Lege velden (null / lege lijst) betekenen: nog niet ingevuld. Nooit zelf invullen of schatten. compleet=true pas als doelpunten, kaarten en opstelling zijn gecontroleerd.",
+  "wedstrijden": [
+    {
+      "id": "2026-08-09",
+      "datum": "2026-08-09",
+      "competitie": "Eredivisie",
+      "thuis": "sc Heerenveen",
+      "uit": "FC Twente",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 0
+      },
+      "toeschouwers": null,
+      "doelpunten": [],
+      "kaarten": [],
+      "opstellingTwente": {
+        "formatie": null,
+        "basis": [],
+        "wissels": []
+      },
+      "statistieken": {
+        "balbezitTwente": null,
+        "schotenTwente": null,
+        "schotenTegen": null
+      },
+      "bron": null,
+      "compleet": false
+    },
+    {
+      "id": "2026-08-16",
+      "datum": "2026-08-16",
+      "competitie": "Eredivisie",
+      "thuis": "FC Twente",
+      "uit": "PEC Zwolle",
+      "uitslag": {
+        "thuis": 3,
+        "uit": 1
+      },
+      "toeschouwers": null,
+      "doelpunten": [],
+      "kaarten": [],
+      "opstellingTwente": {
+        "formatie": null,
+        "basis": [],
+        "wissels": []
+      },
+      "statistieken": {
+        "balbezitTwente": null,
+        "schotenTwente": null,
+        "schotenTegen": null
+      },
+      "bron": null,
+      "compleet": false
+    },
+    {
+      "id": "2026-08-30",
+      "datum": "2026-08-30",
+      "competitie": "Eredivisie",
+      "thuis": "SC Cambuur",
+      "uit": "FC Twente",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 4
+      },
+      "toeschouwers": null,
+      "doelpunten": [],
+      "kaarten": [],
+      "opstellingTwente": {
+        "formatie": null,
+        "basis": [],
+        "wissels": []
+      },
+      "statistieken": {
+        "balbezitTwente": null,
+        "schotenTwente": null,
+        "schotenTegen": null
+      },
+      "bron": null,
+      "compleet": false
+    },
+    {
+      "id": "2026-09-06",
+      "datum": "2026-09-06",
+      "competitie": "Eredivisie",
+      "thuis": "FC Groningen",
+      "uit": "FC Twente",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 2
+      },
+      "toeschouwers": null,
+      "doelpunten": [],
+      "kaarten": [],
+      "opstellingTwente": {
+        "formatie": null,
+        "basis": [],
+        "wissels": []
+      },
+      "statistieken": {
+        "balbezitTwente": null,
+        "schotenTwente": null,
+        "schotenTegen": null
+      },
+      "bron": null,
+      "compleet": false
+    },
+    {
+      "id": "2026-09-09",
+      "datum": "2026-09-09",
+      "competitie": "Eredivisie",
+      "thuis": "FC Twente",
+      "uit": "Telstar",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 0
+      },
+      "toeschouwers": null,
+      "doelpunten": [],
+      "kaarten": [],
+      "opstellingTwente": {
+        "formatie": null,
+        "basis": [],
+        "wissels": []
+      },
+      "statistieken": {
+        "balbezitTwente": null,
+        "schotenTwente": null,
+        "schotenTegen": null
+      },
+      "bron": null,
+      "compleet": false
+    },
+    {
+      "id": "2026-09-12",
+      "datum": "2026-09-12",
+      "competitie": "Eredivisie",
+      "thuis": "FC Twente",
+      "uit": "ADO Den Haag",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 0
+      },
+      "toeschouwers": null,
+      "doelpunten": [],
+      "kaarten": [],
+      "opstellingTwente": {
+        "formatie": null,
+        "basis": [],
+        "wissels": []
+      },
+      "statistieken": {
+        "balbezitTwente": null,
+        "schotenTwente": null,
+        "schotenTegen": null
+      },
+      "bron": null,
+      "compleet": false
+    },
+    {
+      "id": "2026-09-20",
+      "datum": "2026-09-20",
+      "competitie": "Eredivisie",
+      "thuis": "FC Twente",
+      "uit": "PSV",
+      "uitslag": {
+        "thuis": 3,
+        "uit": 2
+      },
+      "toeschouwers": null,
+      "doelpunten": [
+        {
+          "minuut": 14,
+          "speler": "Younes Taha",
+          "team": "FC Twente"
+        },
+        {
+          "minuut": 26,
+          "speler": "Guus Til",
+          "team": "PSV"
+        },
+        {
+          "minuut": 29,
+          "speler": "Guus Til",
+          "team": "PSV"
+        },
+        {
+          "minuut": 79,
+          "speler": "Wout Weghorst",
+          "team": "FC Twente"
+        },
+        {
+          "minuut": 83,
+          "speler": "Daouda Weidmann",
+          "team": "FC Twente"
+        }
+      ],
+      "kaarten": [],
+      "opstellingTwente": {
+        "formatie": null,
+        "basis": [],
+        "wissels": []
+      },
+      "statistieken": {
+        "balbezitTwente": null,
+        "schotenTwente": null,
+        "schotenTegen": null
+      },
+      "bron": "https://www.doelpunten.nl/wedstrijd/19714638",
+      "compleet": false
+    }
+  ]
+}

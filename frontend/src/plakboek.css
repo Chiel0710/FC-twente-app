@@ -1,0 +1,109 @@
+/* Plakboek — kaart, overlay en animaties.
+   Importeer dit bestand één keer, bijvoorbeeld in main.jsx of in Plakboek.jsx. */
+
+:root {
+  --rood: #d81e1e;
+  --diep: #a6120c;
+  --zwart: #101010;
+  --grijs: #7c7c80;
+  --lijn: #d6d2c8;
+  --goud: #c9a227;
+}
+
+/* ---- de kaart ---- */
+.kaart {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: 12px;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(160deg, #e22a2a, var(--diep));
+  border: 3px solid #fff;
+  box-shadow: 0 6px 14px rgba(166, 18, 12, 0.28);
+  transform-origin: center center;
+}
+.kaart.cl { border-color: var(--goud); box-shadow: 0 6px 16px rgba(201, 162, 39, 0.38); }
+.kaart .badge {
+  width: 52px; height: 52px; display: grid; place-items: center;
+  background: #fff; border-radius: 50%; padding: 7px; margin-bottom: 8px;
+}
+.kaart .badge img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+.kaart .tegen { font-family: Oswald, sans-serif; font-weight: 600; font-size: 14px; margin: 0; line-height: 1.15; }
+.kaart .score { font-family: Oswald, sans-serif; font-size: 29px; margin: 3px 0 0; line-height: 1; }
+.kaart .meta { font-size: 10.5px; margin: 6px 0 0; opacity: 0.85; }
+.kaart .serie { position: absolute; bottom: 7px; right: 9px; font-size: 9px; opacity: 0.75; margin: 0; letter-spacing: 0.04em; }
+
+/* glansveeg over de kaart */
+.glans { position: absolute; inset: 0; border-radius: 9px; overflow: hidden; pointer-events: none; }
+.glans::after {
+  content: ""; position: absolute; top: -60%; left: -120%;
+  width: 60%; height: 220%; transform: rotate(18deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+  animation: veeg 1.5s 0.35s ease-out;
+}
+@keyframes veeg { to { left: 160%; } }
+
+/* onthulling in de overlay */
+.onthul { animation: onthul 0.6s cubic-bezier(0.2, 0.9, 0.25, 1.2); }
+@keyframes onthul {
+  0%   { transform: scale(0.3) rotate(-14deg); opacity: 0; }
+  60%  { transform: scale(1.07) rotate(3deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); }
+}
+
+/* ---- overlay ---- */
+.laag {
+  position: fixed; inset: 0; z-index: 50; display: none; place-items: center;
+  background: rgba(16, 16, 16, 0.72); backdrop-filter: blur(3px); padding: 20px;
+}
+.laag.aan { display: grid; }
+.pakje { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.pakje .kaart { width: min(70vw, 230px); box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5); }
+.pakje .kaart .badge { width: 62px; height: 62px; }
+.pakje .kaart .tegen { font-size: 17px; }
+.pakje .kaart .score { font-size: 38px; }
+.pakje p { color: #fff; margin: 0; font-family: Oswald, sans-serif; font-size: 20px; }
+
+/* ---- vliegende kopie (FLIP) ---- */
+.vliegt {
+  position: fixed; z-index: 70; margin: 0; pointer-events: none;
+  transition: transform 0.85s cubic-bezier(0.55, 0.05, 0.25, 1), opacity 0.2s 0.75s;
+}
+
+/* ---- landen in het vakje ---- */
+.geplakt { animation: stempel 0.45s cubic-bezier(0.2, 0.9, 0.25, 1.4); }
+@keyframes stempel {
+  0%   { transform: scale(1.18); }
+  60%  { transform: scale(0.96); }
+  100% { transform: scale(1); }
+}
+
+/* ---- deeltjes ---- */
+.deeltje {
+  position: fixed; width: 9px; height: 9px; border-radius: 2px;
+  pointer-events: none; z-index: 60;
+  animation: spat var(--duur) cubic-bezier(0.15, 0.75, 0.3, 1) forwards;
+}
+@keyframes spat {
+  0%   { transform: translate(0, 0) scale(1) rotate(0); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.2) rotate(var(--rot)); opacity: 0; }
+}
+
+/* ---- lege vakjes ---- */
+.slot.leeg, .slot.claimbaar {
+  aspect-ratio: 3 / 4; border-radius: 10px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center; padding: 12px 9px;
+  border: 2px dashed var(--lijn);
+  background: repeating-linear-gradient(135deg, transparent 0 9px, rgba(0, 0, 0, 0.02) 9px 18px);
+}
+.slot.claimbaar { border-color: #efb7b7; background: repeating-linear-gradient(135deg, rgba(216,30,30,.05) 0 9px, rgba(216,30,30,.1) 9px 18px); }
+.slot:focus-visible { outline: 3px solid var(--rood); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .onthul, .geplakt, .deeltje, .glans::after, .vliegt { animation: none !important; transition: none !important; }
+}

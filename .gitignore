@@ -1,0 +1,36 @@
+# Afhankelijkheden
+node_modules/
+
+# Env-bestanden met lokale/geheime instellingen
+.env
+.env.local
+
+# Database (SQLite, lokaal bestand)
+backend/prisma/dev.db
+backend/prisma/dev.db-journal
+
+# Build-output
+frontend/dist/
+frontend/dist-ssr/
+
+# Screenshots (Puppeteer-testtool)
+frontend/temporary screenshots/
+
+# Editor/OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+Thumbs.db
+
+# Losse bron-/referentiebestanden in de hoofdmap (aangeleverde ontwerp- en
+# databestanden tijdens development — al gekopieerd naar frontend/backend
+# waar nodig, horen niet in de repo zelf).
+/*.png
+/*.mp4
+/*.zip
+/*.json
+/*.html
+/*.jsx
+/*.css
+/*.routes.js

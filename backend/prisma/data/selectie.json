@@ -1,0 +1,163 @@
+{
+  "club": "FC Twente",
+  "seizoen": "2026-2027",
+  "toelichting": "Posities nog aanvullen (behalve keepers). foto=null: foto ontbreekt nog.",
+  "selectie": [
+    {
+      "rugnummer": 1,
+      "naam": "Lars Unnerstall",
+      "positie": "Keeper",
+      "foto": "/spelers/01-lars-unnerstall.png"
+    },
+    {
+      "rugnummer": 2,
+      "naam": "Michał Rosiak",
+      "positie": null,
+      "foto": "/spelers/02-michal-rosiak.png"
+    },
+    {
+      "rugnummer": 3,
+      "naam": "Robin Pröpper",
+      "positie": null,
+      "foto": "/spelers/03-robin-propper.png"
+    },
+    {
+      "rugnummer": 4,
+      "naam": "Ruud Nijstad",
+      "positie": null,
+      "foto": "/spelers/04-ruud-nijstad.png"
+    },
+    {
+      "rugnummer": 6,
+      "naam": "Ramiz Zerrouki",
+      "positie": null,
+      "foto": "/spelers/06-ramiz-zerrouki.png"
+    },
+    {
+      "rugnummer": 7,
+      "naam": "Marko Pjaca",
+      "positie": null,
+      "foto": "/spelers/07-marko-pjaca.png"
+    },
+    {
+      "rugnummer": 8,
+      "naam": "Daouda Weidmann",
+      "positie": null,
+      "foto": "/spelers/08-daouda-weidmann.png"
+    },
+    {
+      "rugnummer": 9,
+      "naam": "Wout Weghorst",
+      "positie": null,
+      "foto": "/spelers/09-wout-weghorst.png"
+    },
+    {
+      "rugnummer": 10,
+      "naam": "Younes Taha",
+      "positie": null,
+      "foto": "/spelers/10-younes-taha.png"
+    },
+    {
+      "rugnummer": 11,
+      "naam": "Daan Rots",
+      "positie": null,
+      "foto": "/spelers/11-daan-rots.png"
+    },
+    {
+      "rugnummer": 14,
+      "naam": "Kristian Hlynsson",
+      "positie": null,
+      "foto": "/spelers/14-kristian-hlynsson.png"
+    },
+    {
+      "rugnummer": 16,
+      "naam": "Joël Drommel",
+      "positie": "Keeper",
+      "foto": "/spelers/16-joel-drommel.png"
+    },
+    {
+      "rugnummer": 17,
+      "naam": "Filip Thorvaldsen",
+      "positie": null,
+      "foto": "/spelers/17-filip-thorvaldsen.png"
+    },
+    {
+      "rugnummer": 18,
+      "naam": "Jordy Bawuah",
+      "positie": null,
+      "foto": "/spelers/18-jordy-bawuah.png"
+    },
+    {
+      "rugnummer": 20,
+      "naam": "Thomas van den Belt",
+      "positie": null,
+      "foto": "/spelers/20-thomas-van-den-belt.png"
+    },
+    {
+      "rugnummer": 22,
+      "naam": "Remko Pasveer",
+      "positie": "Keeper",
+      "foto": "/spelers/22-remko-pasveer.png"
+    },
+    {
+      "rugnummer": 23,
+      "naam": "Stav Lemkin",
+      "positie": null,
+      "foto": "/spelers/23-stav-lemkin.png"
+    },
+    {
+      "rugnummer": 24,
+      "naam": "Krzysztof Kurowski",
+      "positie": null,
+      "foto": "/spelers/24-krzysztof-kurowski.png"
+    },
+    {
+      "rugnummer": 25,
+      "naam": "Lucas Vennegoor of Hesselink",
+      "positie": null,
+      "foto": "/spelers/25-lucas-vennegoor-of-hesselink.png"
+    },
+    {
+      "rugnummer": 27,
+      "naam": "Sondre Ørjasæter",
+      "positie": null,
+      "foto": "/spelers/27-sondre-orjasaeter.png"
+    },
+    {
+      "rugnummer": 28,
+      "naam": "Bart van Rooij",
+      "positie": null,
+      "foto": "/spelers/28-bart-van-rooij.png"
+    },
+    {
+      "rugnummer": 29,
+      "naam": "Aske Adelgaard",
+      "positie": null,
+      "foto": "/spelers/29-aske-adelgaard.png"
+    },
+    {
+      "rugnummer": 31,
+      "naam": "Yannick Gerritsen",
+      "positie": "Keeper",
+      "foto": "/spelers/31-yannick-gerritsen.png"
+    },
+    {
+      "rugnummer": 37,
+      "naam": "Naci Ünüvar",
+      "positie": null,
+      "foto": "/spelers/37-naci-unuvar.png"
+    },
+    {
+      "rugnummer": 38,
+      "naam": "Max Bruns",
+      "positie": null,
+      "foto": "/spelers/38-max-bruns.png"
+    },
+    {
+      "rugnummer": 41,
+      "naam": "Gijs Besselink",
+      "positie": null,
+      "foto": "/spelers/41-gijs-besselink.png"
+    }
+  ]
+}
