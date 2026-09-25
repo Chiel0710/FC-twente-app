@@ -1,3 +1,4 @@
+import { claimStickerVoor } from './eigenStickers'
 // Helpers om wedstrijd/sticker-data (zoals de backend 'm rauw teruggeeft) om
 // te zetten naar het sticker-object dat StickerPlak.jsx verwacht:
 // { id, matchId, tegenstander, logoSlug, thuis, datum, uitslag, volgnummer, europees }
@@ -37,6 +38,27 @@ export function bouwStickerObject(stickerCard) {
         ? `${match.thuisScore}-${match.uitScore}`
         : null,
     volgnummer: stickerCard.serialNumber || null,
-    europees: match.competition !== 'Eredivisie',
+    // Alleen echt Europese duels; niet elke competitie die geen "Eredivisie" heet
+    // (Vrouwen Eredivisie en de Supercup zijn niet Europees)
+    europees: match.competition === 'Conference League',
+    // eigen ontwerp voor deze sticker (bv. Twente – PSV), anders null
+    beeld: claimStickerVoor(match.kickoff),
   }
+}
+
+// Leesbare sleutel van een sticker in links, bv. "2026-09-20-twente-psv".
+// Een sticker in de database heeft per profiel een eigen id; deze sleutel is
+// voor iedereen gelijk en wijst via datum en clubs de wedstrijd aan.
+const kortNaam = (naam) =>
+  naam
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '') // accenten weg: é -> e
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^(fc|sc)-|-$/g, '')
+
+export function stickerSleutel(match) {
+  const d = new Date(match.kickoff)
+  const datum = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+  return `${datum}-${kortNaam(match.thuisTeam.name)}-${kortNaam(match.uitTeam.name)}`
 }

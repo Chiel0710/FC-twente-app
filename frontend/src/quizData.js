@@ -1,5 +1,5 @@
 // Statische weekquiz — 3 weetjes, met uitleg per antwoord. Geen score/ranglijst
-// (Fan-tab is voor de lol), het gedrag wordt alleen gelogd via /api/quiz/answer.
+// (Fan-tab is voor de lol), het gedrag wordt alleen gelogd (op dit apparaat, zie api.js).
 export const QUIZVRAGEN = [
   {
     id: 1,

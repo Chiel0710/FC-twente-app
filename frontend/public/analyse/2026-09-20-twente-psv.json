@@ -1,0 +1,46 @@
+{
+  "wedstrijdId": "2026-09-20-twente-psv",
+  "competitie": "Eredivisie",
+  "datum": "2026-09-20",
+  "stadion": "De Grolsch Veste",
+  "thuis": "FC Twente",
+  "uit": "PSV",
+  "uitslag": "3-2",
+  "beschikbaarVanaf": "na",
+  "titel": "Twente zet PSV voor het eerst dit seizoen op verlies",
+  "intro": "In een wedstrijd die alle kanten op ging, won FC Twente in de Grolsch Veste met 3-2 van landskampioen PSV. Voor de ploeg van Peter Bosz was het de eerste nederlaag van het seizoen.",
+  "hoofdstukken": [
+    {
+      "kop": "Snelle start, snelle klap terug",
+      "tekst": "PSV kende een rommelig eerste kwartier: spits Ricardo Pepi moest al vroeg geblesseerd naar de kant en Younes Taha bracht Twente op voorsprong. PSV herstelde zich snel. Guus Til maakte eerst met het hoofd gelijk en rondde kort daarna een fraaie aanval af, waarmee hij de wedstrijd in drie minuten omdraaide."
+    },
+    {
+      "kop": "Omschakeling op het juiste moment",
+      "tekst": "Een kwartier voor tijd haalde Twente aanvoerder Robin Pröpper naar de kant en bracht met Lucas Vennegoor of Hesselink een extra aanvaller. Dat slotoffensief betaalde zich uit. Invaller Daan Rots legde met een lobje de bal klaar voor Wout Weghorst, die koelbloedig de 2-2 binnenschoof."
+    },
+    {
+      "kop": "De beslissende rush",
+      "tekst": "Kort daarna zette Daouda Weidmann een rush in vanaf eigen helft en bleef hij rustig in de afronding: 3-2, en de genadeklap voor PSV."
+    },
+    {
+      "kop": "Wat zegt de aanvoerder?",
+      "tekst": "Pröpper erkende na afloop dat niet alles even mooi was, maar vond dat Twente met de gekozen speelstijl veel goede dingen liet zien en PSV daarmee flink dwarszat."
+    }
+  ],
+  "sleutelmomenten": [
+    { "minuut": 8, "type": "blessure", "tekst": "Pepi (PSV) valt geblesseerd uit" },
+    { "minuut": 14, "type": "doelpunt", "team": "thuis", "speler": "Younes Taha", "stand": "1-0" },
+    { "minuut": 26, "type": "doelpunt", "team": "uit", "speler": "Guus Til", "stand": "1-1", "tekst": "Kopbal" },
+    { "minuut": 29, "type": "doelpunt", "team": "uit", "speler": "Guus Til", "stand": "1-2" },
+    { "minuut": 75, "type": "wissel", "team": "thuis", "tekst": "Pröpper eruit, Vennegoor of Hesselink erin" },
+    { "minuut": 79, "type": "doelpunt", "team": "thuis", "speler": "Wout Weghorst", "assist": "Daan Rots", "stand": "2-2" },
+    { "minuut": 83, "type": "doelpunt", "team": "thuis", "speler": "Daouda Weidmann", "stand": "3-2", "tekst": "Rush vanaf eigen helft" }
+  ],
+  "uitgelicht": {
+    "speler": "Daouda Weidmann",
+    "reden": "Beslissende 3-2 na een solo vanaf eigen helft."
+  },
+  "context": "AZ gaat als koploper de interlandbreak in.",
+  "bron": "Samengevat op basis van het wedstrijdverslag van ESPN (20 sep 2026). Eigen samenvatting, geen overgenomen tekst.",
+  "controleer": "Minuten van de wissel (75) en de blessure (8) zijn afgeleid uit het verslag; controleer ze tegen wedstrijd-details-2026-2027.json en pas aan als die afwijken."
+}

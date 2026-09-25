@@ -1,0 +1,331 @@
+/* ==========================================================================
+   Highlights-scherm (/highlights/:datum) — "Twente in 60 seconden" als
+   stories, schermvullend boven de app. Alleen transform/opacity animeren.
+   ========================================================================== */
+
+.hl {
+  position: fixed;
+  inset: 0;
+  z-index: 70; /* boven kopbalk, onderbalk en toast-laag */
+  display: flex;
+  flex-direction: column;
+  background: #0d0d0d;
+  color: var(--wit);
+  animation: vervaag-in 0.3s ease both;
+}
+
+/* Voortgang: één balkje per doelpunt, zoals bij stories */
+.hl__balken {
+  position: absolute;
+  z-index: 3;
+  top: calc(env(safe-area-inset-top, 0px) + var(--sp-2));
+  left: var(--sp-3);
+  right: var(--sp-3);
+  display: flex;
+  gap: var(--sp-1);
+}
+
+.hl__balk {
+  flex: 1;
+  height: 3px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+}
+
+.hl__vulling {
+  display: block;
+  height: 100%;
+  background: var(--wit);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.hl__vulling.is-klaar {
+  transform: scaleX(1);
+}
+
+/* Kaart i.p.v. clip: het balkje loopt in de tijd dat de kaart staat */
+.hl__vulling.is-kaart {
+  animation: hl-vul var(--kaart-duur) linear forwards;
+}
+
+@keyframes hl-vul {
+  to { transform: scaleX(1); }
+}
+
+.hl__kop {
+  position: absolute;
+  z-index: 3;
+  top: calc(env(safe-area-inset-top, 0px) + var(--sp-5));
+  left: var(--sp-4);
+  right: var(--sp-3);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.hl__titel {
+  color: var(--wit);
+  font-family: var(--font-tegel, var(--font-kop));
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.hl__uitslag {
+  font-family: var(--font-kop);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.hl__sluit {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--wit);
+  cursor: pointer;
+  transition: transform 0.2s var(--indruk);
+}
+
+.hl__sluit:hover { background: rgba(255, 255, 255, 0.26); }
+.hl__sluit:focus-visible { outline: 2px solid var(--wit); outline-offset: 2px; }
+.hl__sluit:active { transform: scale(0.9); }
+
+.hl__melding {
+  margin: auto;
+  padding: var(--sp-5);
+  text-align: center;
+  font-size: 15px;
+}
+
+/* De clip vult het scherm; muted/playsinline voor autoplay op telefoons */
+.hl__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+
+/* Kaart als de clip ontbreekt: rood voor Twente, grafiet voor de tegenstander */
+.hl__kaart {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-6);
+  background:
+    radial-gradient(90% 60% at 50% 30%, rgba(255, 255, 255, 0.08), transparent 70%),
+    linear-gradient(#26262a, #151517);
+  animation: vervaag-in 0.3s ease both;
+}
+
+.hl__kaart.is-twente {
+  background:
+    radial-gradient(80% 60% at 30% 25%, rgba(255, 91, 69, 0.55), transparent 70%),
+    radial-gradient(90% 70% at 100% 100%, rgba(106, 8, 4, 0.7), transparent 70%),
+    var(--rood);
+}
+
+.hl__kaart-minuut {
+  font-family: var(--font-kop);
+  font-size: clamp(110px, 38vw, 180px);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}
+
+.hl__kaart-speler {
+  font-family: var(--font-kop);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.05;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.hl__kaart-stand {
+  padding: var(--sp-1) var(--sp-4);
+  border-radius: var(--r-pill);
+  background: rgba(0, 0, 0, 0.28);
+  font-family: var(--font-kop);
+  font-size: 24px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Onderin: minuut, speler en tussenstand over de clip */
+.hl__onder {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-8) var(--sp-4) calc(env(safe-area-inset-bottom, 0px) + var(--sp-5));
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+  pointer-events: none;
+}
+
+.hl__minuut {
+  font-family: var(--font-kop);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--gloed-rood, #ff5b45);
+}
+
+.hl__speler {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-kop);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.hl__speler small {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  opacity: 0.75;
+  text-transform: none;
+}
+
+.hl__stand {
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.16);
+  font-family: var(--font-kop);
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tikzones zoals bij stories: links terug, rechts verder */
+.hl__tik {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+.hl__tik button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.hl__tik button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: -6px;
+}
+
+.hl__tik button:active {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Eindscherm na de laatste clip */
+.hl__eind {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-6);
+  text-align: center;
+  animation: vervaag-in 0.4s ease both;
+}
+
+.hl__eind-stand {
+  font-family: var(--font-kop);
+  font-size: 96px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--gloed-rood, #ff5b45);
+}
+
+.hl__eind-tekst {
+  font-family: var(--font-kop);
+  font-size: 16px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.hl__claim {
+  margin-top: var(--sp-4);
+  min-height: 54px;
+  padding: 0 var(--sp-7);
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--rood);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 12px 26px -10px rgba(216, 30, 30, 0.9);
+  transition: transform 0.2s var(--indruk);
+}
+
+.hl__claim:hover { transform: translateY(-2px); }
+.hl__claim:focus-visible { outline: 3px solid var(--wit); outline-offset: 3px; }
+.hl__claim:active { transform: scale(0.97); }
+
+.hl__opnieuw {
+  min-height: 44px;
+  padding: 0 var(--sp-5);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s var(--indruk);
+}
+
+.hl__opnieuw:hover { background: rgba(255, 255, 255, 0.08); }
+.hl__opnieuw:focus-visible { outline: 2px solid var(--wit); outline-offset: 2px; }
+.hl__opnieuw:active { transform: scale(0.97); }
+
+/* De hele toast is tikbaar (naar zijn link) */
+.toast-tik .toast {
+  cursor: pointer;
+}
+
+.inbox li {
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hl,
+  .hl__kaart,
+  .hl__eind {
+    animation: none;
+  }
+}

@@ -1,36 +1,28 @@
 import { useEffect, useState } from 'react'
 import { getMatches, getResults, getStandings } from '../api'
 import TeamBadge from '../components/TeamBadge'
+import TeamSchakelaar from '../components/TeamSchakelaar'
+import WedstrijdKaart from '../components/WedstrijdKaart'
+import { useTeamKeuze } from '../teamKeuze'
 
-const datumFormat = new Intl.DateTimeFormat('nl-NL', {
-  weekday: 'short',
-  day: 'numeric',
-  month: 'short',
-  hour: '2-digit',
-  minute: '2-digit',
-})
-
-const datumKortFormat = new Intl.DateTimeFormat('nl-NL', {
-  weekday: 'short',
-  day: 'numeric',
-  month: 'short',
-})
+// Naam van de competitie boven de stand, per team
+const STAND_COMPETITIE = { mannen: 'Eredivisie', vrouwen: 'Vrouwen Eredivisie' }
 
 export default function Wedstrijden() {
-  const [laatsteUitslag, setLaatsteUitslag] = useState(undefined)
-  const [programma, setProgramma] = useState([])
-  const [stand, setStand] = useState([])
+  const { team } = useTeamKeuze()
+  // Per team bewaren: terugschakelen is dan meteen klaar
+  const [perTeam, setPerTeam] = useState({})
   const [fout, setFout] = useState(null)
+  const data = perTeam[team]
 
   useEffect(() => {
+    if (perTeam[team]) return
     let actief = true
 
-    Promise.all([getMatches('gepland'), getResults(), getStandings()])
-      .then(([geplande, resultaten, teams]) => {
+    Promise.all([getMatches('gepland', team), getResults(team), getStandings(team)])
+      .then(([programma, uitslagen, stand]) => {
         if (!actief) return
-        setProgramma(geplande)
-        setLaatsteUitslag(resultaten[0] ?? null)
-        setStand(teams)
+        setPerTeam((oud) => ({ ...oud, [team]: { programma, uitslagen, stand } }))
       })
       .catch((err) => {
         if (!actief) return
@@ -40,7 +32,7 @@ export default function Wedstrijden() {
     return () => {
       actief = false
     }
-  }, [])
+  }, [team, perTeam])
 
   if (fout) {
     return (
@@ -52,37 +44,25 @@ export default function Wedstrijden() {
 
   return (
     <>
+      <TeamSchakelaar />
+
       <section>
         <div className="section-heading">
           <span className="eyebrow">Terugblik</span>
-          <h2>Laatste uitslag</h2>
+          <h2>Uitslagen</h2>
         </div>
 
-        {laatsteUitslag === undefined && <div className="card">Uitslag laden...</div>}
-        {laatsteUitslag === null && (
+        {!data && <div className="card">Uitslagen laden...</div>}
+        {data && data.uitslagen.length === 0 && (
           <div className="card">
             <p>Er is nog geen wedstrijd gespeeld.</p>
           </div>
         )}
-
-        {laatsteUitslag && (
-          <div className="card">
-            <div className="result-card__row">
-              <div className="result-card__team">
-                <TeamBadge team={laatsteUitslag.thuisTeam} />
-                <span className="result-card__team-name">{laatsteUitslag.thuisTeam.name}</span>
-              </div>
-              <span className="result-card__score">
-                {laatsteUitslag.thuisScore} - {laatsteUitslag.uitScore}
-              </span>
-              <div className="result-card__team">
-                <TeamBadge team={laatsteUitslag.uitTeam} />
-                <span className="result-card__team-name">{laatsteUitslag.uitTeam.name}</span>
-              </div>
-            </div>
-            <p className="result-card__meta">
-              {datumFormat.format(new Date(laatsteUitslag.kickoff))} · {laatsteUitslag.venue}
-            </p>
+        {data && data.uitslagen.length > 0 && (
+          <div className="wedstrijd-lijst">
+            {data.uitslagen.map((m) => (
+              <WedstrijdKaart match={m} key={m.id} />
+            ))}
           </div>
         )}
       </section>
@@ -93,31 +73,16 @@ export default function Wedstrijden() {
           <h2>Programma</h2>
         </div>
 
-        {programma.length === 0 && laatsteUitslag !== undefined && (
+        {!data && <div className="card">Programma laden...</div>}
+        {data && data.programma.length === 0 && (
           <div className="card">
             <p>Geen verdere wedstrijden gepland.</p>
           </div>
         )}
-
-        {programma.length > 0 && (
-          <div className="card fixture-list">
-            {programma.map((m) => (
-              <div className="fixture-row" key={m.id}>
-                <span className="fixture-row__datum">
-                  {datumKortFormat.format(new Date(m.kickoff))}
-                  {!m.aftrapBekend && <span className="fixture-row__nnb"> n.n.b.</span>}
-                </span>
-                <span className="fixture-row__team">
-                  <TeamBadge team={m.thuisTeam} size="sm" />
-                  <span>{m.thuisTeam.name}</span>
-                </span>
-                <span className="fixture-row__vs">–</span>
-                <span className="fixture-row__team">
-                  <TeamBadge team={m.uitTeam} size="sm" />
-                  <span>{m.uitTeam.name}</span>
-                </span>
-                <span className="fixture-row__competitie">{m.competition}</span>
-              </div>
+        {data && data.programma.length > 0 && (
+          <div className="wedstrijd-lijst">
+            {data.programma.map((m) => (
+              <WedstrijdKaart match={m} key={m.id} />
             ))}
           </div>
         )}
@@ -125,13 +90,13 @@ export default function Wedstrijden() {
 
       <section>
         <div className="section-heading">
-          <span className="eyebrow">Eredivisie</span>
+          <span className="eyebrow">{STAND_COMPETITIE[team]}</span>
           <h2>Stand</h2>
         </div>
 
-        {stand.length === 0 && <div className="card">Stand laden...</div>}
+        {!data && <div className="card">Stand laden...</div>}
 
-        {stand.length > 0 && (
+        {data && data.stand.length > 0 && (
           <div className="card">
             <div className="table-scroll">
               <table className="standings-table">
@@ -145,35 +110,35 @@ export default function Wedstrijden() {
                   </tr>
                 </thead>
                 <tbody>
-                  {stand.map((team) => (
+                  {data.stand.map((club) => (
                     <tr
-                      key={team.id}
-                      className={[
-                        team.isTwente ? 'is-twente' : '',
-                        team.zone ? 'is-zone' : '',
-                      ]
+                      key={club.id}
+                      className={[club.isTwente ? 'is-twente' : '', club.zone ? 'is-zone' : '']
                         .filter(Boolean)
                         .join(' ')}
                     >
-                      <td>{team.position}</td>
+                      <td>{club.position}</td>
                       <td>
                         <span className="standings-table__team">
-                          <TeamBadge team={team} size="sm" />
-                          {team.name}
-                          {team.zone && <span className="standings-table__zone-dot" />}
+                          <TeamBadge team={club} size="sm" />
+                          {club.name}
+                          {club.zone && <span className="standings-table__zone-dot" />}
                         </span>
                       </td>
-                      <td className="num">{team.played}</td>
-                      <td className="num">{team.goalDifference}</td>
-                      <td className="num punten">{team.points}</td>
+                      <td className="num">{club.played}</td>
+                      <td className="num">{club.goalDifference}</td>
+                      <td className="num punten">{club.points}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <p className="result-card__meta">
-              Rood stipje = degradatie of play-offs promotie/degradatie.
-            </p>
+            {/* Alleen tonen als er echt zones in de stand staan (bij de vrouwen niet) */}
+            {data.stand.some((club) => club.zone) && (
+              <p className="result-card__meta">
+                Rood stipje = degradatie of play-offs promotie/degradatie.
+              </p>
+            )}
           </div>
         )}
       </section>

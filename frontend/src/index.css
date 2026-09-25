@@ -152,6 +152,7 @@ a {
 .app-topbar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--sp-3);
   padding: var(--sp-5) var(--sp-5) var(--sp-4);
 }
@@ -1044,11 +1045,23 @@ a {
   object-position: top center;
 }
 
-.speler-avatar__streepje {
-  color: rgba(255, 255, 255, 0.75);
+.speler-avatar img {
+  /* vaste plek, zodat alle kaarten gelijk blijven terwijl de foto laadt */
+  display: block;
+}
+
+/* Geen foto in de bron: neutrale plaat met het rugnummer, geen clubrood */
+.speler-avatar--leeg {
+  background: linear-gradient(155deg, #e4e2df 0%, #cfccc8 100%);
+  box-shadow: 0 1px 2px rgba(16, 16, 16, 0.08);
+}
+
+.speler-avatar__nummer {
+  color: rgba(16, 16, 16, 0.35);
   font-family: var(--font-kop);
   font-weight: 600;
-  font-size: 22px;
+  font-size: 32px;
+  letter-spacing: -0.03em;
 }
 
 /* Man of the Match — groter vlak, spelerskeuze met echte foto's */
@@ -1460,9 +1473,84 @@ a {
   line-height: 1.2;
 }
 
-.selectie-kaart__info {
-  font-size: 10px;
-  color: var(--tekst-zacht);
+.selectie-kaart__nummer {
+  font-family: var(--font-kop);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--rood);
+  line-height: 1;
+  margin-top: var(--sp-1);
+}
+
+/* Schakelaar Mannen / Vrouwen — staat op de donkere achtergrond */
+.team-schakelaar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-1);
+  padding: var(--sp-1);
+  margin-bottom: var(--sp-2); /* + gap van .meer-sub = 24px */
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.team-schakelaar__knop {
+  min-height: 42px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: var(--font-kop);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.team-schakelaar__knop:hover {
+  color: var(--wit);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.team-schakelaar__knop:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 2px;
+}
+
+.team-schakelaar__knop:active {
+  transform: scale(0.96);
+}
+
+.team-schakelaar__knop[aria-pressed='true'] {
+  background: var(--wit);
+  color: var(--rood);
+  box-shadow: 0 6px 16px -8px rgba(16, 16, 16, 0.6);
+}
+
+/* Eén blok per linie: Keepers, Verdedigers, ... */
+.selectie-linie + .selectie-linie {
+  margin-top: var(--sp-2); /* + gap van .meer-sub = 24px */
+}
+
+.selectie-linie__titel {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-3);
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--wit);
+}
+
+.selectie-linie__aantal {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* Media & interviews */
@@ -2198,6 +2286,169 @@ button.slot {
   transform: rotate(45deg);
 }
 
+/* ==========================================================================
+   Fan-tab (nieuw): Rossie-video met vijf tikbare ballen (FanRossie.jsx).
+   Vaste laag tussen kopbalk en onderbalk; de video staat er zo groot mogelijk
+   in zonder te vervormen, de rest krijgt de kleur van de tribune.
+   ========================================================================== */
+.fan-rossie {
+  position: fixed;
+  z-index: 5; /* onder kopbalk en onderbalk (40) en de tegel-overlay (50) */
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(520px, 100%);
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  /* achter de ronde hoeken van de balken loopt de tribune door */
+  padding: calc(var(--veilig-boven) + var(--kopbalk-hoogte)) 0 calc(var(--veilig-onder) + 10px + var(--onderbalk-hoogte));
+  background:
+    radial-gradient(90% 40% at 50% 0%, rgba(255, 255, 255, 0.06), transparent 70%),
+    #5a1a1e;
+}
+
+/* Meet zijn eigen maat, zodat de video "contain" kan rekenen */
+.fan-rossie__podium {
+  container-type: size;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+}
+
+.fan-rossie__beeld {
+  position: relative;
+  width: min(100cqw, calc(100cqh * var(--verhouding)));
+  aspect-ratio: var(--verhouding);
+}
+
+.fan-rossie__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill; /* container heeft dezelfde verhouding: niets vervormt */
+  display: block;
+}
+
+/* ---- onzichtbare tikvlakken over de ballen ---- */
+.fan-rossie__bal {
+  position: absolute;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* rode gloed: alleen opacity animeren */
+.fan-rossie__bal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 3px rgba(216, 30, 30, 0.75),
+    0 0 26px 8px rgba(216, 30, 30, 0.6);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.fan-rossie__bal:hover::after {
+  opacity: 0.4;
+}
+
+.fan-rossie__bal:focus-visible {
+  outline: 3px solid var(--wit);
+  outline-offset: 3px;
+}
+
+.fan-rossie__bal:active,
+.fan-rossie__bal.is-getikt {
+  transform: translate(-50%, -50%) scale(0.92);
+}
+
+.fan-rossie__bal:active::after,
+.fan-rossie__bal.is-getikt::after {
+  opacity: 1;
+}
+
+/* ?tikvlakken=1: laat zien waar de tikvlakken liggen */
+.fan-rossie__bal.is-zichtbaar {
+  background: rgba(216, 30, 30, 0.28);
+  box-shadow: inset 0 0 0 2px #ff2a2a;
+}
+
+/* ---- knopje "opnieuw" rechtsonder ---- */
+.fan-rossie__opnieuw {
+  position: absolute;
+  right: var(--sp-3);
+  bottom: var(--sp-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 var(--sp-3);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--r-pill);
+  background: rgba(20, 6, 8, 0.62);
+  backdrop-filter: blur(4px);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  animation: vervaag-in 0.3s ease both;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fan-rossie__opnieuw:hover {
+  transform: translateY(-1px);
+}
+
+.fan-rossie__opnieuw:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 2px;
+}
+
+.fan-rossie__opnieuw:active {
+  transform: scale(0.94);
+}
+
+/* Weetje: nieuw weetje komt kort binnen */
+.weetje-kaart__tekst {
+  animation: weetje-in 0.35s cubic-bezier(0.2, 0.9, 0.25, 1.1) both;
+}
+
+@keyframes weetje-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fan-rossie__bal,
+  .fan-rossie__bal::after,
+  .fan-rossie__opnieuw {
+    transition: none;
+    animation: none;
+  }
+  .weetje-kaart__tekst {
+    animation: none;
+  }
+}
+
 /* ---- tegel-overlay ---- */
 .tegel-overlay {
   position: fixed;
@@ -2215,7 +2466,13 @@ button.slot {
   position: relative;
   width: min(100%, 380px);
   max-height: 85vh;
+  /* mooi rond, en nooit zijwaarts schuiven; past iets niet in de hoogte,
+     dan kan het nog wel omhoog/omlaag, maar zonder zichtbare schuifbalk */
+  border-radius: var(--r-lg);
+  overflow-x: hidden;
   overflow-y: auto;
+  scrollbar-width: none;
+  overscroll-behavior: contain;
   transform-origin: 50% 100%;
   animation: tegel-omhoog 0.55s cubic-bezier(0.2, 0.9, 0.25, 1.15) both;
   display: flex;
@@ -2237,36 +2494,8 @@ button.slot {
   }
 }
 
-.tegel-overlay__sluit {
-  position: absolute;
-  top: -14px;
-  right: -14px;
-  z-index: 1;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--r-pill);
-  border: none;
-  background: var(--wit);
-  color: var(--zwart);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
-  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.tegel-overlay__sluit:hover {
-  transform: scale(1.06);
-}
-
-.tegel-overlay__sluit:focus-visible {
-  outline: 2px solid var(--rood);
-  outline-offset: 2px;
-}
-
-.tegel-overlay__sluit:active {
-  transform: scale(0.94);
+.tegel-overlay__kaart::-webkit-scrollbar {
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2275,4 +2504,222 @@ button.slot {
   .tegel-overlay__kaart {
     animation: none !important;
   }
+}
+
+/* ==========================================================================
+   Rossie (/rossie) — het chatscherm zelf komt uit styles/rossie.css
+   (ongewijzigd). Hier alleen de laag eromheen en de terugknop.
+   ========================================================================== */
+.rossie-laag {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  overflow: hidden;
+  animation: rossie-laag-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes rossie-laag-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Zelfde maat en glas als de geluidsknop rechtsboven in rossie.css */
+.rossie-terug {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
+  left: 14px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 0 var(--sp-4) 0 var(--sp-3);
+  border: 0;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.rossie-terug:hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.rossie-terug:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 2px;
+}
+
+.rossie-terug:active {
+  transform: scale(0.94);
+}
+
+/* ==========================================================================
+   Wedstrijdkaart (Wedstrijden + Home): thuis links, uit rechts, in het midden
+   datum, tijd of uitslag en het competitielogo.
+   ========================================================================== */
+.wedstrijd-lijst {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.wedstrijd-kaart {
+  display: grid;
+  /* Vaste middenkolom: zo staan de clublogo's in elke kaart op dezelfde plek,
+     ook als "(onder voorbehoud)" erbij staat (dat breekt dan af) */
+  grid-template-columns: 1fr 124px 1fr;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-3);
+  background: var(--surface-1);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.wedstrijd-kaart__club {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  min-width: 0;
+  text-align: center;
+}
+
+.wedstrijd-kaart__naam {
+  font-family: var(--font-kop);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--tekst);
+  /* lange namen (Lincoln Red Imps) mogen afbreken, niet over de rand */
+  overflow-wrap: anywhere;
+}
+
+.wedstrijd-kaart__midden {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+  text-align: center;
+}
+
+.wedstrijd-kaart__datum {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--tekst-zacht);
+}
+
+.wedstrijd-kaart__tijd {
+  font-family: var(--font-kop);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--tekst);
+}
+
+/* "tijd n.t.b." is tekst, geen tijd: kleiner en gedempt */
+.wedstrijd-kaart__tijd.is-onbekend {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--tekst-zacht);
+  padding: 4px 0;
+}
+
+.wedstrijd-kaart__uitslag {
+  display: inline-flex;
+  align-items: center; /* streepje midden tussen de cijfers, niet op de onderlijn */
+  gap: 0.2em;
+  font-family: var(--font-kop);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--rood);
+}
+
+.wedstrijd-kaart__uitslag span {
+  font-size: 0.6em;
+  color: var(--tekst-zacht);
+}
+
+/* Vaste hoogte, ook als er geen logo is: dan blijft de plek leeg */
+.wedstrijd-kaart__competitie {
+  height: 24px;
+  margin-top: var(--sp-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wedstrijd-kaart__competitie img {
+  height: 100%;
+  width: auto;
+  max-width: 64px;
+  object-fit: contain; /* logo's nooit vervormen */
+}
+
+/* Competitielogo op het donkere scorebord van Home: op een klein wit plaatje */
+.scoreboard__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.competitie-plaatje {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  padding: 2px 6px;
+  border-radius: var(--r-sm);
+  background: var(--wit);
+  box-shadow: 0 2px 8px -4px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+}
+
+.competitie-plaatje img {
+  height: 100%;
+  width: auto;
+  max-width: 56px;
+  object-fit: contain;
+}
+
+/* Plakboek: vakje licht even op als je er via ?claim= naartoe gaat en de
+   sticker al geplakt is (alleen opacity van een witte rand-laag) */
+.plakboek-raster .is-oplichtend {
+  position: relative;
+}
+
+.plakboek-raster .is-oplichtend::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 3px var(--rood),
+    0 0 22px 4px rgba(216, 30, 30, 0.55);
+  pointer-events: none;
+  animation: vakje-oplichten 2s ease both;
+}
+
+@keyframes vakje-oplichten {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  50% { opacity: 0.3; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
 }

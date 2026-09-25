@@ -9,9 +9,14 @@
 
 const { PrismaClient } = require("@prisma/client");
 const speelschema = require("./data/speelschema.json");
+const speelschemaVrouwen = require("./data/speelschema-vrouwen.json");
 const standData = require("./data/stand.json");
+const standVrouwen = require("./data/stand-vrouwen.json");
 const wedstrijdDetails = require("./data/wedstrijd-details.json");
 const selectie = require("./data/selectie.json");
+const selectieVrouwen = require("./data/selectie-vrouwen.json");
+// De persona's uit het profielmenu van de app (één bron: de frontend)
+const voorbeeld = require("../../frontend/src/data/voorbeeld-seizoenskaart.json");
 
 const prisma = new PrismaClient();
 
@@ -22,8 +27,9 @@ function dagenGeleden(dagen) {
 }
 
 // Naam (zoals in de JSON-bestanden) → bestandsnaam van het logo in
-// frontend/public/logos/. Ook de 6 Europese tegenstanders die niet in de
-// Eredivisie-stand voorkomen staan hierin, want die hebben ook een logo.
+// frontend/public/logos/. Ook clubs die niet in de Eredivisie-stand van de
+// mannen staan (Europese tegenstanders, De Graafschap bij de vrouwen) staan
+// hierin, want die hebben ook een logo.
 const LOGO_SLUG = {
   "AZ": "az",
   "Feyenoord": "feyenoord",
@@ -49,6 +55,7 @@ const LOGO_SLUG = {
   "SC Freiburg": "sc-freiburg",
   "AGF Aarhus": "agf-aarhus",
   "Kairat Almaty": "kairat-almaty",
+  "De Graafschap": "de-graafschap",
 };
 
 const SHORT_NAME = {
@@ -76,6 +83,7 @@ const SHORT_NAME = {
   "SC Freiburg": "FRE",
   "AGF Aarhus": "AGF",
   "Kairat Almaty": "KAI",
+  "De Graafschap": "DGR",
 };
 
 // -----------------------------------------------------------------------
@@ -130,6 +138,7 @@ async function main() {
   await prisma.newsItem.deleteMany();
   await prisma.player.deleteMany();
   await prisma.profile.deleteMany();
+  await prisma.standRij.deleteMany();
   await prisma.team.deleteMany();
 
   console.log("Teams + echte Eredivisie-stand seeden...");
@@ -152,17 +161,17 @@ async function main() {
     teamPerNaam.set(rij.club, team);
   }
 
-  // Europese tegenstanders uit het speelschema staan niet in de Eredivisie-
-  // stand — die krijgen een Team-rij zonder standcijfers.
-  const europeseNamen = new Set(
-    speelschema.wedstrijden
-      .filter((w) => !teamPerNaam.has(w.thuis))
-      .map((w) => w.thuis)
-      .concat(
-        speelschema.wedstrijden.filter((w) => !teamPerNaam.has(w.uit)).map((w) => w.uit),
-      ),
+  // Clubs uit de speelschema's of de vrouwenstand die niet in de Eredivisie-
+  // stand van de mannen staan (Europese tegenstanders, De Graafschap) krijgen
+  // een Team-rij zonder standcijfers.
+  const alleWedstrijden = [...speelschema.wedstrijden, ...speelschemaVrouwen.wedstrijden];
+  const overigeNamen = new Set(
+    alleWedstrijden
+      .flatMap((w) => [w.thuis, w.uit])
+      .concat(standVrouwen.stand.map((rij) => rij.club))
+      .filter((naam) => !teamPerNaam.has(naam)),
   );
-  for (const naam of europeseNamen) {
+  for (const naam of overigeNamen) {
     const team = await prisma.team.create({
       data: {
         name: naam,
@@ -174,20 +183,58 @@ async function main() {
     teamPerNaam.set(naam, team);
   }
 
-  console.log("Echte selectie seeden (spelers.js)...");
+  // Standen van beide competities in StandRij. Dezelfde club (Ajax, PSV...)
+  // staat in beide standen, daarom per team een eigen rij.
+  console.log("Standen seeden (Eredivisie + Vrouwen Eredivisie)...");
+  const standen = [
+    { team: "mannen", rijen: standData.stand },
+    { team: "vrouwen", rijen: standVrouwen.stand },
+  ];
+  for (const { team, rijen } of standen) {
+    for (const rij of rijen) {
+      await prisma.standRij.create({
+        data: {
+          team,
+          clubId: teamPerNaam.get(rij.club).id,
+          positie: rij.positie,
+          gespeeld: rij.gespeeld,
+          doelsaldo: rij.doelsaldo,
+          punten: rij.punten,
+          zone: rij.zone,
+          // alleen de vrouwenstand levert deze aan; anders null
+          gewonnen: rij.gewonnen ?? null,
+          gelijk: rij.gelijk ?? null,
+          verloren: rij.verloren ?? null,
+          doelpuntenVoor: rij.doelpuntenVoor ?? null,
+          doelpuntenTegen: rij.doelpuntenTegen ?? null,
+        },
+      });
+    }
+  }
+
+  // Beide selecties hebben dezelfde velden (rugnummer, naam, positie, foto);
+  // alleen het team verschilt.
+  console.log("Echte selecties seeden (mannen + vrouwen)...");
   const ontbrekendePositie = [];
   const ontbrekendeFoto = [];
-  for (const s of selectie.selectie) {
-    await prisma.player.create({
-      data: {
-        naam: s.naam,
-        rugnummer: s.rugnummer,
-        positie: s.positie, // null = nog niet ingevuld in de bron
-        fotoUrl: s.foto, // null = foto ontbreekt nog in de bron
-      },
-    });
-    if (!s.positie) ontbrekendePositie.push(s.naam);
-    if (!s.foto) ontbrekendeFoto.push(s.naam);
+  const selecties = [
+    { team: "mannen", spelers: selectie.selectie },
+    { team: "vrouwen", spelers: selectieVrouwen.selectie },
+  ];
+  for (const { team, spelers } of selecties) {
+    for (const s of spelers) {
+      await prisma.player.create({
+        data: {
+          team,
+          naam: s.naam,
+          rugnummer: s.rugnummer,
+          positie: s.positie, // null = nog niet ingevuld in de bron
+          foto: s.foto, // null = foto ontbreekt nog in de bron
+        },
+      });
+      if (!s.positie) ontbrekendePositie.push(`${s.naam} (${team})`);
+      if (!s.foto) ontbrekendeFoto.push(`${s.naam} (${team})`);
+    }
   }
   if (ontbrekendePositie.length) {
     console.log(`  Let op: positie ontbreekt in de bron voor: ${ontbrekendePositie.join(", ")}`);
@@ -201,9 +248,14 @@ async function main() {
   const detailsPerDatum = new Map(wedstrijdDetails.wedstrijden.map((w) => [w.datum, w]));
   const ontbrekendeDoelpunten = [];
 
-  console.log("Echte wedstrijden uit het speelschema seeden...");
-  let eredivisieTeller = 0;
-  for (const w of speelschema.wedstrijden) {
+  // Beide speelschema's in één lijst; elke wedstrijd krijgt zijn team mee
+  console.log("Echte wedstrijden uit de speelschema's seeden (mannen + vrouwen)...");
+  const wedstrijden = [
+    ...speelschema.wedstrijden.map((w) => ({ ...w, team: "mannen" })),
+    ...speelschemaVrouwen.wedstrijden.map((w) => ({ ...w, team: "vrouwen" })),
+  ];
+  const speelrondeTeller = { mannen: 0, vrouwen: 0 };
+  for (const w of wedstrijden) {
     const thuisTeam = teamPerNaam.get(w.thuis);
     const uitTeam = teamPerNaam.get(w.uit);
 
@@ -212,10 +264,12 @@ async function main() {
     const kickoff = new Date(w.datum);
     kickoff.setHours(uur, minuut, 0, 0);
 
+    // Speelronde per team tellen, voor "Eredivisie" én "Vrouwen Eredivisie"
+    // (niet voor Conference League of Supercup)
     let matchday = null;
-    if (w.competitie === "Eredivisie") {
-      eredivisieTeller += 1;
-      matchday = eredivisieTeller;
+    if (w.competitie.endsWith("Eredivisie")) {
+      speelrondeTeller[w.team] += 1;
+      matchday = speelrondeTeller[w.team];
     }
 
     let thuisScore = null;
@@ -226,16 +280,26 @@ async function main() {
       uitScore = u;
     }
 
-    const details = detailsPerDatum.get(w.datum);
+    // wedstrijd-details.json gaat alleen over de mannen; koppelen op datum mag
+    // dus niet bij de vrouwen (die kunnen op dezelfde dag spelen)
+    const details = w.team === "mannen" ? detailsPerDatum.get(w.datum) : undefined;
 
     const match = await prisma.match.create({
       data: {
+        team: w.team,
         competition: w.competitie,
+        competitieLogo: w.competitieLogo ?? null, // null = geen logo aangeleverd (bv. Supercup)
         matchday,
         kickoff,
         aftrapBekend,
+        dagDefinitief: w.dagDefinitief !== false,
+        // Het vrouwenschema noemt geen stadion: dan null, niet raden
         venue:
-          w.thuis === "FC Twente" ? "De Grolsch Veste, Enschede" : `Uitstadion ${thuisTeam.name}`,
+          w.team === "vrouwen"
+            ? null
+            : w.thuis === "FC Twente"
+              ? "De Grolsch Veste, Enschede"
+              : `Uitstadion ${thuisTeam.name}`,
         status: w.status,
         thuisTeamId: thuisTeam.id,
         uitTeamId: uitTeam.id,
@@ -262,7 +326,7 @@ async function main() {
           });
         }
       } else {
-        ontbrekendeDoelpunten.push(`${w.thuis} - ${w.uit} (${w.datum})`);
+        ontbrekendeDoelpunten.push(`${w.thuis} - ${w.uit} (${w.datum}, ${w.team})`);
       }
       // Kaarten en opstelling staan in de bron nu nog altijd leeg — zodra daar
       // echte data in komt, hier op dezelfde manier als doelpunten verwerken.
@@ -288,9 +352,23 @@ async function main() {
   console.log("Demo-profielen seeden (alle fantypes)...");
   await prisma.profile.createMany({
     data: [
+      // Persona's uit het profielmenu: elke persona hoort bij profiel demo-<id>
+      {
+        id: "demo-bezoeker",
+        naam: "Bezoeker",
+        fantype: "standaard",
+      },
+      {
+        id: "demo-johan",
+        naam: "Johan de Heer",
+        fantype: "seizoenskaarthouder",
+        bezoekfrequentie: "seizoenskaart",
+        woonregio: "Twente",
+        volgtVia: "live",
+      },
       {
         id: "demo-daan",
-        naam: "Daan",
+        naam: "Daan Oude Luttikhuis",
         fantype: "afstand",
         bezoekfrequentie: "zelden of nooit",
         woonregio: "elders in NL",
@@ -343,6 +421,21 @@ async function main() {
         metWie: "gezin",
       },
     ],
+  });
+
+  // Voorbeeld-seizoenskaart (Johan de Heer) uit voorbeeld-seizoenskaart.json:
+  // de bezoeker ziet die op Tickets, met de QR van dit profiel
+  const kaart = voorbeeld.seizoenskaart;
+  await prisma.seasonTicket.create({
+    data: {
+      profileId: voorbeeld.profielId,
+      vak: kaart.vak,
+      rij: kaart.rij,
+      stoel: kaart.stoel,
+      qrData: `FCT-DEMO-SEASON-${kaart.vak}-${kaart.rij}-${kaart.stoel}`,
+      geldigVan: new Date("2026-08-01"),
+      geldigTot: new Date("2027-06-30"),
+    },
   });
 
   console.log("Seizoenskaart voor de seizoenskaarthouder seeden...");

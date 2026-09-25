@@ -1,0 +1,200 @@
+{
+  "bron": "https://castore.com/nl-nl/collections/fc-twente",
+  "opgehaald": "2026-09-23",
+  "valuta": "EUR",
+  "toelichting": "Terugval-set voor als de live feed niet bereikbaar is. Prijzen kunnen verouderen; de app toont dan de datum van deze snapshot.",
+  "producten": [
+    {
+      "naam": "FC Twente heren 26/27 thuisshirt",
+      "prijs": 105.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-men-26-27-home-shirt",
+      "categorie": "Shirts",
+      "groep": "Heren",
+      "id": "cas-001"
+    },
+    {
+      "naam": "FC Twente heren 26/27 uitshirt",
+      "prijs": 105.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-men-26-27-away-shirt",
+      "categorie": "Shirts",
+      "groep": "Heren",
+      "id": "cas-002"
+    },
+    {
+      "naam": "FC Twente heren 26/27 derde shirt",
+      "prijs": 105.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-men-26-27-third-shirt",
+      "categorie": "Shirts",
+      "groep": "Heren",
+      "id": "cas-003"
+    },
+    {
+      "naam": "FC Twente dames 26/27 thuisshirt",
+      "prijs": 105.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-women-26-27-home-shirt",
+      "categorie": "Shirts",
+      "groep": "Dames",
+      "id": "cas-004"
+    },
+    {
+      "naam": "FC Twente dames 26/27 uitshirt",
+      "prijs": 105.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-women-26-27-away-shirt",
+      "categorie": "Shirts",
+      "groep": "Dames",
+      "id": "cas-005"
+    },
+    {
+      "naam": "FC Twente junior 26/27 thuisshirt",
+      "prijs": 82.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-junior-26-27-home-shirt",
+      "categorie": "Shirts",
+      "groep": "Junior",
+      "id": "cas-006"
+    },
+    {
+      "naam": "FC Twente junior 26/27 uitshirt",
+      "prijs": 82.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-junior-26-27-away-shirt",
+      "categorie": "Shirts",
+      "groep": "Junior",
+      "id": "cas-007"
+    },
+    {
+      "naam": "FC Twente junior 26/27 derde shirt",
+      "prijs": 82.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-junior-26-27-third-shirt",
+      "categorie": "Shirts",
+      "groep": "Junior",
+      "id": "cas-008"
+    },
+    {
+      "naam": "FC Twente heren 26/27 shorts",
+      "prijs": 52.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-men-26-27-shorts",
+      "categorie": "Broeken",
+      "groep": "Heren",
+      "id": "cas-009"
+    },
+    {
+      "naam": "FC Twente heren 26/27 uitshorts",
+      "prijs": 52.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-men-26-27-away-shorts",
+      "categorie": "Broeken",
+      "groep": "Heren",
+      "id": "cas-010"
+    },
+    {
+      "naam": "FC Twente heren 26/27 derde shorts",
+      "prijs": 52.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-men-26-27-third-shorts",
+      "categorie": "Broeken",
+      "groep": "Heren",
+      "id": "cas-011"
+    },
+    {
+      "naam": "FC Twente junior 26/27 shorts",
+      "prijs": 47.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-junior-26-27-shorts",
+      "categorie": "Broeken",
+      "groep": "Junior",
+      "id": "cas-012"
+    },
+    {
+      "naam": "FC Twente junior 26/27 uitshorts",
+      "prijs": 47.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-junior-26-27-away-shorts",
+      "categorie": "Broeken",
+      "groep": "Junior",
+      "id": "cas-013"
+    },
+    {
+      "naam": "FC Twente volwassenen 26/27 thuissokken",
+      "prijs": 23.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-adult-26-27-home-socks",
+      "categorie": "Sokken",
+      "groep": "Heren",
+      "id": "cas-014"
+    },
+    {
+      "naam": "FC Twente volwassenen 26/27 uitsokken",
+      "prijs": 23.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-adult-26-27-away-socks",
+      "categorie": "Sokken",
+      "groep": "Heren",
+      "id": "cas-015"
+    },
+    {
+      "naam": "FC Twente volwassenen 26/27 derde sokken",
+      "prijs": 23.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-adult-26-27-third-socks",
+      "categorie": "Sokken",
+      "groep": "Heren",
+      "id": "cas-016"
+    },
+    {
+      "naam": "FC Twente volwassenen 26/27 thuis voetloze kousen",
+      "prijs": 23.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-adults-26-27-home-footless-socks",
+      "categorie": "Sokken",
+      "groep": "Heren",
+      "id": "cas-017"
+    },
+    {
+      "naam": "FC Twente volwassenen 26/27 uit voetloze kousen",
+      "prijs": 23.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-adult-26-27-away-footless-socks",
+      "categorie": "Sokken",
+      "groep": "Heren",
+      "id": "cas-018"
+    },
+    {
+      "naam": "FC Twente volwassenen 26/27 derde voetloze kousen",
+      "prijs": 23.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-adult-26-27-third-footless-socks",
+      "categorie": "Sokken",
+      "groep": "Heren",
+      "id": "cas-019"
+    },
+    {
+      "naam": "FC Twente junior 26/27 thuissokken",
+      "prijs": 21.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-junior-26-27-home-socks",
+      "categorie": "Sokken",
+      "groep": "Junior",
+      "id": "cas-020"
+    },
+    {
+      "naam": "FC Twente junior 26/27 uitsokken",
+      "prijs": 21.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-junior-26-27-away-socks",
+      "categorie": "Sokken",
+      "groep": "Junior",
+      "id": "cas-021"
+    },
+    {
+      "naam": "FC Twente junior 26/27 derde sokken",
+      "prijs": 21.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-junior-26-27-third-socks",
+      "categorie": "Sokken",
+      "groep": "Junior",
+      "id": "cas-022"
+    },
+    {
+      "naam": "FC Twente junior 26/27 thuistenue",
+      "prijs": 82.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-junior-26-27-home-kit",
+      "categorie": "Tenues",
+      "groep": "Junior",
+      "id": "cas-023"
+    },
+    {
+      "naam": "FC Twente baby 26/27 thuistenue",
+      "prijs": 70.95,
+      "url": "https://castore.com/nl-nl/products/fc-twente-infant-26-27-home-kit",
+      "categorie": "Tenues",
+      "groep": "Junior",
+      "id": "cas-024"
+    }
+  ]
+}

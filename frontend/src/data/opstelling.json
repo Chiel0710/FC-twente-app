@@ -1,0 +1,12 @@
+{
+  "toelichting": "Opstelling voor de Opstelling-tegel op Home. Pas deze aan per wedstrijd. rij 1 = keeper, hoogste rij = spits. Rugnummers verwijzen naar de mannenselectie.",
+  "team": "mannen",
+  "formatie": "4-2-3-1",
+  "rijen": [
+    [1],
+    [28, 38, 3, 4],
+    [6, 8],
+    [17, 10, 27],
+    [9]
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "toelichting": "DEMO: verzonnen startaantallen voor de stemmen, zodat de percentages er in de pitch echt uitzien. De stem van de fan (in localStorage op zijn eigen apparaat) komt er bovenop. Geen echte uitslagen.",
+  "poll": {
+    "id": "poll-kracht",
+    "question": "Wat is dit seizoen de grootste kracht van het elftal?",
+    "opties": ["De verdediging", "Het middenveld", "De aanval", "De mentaliteit"],
+    "basis": [34, 58, 71, 46]
+  },
+  "motm": {
+    "2026-09-20": { "8": 41, "9": 33, "10": 18, "1": 6, "4": 4 }
+  },
+  "voorspelling": {
+    "standaard": { "thuis": 52, "gelijk": 23, "uit": 25 }
+  }
+}

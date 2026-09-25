@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
-import { X } from 'lucide-react'
 
 // Overlay die de actieve tegel omhoog laat schuiven (animatie uit
-// fan-wereld.html). Sluiten kan met de knop, met Escape, of door naast de
-// tegel te tikken (op de gedempte achtergrond, niet op de tegel zelf).
+// fan-wereld.html). Sluiten kan met Escape of door naast de tegel te tikken
+// (op de gedempte achtergrond, ook onderin over de onderbalk). Geen
+// sluitknop: die stak buiten de kaart en gaf schuifbalken.
 export default function TegelOverlay({ onSluit, children }) {
   useEffect(() => {
     function bijToets(e) {
@@ -20,10 +20,7 @@ export default function TegelOverlay({ onSluit, children }) {
         if (e.target === e.currentTarget) onSluit()
       }}
     >
-      <div className="tegel-overlay__kaart">
-        <button type="button" className="tegel-overlay__sluit" onClick={onSluit} aria-label="Sluiten">
-          <X strokeWidth={2.5} size={18} />
-        </button>
+      <div className="tegel-overlay__kaart" role="dialog" aria-modal="true">
         {children}
       </div>
     </div>

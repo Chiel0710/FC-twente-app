@@ -1,0 +1,490 @@
+/* ==========================================================================
+   Meer → Plattegrond. Jouw plek als drie grote cijfers (zoals op een
+   kaartje), de plattegrond met pin, ingang en gestippelde route, en een
+   stappenkaart. Alleen transform/opacity animeren.
+   ========================================================================== */
+
+.pg {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+/* ---- jouw plek ---- */
+.pg-plek {
+  position: relative; /* label "Voorbeeld" bovenaan in het midden, zoals op Tickets */
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: 20px;
+  color: var(--wit);
+  background:
+    radial-gradient(80% 70% at 15% 0%, rgba(255, 120, 110, 0.4), transparent 70%),
+    linear-gradient(155deg, var(--rood), var(--rood-diep));
+  box-shadow:
+    0 2px 4px rgba(20, 0, 0, 0.25),
+    0 14px 30px -16px rgba(20, 0, 0, 0.75);
+}
+
+.pg-plek__eyebrow {
+  font-family: var(--font-kop);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.pg-plek__cijfers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.pg-plek__cijfers div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--sp-2) 0 var(--sp-3);
+}
+
+.pg-plek__cijfers div + div {
+  border-left: 1px dashed rgba(255, 255, 255, 0.35);
+}
+
+.pg-plek__cijfers dt {
+  font-family: var(--font-kop);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.pg-plek__cijfers dd {
+  margin: 0;
+  font-family: var(--font-kop);
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- zoeken ---- */
+.pg-zoek {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.pg-zoek__label {
+  font-family: var(--font-kop);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.pg-zoek__label.is-klein {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  opacity: 0.9;
+}
+
+.pg-zoek__rij {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.pg-zoek__rij input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 16px;
+  border: 2px solid transparent;
+  border-radius: var(--r-pill);
+  background: var(--wit);
+  color: var(--zwart);
+  font: 600 16px var(--font-body);
+  letter-spacing: 0.06em;
+}
+
+.pg-zoek__rij input:focus-visible {
+  outline: none;
+  border-color: var(--zwart);
+}
+
+.pg-zoek__rij button {
+  flex: none;
+  width: 46px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--zwart);
+  color: var(--wit);
+  cursor: pointer;
+  transition: transform 0.15s var(--indruk);
+}
+
+.pg-zoek__rij button:hover {
+  transform: translateY(-1px);
+}
+
+.pg-zoek__rij button:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 2px;
+}
+
+.pg-zoek__rij button:active {
+  transform: scale(0.92);
+}
+
+.pg-zoek__melding {
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.pg-zoek__terug {
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--wit);
+  font: 600 13px var(--font-body);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.pg-zoek__terug:hover {
+  opacity: 0.85;
+}
+
+.pg-zoek__terug:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 2px;
+}
+
+.pg-zoek__terug:active {
+  opacity: 0.7;
+}
+
+/* ---- plattegrond ---- */
+.pg-kaart {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--wit);
+  /* verticaal scrollen blijft werken; knijpen en slepen doen wij zelf */
+  touch-action: pan-y;
+  user-select: none;
+  box-shadow:
+    0 2px 4px rgba(20, 0, 0, 0.2),
+    0 14px 30px -16px rgba(20, 0, 0, 0.7);
+}
+
+.pg-kaart__laag {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+
+.pg-kaart__laag img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Gestippelde route van de ingang naar het vak */
+.pg-route {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.pg-route line {
+  stroke: var(--rood);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1 7;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.9));
+}
+
+/* Onzichtbare tikvlakken op elk vak */
+.pg-vak {
+  position: absolute;
+  width: 5.2%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+}
+
+.pg-vak:hover {
+  background: rgba(216, 30, 30, 0.18);
+}
+
+.pg-vak:focus-visible {
+  outline: 2px solid var(--zwart);
+  outline-offset: 1px;
+}
+
+.pg-vak:active {
+  background: rgba(216, 30, 30, 0.3);
+}
+
+/* Ingang: rond label in clubrood, blijft even groot bij inzoomen */
+.pg-ingang {
+  position: absolute;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--wit);
+  border-radius: 50%;
+  background: var(--rood);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 16px;
+  font-weight: 700;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(var(--tegen));
+  box-shadow: 0 3px 8px rgba(80, 0, 0, 0.45);
+}
+
+/* Pin op je vak met een pulserende ring */
+.pg-pin {
+  position: absolute;
+  z-index: 3;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(var(--tegen));
+  animation: pg-pin-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.pg-pin::before,
+.pg-pin i {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.pg-pin::before {
+  background: var(--rood);
+  animation: pg-puls 1.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.pg-pin i {
+  background: var(--rood);
+  border: 3px solid var(--wit);
+  box-shadow: 0 3px 8px rgba(80, 0, 0, 0.5);
+}
+
+@keyframes pg-puls {
+  from { transform: scale(1); opacity: 0.7; }
+  to { transform: scale(2.8); opacity: 0; }
+}
+
+@keyframes pg-pin-in {
+  from { opacity: 0; transform: translate(-50%, -80%) scale(calc(var(--tegen) * 0.4)); }
+}
+
+/* Zoomknoppen rechtsonder */
+.pg-zoomknoppen {
+  position: absolute;
+  z-index: 4;
+  right: var(--sp-2);
+  bottom: var(--sp-2);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pg-zoomknoppen button {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 12px;
+  background: var(--zwart);
+  color: var(--wit);
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.15s var(--indruk);
+}
+
+.pg-zoomknoppen button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.pg-zoomknoppen button:focus-visible {
+  outline: 2px solid var(--rood);
+  outline-offset: 2px;
+}
+
+.pg-zoomknoppen button:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.pg-zoomknoppen button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* ---- stappenkaart ---- */
+.pg-stappen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-4) var(--sp-3);
+  border-radius: 20px;
+  background: var(--wit);
+  color: var(--zwart);
+  box-shadow:
+    0 2px 4px rgba(20, 0, 0, 0.2),
+    0 14px 30px -16px rgba(20, 0, 0, 0.7);
+}
+
+.pg-stappen h3 {
+  font-family: var(--font-kop);
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.pg-stappen ol {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+/* doorlopende stippellijn langs de nummers, zoals de route op de kaart */
+.pg-stappen ol::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  left: 13px;
+  border-left: 2px dotted var(--rood);
+}
+
+.pg-stappen li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  animation: pg-stap-in 0.35s ease both;
+}
+
+.pg-stappen li:nth-child(2) { animation-delay: 0.05s; }
+.pg-stappen li:nth-child(3) { animation-delay: 0.1s; }
+.pg-stappen li:nth-child(4) { animation-delay: 0.15s; }
+
+@keyframes pg-stap-in {
+  from { opacity: 0; transform: translateX(-6px); }
+}
+
+.pg-stappen__nr {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--rood);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.pg-stappen li:last-child .pg-stappen__nr {
+  background: var(--zwart);
+}
+
+.pg-stappen__noot {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #8a7f7e;
+}
+
+.pg-leeg {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pg-kaart__laag {
+    transition: none;
+  }
+  .pg-pin,
+  .pg-pin::before,
+  .pg-stappen li {
+    animation: none;
+  }
+}
+
+/* ---- knop "Route naar je plek" (Tickets en /tickets/ticket) ---- */
+.route-knop {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  min-height: 50px;
+  padding: 0 var(--sp-4);
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--wit);
+  color: var(--rood-diep);
+  font-family: var(--font-kop);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow:
+    0 2px 4px rgba(20, 0, 0, 0.2),
+    0 10px 22px -12px rgba(20, 0, 0, 0.7);
+  transition: transform 0.15s var(--indruk);
+}
+
+.route-knop__pijl {
+  margin-left: auto;
+}
+
+.route-knop:hover {
+  transform: translateY(-1px);
+}
+
+.route-knop:focus-visible {
+  outline: 3px solid var(--wit);
+  outline-offset: 3px;
+}
+
+.route-knop:active {
+  transform: scale(0.97);
+}

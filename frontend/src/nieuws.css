@@ -1,0 +1,352 @@
+/* ==========================================================================
+   Nieuws (/nieuws en /nieuws/<id>). Kaarten op de donkerrode pagina, met een
+   beeld uit de app zelf: spelersfoto op clubrood, of het clublogo op
+   donkerrood. Alleen transform/opacity animeren.
+   ========================================================================== */
+
+/* ---- filterchips ---- */
+.nw-chips {
+  display: flex;
+  gap: var(--sp-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0 calc(var(--sp-4) * -1);
+  padding: 2px var(--sp-4) 4px;
+}
+
+.nw-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.nw-chip {
+  flex: none;
+  min-height: 36px;
+  padding: 0 var(--sp-4);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: transform 0.15s var(--indruk);
+}
+
+.nw-chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nw-chip:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 2px;
+}
+
+.nw-chip:active {
+  transform: scale(0.95);
+}
+
+.nw-chip.is-actief {
+  border-color: var(--wit);
+  background: var(--wit);
+  color: var(--rood-diep);
+}
+
+/* ---- lijst ---- */
+.nw-lijst {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.nw-kaart {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: var(--sp-3);
+  align-items: stretch;
+  padding: var(--sp-2);
+  border: none;
+  border-radius: 18px;
+  background: var(--wit);
+  color: var(--zwart);
+  text-align: left;
+  cursor: pointer;
+  box-shadow:
+    0 2px 4px rgba(20, 0, 0, 0.2),
+    0 12px 26px -16px rgba(20, 0, 0, 0.7);
+  transition: transform 0.2s var(--indruk);
+  animation: nw-in 0.35s ease both;
+}
+
+.nw-kaart:hover {
+  transform: translateY(-2px);
+}
+
+.nw-kaart:focus-visible {
+  outline: 3px solid var(--wit);
+  outline-offset: 3px;
+}
+
+.nw-kaart:active {
+  transform: scale(0.98);
+}
+
+@keyframes nw-in {
+  from { opacity: 0; transform: translateY(6px); }
+}
+
+.nw-kaart__tekst {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 4px var(--sp-1) 4px 0;
+}
+
+.nw-kaart__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 12px;
+  color: #7a6f6e;
+}
+
+.nw-label {
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: var(--rood);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nw-kaart__titel {
+  font-family: var(--font-kop);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.nw-kaart__intro {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #4a4242;
+}
+
+/* ---- beeld: spelersfoto op clubrood, of clublogo op donkerrood ---- */
+.nw-beeld {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  min-height: 96px;
+  border-radius: 12px;
+  background:
+    radial-gradient(80% 70% at 50% 20%, rgba(216, 30, 30, 0.35), transparent 70%),
+    linear-gradient(160deg, #6e0806, #3a0605);
+}
+
+.nw-beeld.is-speler {
+  place-items: end center;
+  background:
+    radial-gradient(80% 80% at 50% 100%, rgba(255, 120, 110, 0.5), transparent 70%),
+    linear-gradient(160deg, var(--rood), var(--rood-diep));
+}
+
+.nw-beeld img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 10%;
+}
+
+.nw-beeld__logo {
+  width: 52% !important;
+  height: auto !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+.nw-beeld.is-groot {
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+}
+
+.nw-beeld.is-groot.is-speler img {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+  object-position: 50% 100%;
+}
+
+.nw-beeld.is-groot .nw-beeld__logo {
+  width: 30% !important;
+}
+
+/* ---- bericht ---- */
+.nw-bericht {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.nw-bericht__kaart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-5);
+  border-radius: 20px;
+  background: var(--wit);
+  color: var(--zwart);
+  box-shadow:
+    0 2px 4px rgba(20, 0, 0, 0.2),
+    0 14px 30px -16px rgba(20, 0, 0, 0.7);
+}
+
+.nw-bericht__titel {
+  font-family: var(--font-tegel, var(--font-kop));
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--rood-diep);
+}
+
+.nw-bericht__tekst {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* Spelerskaartjes */
+.nw-spelers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.nw-speler {
+  display: grid;
+  grid-template-columns: 48px auto;
+  grid-template-rows: auto auto;
+  column-gap: var(--sp-2);
+  align-items: center;
+  padding: 6px var(--sp-3) 6px 6px;
+  border: none;
+  border-radius: 14px;
+  background: #f6f1ee;
+  color: var(--zwart);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s var(--indruk);
+}
+
+.nw-speler img {
+  grid-row: span 2;
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  object-position: 50% 10%;
+  border-radius: 10px;
+  background: linear-gradient(160deg, var(--rood), var(--rood-diep));
+}
+
+.nw-speler__nr {
+  font-family: var(--font-kop);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--rood);
+}
+
+.nw-speler__naam {
+  font-family: var(--font-kop);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.nw-speler:hover {
+  transform: translateY(-1px);
+}
+
+.nw-speler:focus-visible {
+  outline: 2px solid var(--rood);
+  outline-offset: 2px;
+}
+
+.nw-speler:active {
+  transform: scale(0.97);
+}
+
+/* Bronknop */
+.nw-bron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  min-height: 52px;
+  margin-top: var(--sp-2);
+  padding: 0 var(--sp-4);
+  border-radius: var(--r-pill);
+  background: var(--zwart);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-decoration: none;
+  transition: transform 0.15s var(--indruk);
+}
+
+.nw-bron:hover {
+  transform: translateY(-1px);
+}
+
+.nw-bron:focus-visible {
+  outline: 3px solid var(--rood);
+  outline-offset: 3px;
+}
+
+.nw-bron:active {
+  transform: scale(0.97);
+}
+
+.nw-bron__noot {
+  margin-top: calc(var(--sp-2) * -1);
+  font-size: 12px;
+  text-align: center;
+  color: #8a7f7e;
+}
+
+/* Speler in de selectie laten oplichten (vanuit een nieuwsbericht) */
+.selectie-kaart.is-oplichtend {
+  position: relative;
+}
+
+.selectie-kaart.is-oplichtend::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 3px var(--rood),
+    0 0 22px 4px rgba(216, 30, 30, 0.55);
+  pointer-events: none;
+  animation: vakje-oplichten 2s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nw-kaart {
+    animation: none;
+  }
+}

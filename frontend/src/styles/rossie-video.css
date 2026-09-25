@@ -1,0 +1,43 @@
+/* Rossie — videolaag. Vervangt de losse pose-afbeeldingen in .rossie-beeld. */
+
+.rossie-video {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #f2f0ef; /* zelfde lichte achtergrond als de video's, geen zwarte rand bij laden */
+  transform-origin: 50% 100%;
+}
+
+.rossie-video video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 20%; /* hoofd blijft in beeld op lage schermen */
+}
+
+/* Antwoord ligt bovenop en faded kort in/uit: verbergt het kleine verschil tussen twee AI-video's */
+.rossie-video__antwoord {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.rossie-video__antwoord.zichtbaar {
+  opacity: 1;
+}
+
+/* Live chat-antwoord (geen video): Rossie wipt licht mee met de stem */
+.rossie-video.praat-live {
+  animation: rossie-wip 0.42s ease-in-out infinite alternate;
+}
+@keyframes rossie-wip {
+  from { transform: translateY(0) scale(1); }
+  to   { transform: translateY(-3px) scale(1.012); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rossie-video__antwoord { transition: none; }
+  .rossie-video.praat-live { animation: none; }
+}

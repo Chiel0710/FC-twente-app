@@ -1,13 +1,18 @@
-import { useState } from 'react'
-import { ArrowLeft, Bell, ChevronRight, Newspaper, ShoppingBag, UserCircle, Users } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { ArrowLeft, Bell, ChevronRight, Map as MapIcoon, MessageCircle, Newspaper, ShoppingBag, Sparkles, Users } from 'lucide-react'
 import SelectieOverzicht from './meer/SelectieOverzicht'
 import MediaOverzicht from './meer/MediaOverzicht'
 import Fanshop from './meer/Fanshop'
 import MeldingenOverzicht from './meer/MeldingenOverzicht'
-import JijProfiel from './meer/JijProfiel'
+import Plattegrond from './meer/Plattegrond'
 import { HUIDIG_PROFIEL_ID } from '../profiel'
+import { laadRossieVooraf } from '../rossieVooraf'
+import { FEATURES } from '../featureVolgorde'
+import { useNavigatie } from '../navigatie'
 
 const ONDERDELEN = [
+  // Bovenaan: hoe kom je bij je plek in De Grolsch Veste (route /plattegrond)
+  { id: 'plattegrond', Icon: MapIcoon, label: 'Plattegrond', Component: Plattegrond },
   { id: 'selectie', Icon: Users, label: 'Selectie', Component: SelectieOverzicht },
   { id: 'media', Icon: Newspaper, label: 'Media & interviews', Component: MediaOverzicht },
   {
@@ -23,13 +28,24 @@ const ONDERDELEN = [
       </div>
     ),
   },
+  // Geen Component: Rossie opent als eigen scherm (/rossie), zie App.jsx
+  { id: 'rossie', Icon: MessageCircle, label: 'Vraag aan Rossie!' },
   { id: 'meldingen', Icon: Bell, label: 'Meldingen', Component: MeldingenOverzicht },
-  { id: 'jij', Icon: UserCircle, label: 'Jij / profiel', Component: JijProfiel },
+  // "Jij / profiel" is vervallen: het profielmenu achter het poppetje rechtsboven neemt het over
 ]
 
-export default function Meer() {
-  const [actiefId, setActiefId] = useState(null)
-  const actiefOnderdeel = ONDERDELEN.find((o) => o.id === actiefId)
+// startOnderdeel: opent meteen een onderdeel (deeplink vanuit de app)
+// startSpeler: rugnummer om in de selectie naartoe te scrollen (vanuit Nieuws)
+// onOpenRossie: opent het chatscherm van Rossie
+export default function Meer({ startOnderdeel = null, startSpeler = null, onOpenRossie }) {
+  const [actiefId, setActiefId] = useState(startOnderdeel)
+  const actiefOnderdeel = ONDERDELEN.find((o) => o.id === actiefId && o.Component)
+  const { openFeature, kanOpenen } = useNavigatie()
+
+  // Rossie's mondstanden alvast inladen zodra het menu in beeld is
+  useEffect(() => {
+    laadRossieVooraf()
+  }, [])
 
   if (actiefOnderdeel) {
     const { Component } = actiefOnderdeel
@@ -39,7 +55,7 @@ export default function Meer() {
           <ArrowLeft strokeWidth={2} size={16} />
           Meer
         </button>
-        <Component />
+        <Component startSpeler={startSpeler} />
       </div>
     )
   }
@@ -53,12 +69,42 @@ export default function Meer() {
 
       <div className="meer-list">
         {ONDERDELEN.map(({ id, Icon, label }) => (
-          <button type="button" className="meer-list__item meer-list__item--klikbaar" key={id} onClick={() => setActiefId(id)}>
+          <button type="button" className="meer-list__item meer-list__item--klikbaar" key={id} onClick={() => (id === 'rossie' ? onOpenRossie?.() : setActiefId(id))}>
             <Icon strokeWidth={2} />
             <span>{label}</span>
             <ChevronRight strokeWidth={2} size={16} className="meer-list__pijl" />
           </button>
         ))}
+      </div>
+
+      {/* Alle features uit data/features.json — ook die met relevantie 0 op
+          Home blijven zo bereikbaar. Nog geen scherm = "Binnenkort". */}
+      <div className="section-heading meer-alle">
+        <span className="eyebrow">Alles in de app</span>
+        <h2>Alle onderdelen</h2>
+      </div>
+      <div className="meer-list">
+        {FEATURES.map((f) => {
+          const open = kanOpenen(f.route)
+          return open ? (
+            <button
+              type="button"
+              className="meer-list__item meer-list__item--klikbaar"
+              key={f.id}
+              onClick={() => openFeature(f.route)}
+            >
+              <Sparkles strokeWidth={2} />
+              <span>{f.titel}</span>
+              <ChevronRight strokeWidth={2} size={16} className="meer-list__pijl" />
+            </button>
+          ) : (
+            <div className="meer-list__item meer-list__item--binnenkort" key={f.id} aria-disabled="true">
+              <Sparkles strokeWidth={2} />
+              <span>{f.titel}</span>
+              <span className="meer-list__badge">Binnenkort</span>
+            </div>
+          )
+        })}
       </div>
     </div>
   )

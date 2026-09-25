@@ -37,29 +37,41 @@ model Team {
   thuisWedstrijden Match[]      @relation("ThuisTeam")
   uitWedstrijden   Match[]      @relation("UitTeam")
   matchEvents      MatchEvent[]
+  standRijen       StandRij[]
 }
 
-// Uitsluitend echte data uit selectie-fc-twente-2026-2027.json. positie en
-// fotoUrl zijn nullable omdat de bron ze voor veel spelers nog niet invult —
-// nooit zelf aanvullen, in de UI tonen we dan een streepje.
+// Uitsluitend echte data uit de selectie-JSON's (mannen en vrouwen). positie en
+// foto zijn nullable omdat de bron ze niet altijd invult — nooit zelf
+// aanvullen; in de UI tonen we dan een plaat met het rugnummer.
 model Player {
   id        String  @id @default(cuid())
   naam      String
   rugnummer Int
   positie   String?
-  fotoUrl   String?
+  // Zelfde naam als in de selectie-JSON's (was fotoUrl). Pad vanaf public,
+  // bv. /spelers-vrouwen/01-diede-lemey.png; null = foto ontbreekt nog.
+  foto      String?
+  // "mannen" of "vrouwen" (SQLite kent geen enums, dus een String)
+  team      String  @default("mannen")
 
   motmVotes MotmVote[]
 }
 
 model Match {
-  id           String   @id @default(cuid())
-  competition  String   @default("Eredivisie")
-  matchday     Int? // alleen bekend/relevant voor Eredivisie-duels
-  kickoff      DateTime
-  aftrapBekend Boolean  @default(true) // false = kickoff is een placeholdertijd, tijd nog niet vastgesteld
-  venue        String
-  status       String // "gepland" of "gespeeld"
+  id             String   @id @default(cuid())
+  competition    String   @default("Eredivisie")
+  matchday       Int? // alleen bekend/relevant voor Eredivisie-duels
+  kickoff        DateTime
+  aftrapBekend   Boolean  @default(true) // false = kickoff is een placeholdertijd, tijd nog niet vastgesteld
+  // false = de exacte dag staat nog niet vast; de datum is de zaterdag van dat speelweekend
+  dagDefinitief  Boolean  @default(true)
+  // Pad naar het competitielogo in frontend/public/competities; null = geen logo aangeleverd
+  competitieLogo String?
+  // "mannen" of "vrouwen" (SQLite kent geen enums, dus een String)
+  team           String   @default("mannen")
+  // null = niet in de bron (bij de vrouwen staat geen stadion in het speelschema)
+  venue          String?
+  status         String // "gepland" of "gespeeld"
 
   thuisTeamId String
   thuisTeam   Team   @relation("ThuisTeam", fields: [thuisTeamId], references: [id])
@@ -82,8 +94,31 @@ model Match {
   stickers    StickerCard[]
 }
 
-model MatchEvent {
+// Eén regel in een competitiestand. Apart van Team, omdat dezelfde club
+// (Ajax, PSV, ...) zowel in de stand van de mannen als die van de vrouwen staat.
+model StandRij {
   id     String @id @default(cuid())
+  team   String // "mannen" of "vrouwen"
+  clubId String
+  club   Team   @relation(fields: [clubId], references: [id])
+
+  positie         Int
+  gespeeld        Int
+  doelsaldo       Int
+  punten          Int
+  zone            String?
+  // Alleen de vrouwenstand levert deze cijfers aan; bij de mannen null
+  gewonnen        Int?
+  gelijk          Int?
+  verloren        Int?
+  doelpuntenVoor  Int?
+  doelpuntenTegen Int?
+
+  @@unique([team, clubId])
+}
+
+model MatchEvent {
+  id      String @id @default(cuid())
   matchId String
   match   Match  @relation(fields: [matchId], references: [id])
 
@@ -108,8 +143,8 @@ model NewsItem {
 // ---------------------------------------------------------------------------
 
 model Profile {
-  id     String @id @default(cuid())
-  naam   String // schermnaam voor demo-profielen, bv. "Daan"
+  id      String @id @default(cuid())
+  naam    String // schermnaam voor demo-profielen, bv. "Daan"
   fantype String // sectie 2: hardekern / seizoenskaarthouder / gemiddeld / losbezoek / afstand / gezin
 
   // Antwoorden uit de onboarding (sectie 5) — nu alleen geseed, nog geen onboarding-flow.
@@ -117,6 +152,9 @@ model Profile {
   woonregio        String?
   volgtVia         String?
   metWie           String?
+
+  // Welk team de fan volgt in de app (Home, Wedstrijden, Selectie): "mannen" of "vrouwen"
+  teamKeuze String @default("mannen")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -202,13 +240,13 @@ model SeasonTicket {
   profileId String  @unique
   profile   Profile @relation(fields: [profileId], references: [id])
 
-  vak      String
-  rij      String
-  stoel    String
-  qrData   String // nep-ID dat de QR-code encodeert
+  vak    String
+  rij    String
+  stoel  String
+  qrData String // nep-ID dat de QR-code encodeert
 
-  geldigVan  DateTime
-  geldigTot  DateTime
+  geldigVan DateTime
+  geldigTot DateTime
 }
 
 // ---------------------------------------------------------------------------

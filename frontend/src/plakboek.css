@@ -107,3 +107,17 @@
 @media (prefers-reduced-motion: reduce) {
   .onthul, .geplakt, .deeltje, .glans::after, .vliegt { animation: none !important; transition: none !important; }
 }
+
+/* Sticker met eigen ontwerp: het plaatje vult de hele kaart */
+.kaart.kaart--beeld {
+  padding: 0;
+  overflow: hidden;
+  background: #fff;
+}
+.kaart.kaart--beeld img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

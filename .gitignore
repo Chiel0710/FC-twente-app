@@ -1,9 +1,13 @@
 # Afhankelijkheden
 node_modules/
 
-# Env-bestanden met lokale/geheime instellingen
+# Env-bestanden met lokale/geheime instellingen (overal, ook in submappen)
 .env
-.env.local
+.env.*
+!.env.example
+
+# Vercel CLI (lokale koppeling met het project)
+.vercel
 
 # Database (SQLite, lokaal bestand)
 backend/prisma/dev.db
@@ -30,7 +34,21 @@ Thumbs.db
 /*.mp4
 /*.zip
 /*.json
+# ...behalve de projectbestanden in de hoofdmap die er wél bij horen
+!/vercel.json
+!/package.json
 /*.html
 /*.jsx
 /*.css
 /*.routes.js
+
+# Aangeleverde bronmappen en losse kopieën in de hoofdmap: wat de app nodig
+# heeft staat al in frontend/public of frontend/src/data
+/home/
+/fan/
+/plattegrond/
+/tegels/
+/tegels-v2/
+/temporary screenshots/
+/*.js
+/CLAUDE (*).md

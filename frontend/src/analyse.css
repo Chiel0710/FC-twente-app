@@ -1,0 +1,409 @@
+/* ==========================================================================
+   Wedstrijdanalyse (/analyse). Kop in de stijl van de Home-tegel (rood doek,
+   Abril Fatface), daaronder een lichte leeskaart. Kenmerk: de tijdlijn van
+   aftrap tot eindsignaal, Twente links en de tegenstander rechts, zoals de
+   doelpunten op de wedstrijdtegel. Alleen transform/opacity animeren.
+   ========================================================================== */
+
+.analyse {
+  gap: var(--sp-4);
+}
+
+/* ---- kop ---- */
+.an-kop {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-5) var(--sp-4) var(--sp-4);
+  border-radius: 22px;
+  color: var(--wit);
+  text-align: center;
+  /* rood doek: gelaagde glans en schaduw, zoals het plaatje op Home */
+  background:
+    radial-gradient(70% 55% at 18% 12%, rgba(255, 120, 110, 0.45), transparent 70%),
+    radial-gradient(60% 60% at 90% 30%, rgba(90, 0, 0, 0.55), transparent 70%),
+    radial-gradient(80% 70% at 40% 110%, rgba(40, 0, 0, 0.7), transparent 70%),
+    linear-gradient(160deg, #d81e1e 0%, #a6120c 55%, #6e0806 100%);
+  box-shadow:
+    0 2px 4px rgba(20, 0, 0, 0.3),
+    0 18px 36px -18px rgba(20, 0, 0, 0.8);
+}
+
+.an-kop__eyebrow {
+  font-family: var(--font-kop);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.an-kop__uitslag {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+}
+
+.an-kop__club {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+  font-family: var(--font-kop);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.an-kop__club img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.4));
+}
+
+.an-kop__uitslag strong {
+  display: flex;
+  gap: 6px;
+  font-family: var(--font-kop);
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+}
+
+.an-kop__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+/* ---- leeskaart ---- */
+.an-artikel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  padding: var(--sp-5) var(--sp-5) var(--sp-6);
+  border-radius: 22px;
+  background: var(--wit);
+  color: var(--zwart);
+  box-shadow:
+    0 2px 4px rgba(20, 0, 0, 0.2),
+    0 16px 32px -18px rgba(20, 0, 0, 0.7);
+}
+
+.an-titel {
+  font-family: var(--font-tegel, var(--font-kop));
+  font-size: 27px;
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: var(--rood-diep);
+}
+
+.an-intro {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.an-blok__kop,
+.an-hoofdstuk h3 {
+  font-family: var(--font-kop);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+}
+
+.an-blok__kop {
+  margin-bottom: var(--sp-3);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rood);
+}
+
+.an-hoofdstuk {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.an-hoofdstuk p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #2b2626;
+}
+
+/* ---- tijdlijn: middenlijn met momenten links (thuis) en rechts (uit) ---- */
+.an-tijdlijn {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.an-tijdlijn::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: linear-gradient(#e7c9c7, var(--rood) 12%, var(--rood) 88%, #e7c9c7);
+}
+
+.an-tijdlijn__grens {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.an-tijdlijn__grens span {
+  padding: 2px 10px;
+  border-radius: var(--r-pill);
+  background: var(--zwart);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.an-moment {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  align-items: center;
+  column-gap: var(--sp-2);
+}
+
+.an-moment__stip {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--wit);
+  color: var(--zwart);
+  box-shadow: 0 0 0 2px var(--rood);
+}
+
+.an-moment__stip svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* Doelpunt van Twente: rode stip; van de tegenstander: donker */
+.an-moment--doelpunt.is-thuis .an-moment__stip {
+  background: var(--rood);
+  color: var(--wit);
+}
+
+.an-moment--doelpunt.is-uit .an-moment__stip {
+  background: var(--zwart);
+  color: var(--wit);
+  box-shadow: 0 0 0 2px var(--zwart);
+}
+
+.an-moment__kaart {
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: 12px;
+  background: #f6f1ee;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.an-moment.is-thuis .an-moment__kaart {
+  grid-column: 1;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.an-moment.is-uit .an-moment__kaart,
+.an-moment.is-midden .an-moment__kaart {
+  grid-column: 3;
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* Moment zonder team (bv. een blessure): rustiger */
+.an-moment.is-midden .an-moment__kaart {
+  background: transparent;
+  padding-left: 0;
+  color: #6b6262;
+  font-style: italic;
+}
+
+.an-moment__club {
+  font-family: var(--font-kop);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8a7f7e;
+}
+
+.an-moment__club b {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--rood-diep);
+}
+
+.an-moment__kaart strong {
+  font-family: var(--font-kop);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.an-moment__sub {
+  font-size: 12px;
+  color: #6b6262;
+}
+
+.an-moment__stand {
+  margin-top: 3px;
+  padding: 1px 8px;
+  border-radius: var(--r-pill);
+  background: var(--zwart);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.an-moment--doelpunt.is-thuis .an-moment__stand {
+  background: var(--rood);
+}
+
+/* ---- uitgelicht ---- */
+.an-uitgelicht {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-3);
+  overflow: hidden;
+  padding: var(--sp-4) var(--sp-4) 0;
+  border-radius: 18px;
+  color: var(--wit);
+  background:
+    radial-gradient(80% 90% at 20% 100%, rgba(255, 110, 100, 0.45), transparent 70%),
+    linear-gradient(150deg, #d81e1e, #7a0a07);
+}
+
+.an-uitgelicht img {
+  flex: none;
+  width: 104px;
+  height: auto;
+  align-self: flex-end;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+}
+
+.an-uitgelicht div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: var(--sp-4);
+}
+
+.an-uitgelicht__eyebrow {
+  font-family: var(--font-kop);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.an-uitgelicht strong {
+  font-family: var(--font-tegel, var(--font-kop));
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.an-uitgelicht p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.an-context {
+  padding-left: var(--sp-3);
+  border-left: 3px solid var(--rood);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.an-bron {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #8a7f7e;
+}
+
+/* ---- nog niet beschikbaar ---- */
+.an-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  text-align: center;
+}
+
+.an-slot svg {
+  width: 28px;
+  height: 28px;
+  color: var(--rood);
+}
+
+/* Momenten komen na elkaar binnen */
+.an-moment {
+  animation: an-in 0.45s cubic-bezier(0.2, 0.9, 0.25, 1.1) both;
+}
+
+.an-moment:nth-child(2) { animation-delay: 0.05s; }
+.an-moment:nth-child(3) { animation-delay: 0.1s; }
+.an-moment:nth-child(4) { animation-delay: 0.15s; }
+.an-moment:nth-child(5) { animation-delay: 0.2s; }
+.an-moment:nth-child(6) { animation-delay: 0.25s; }
+.an-moment:nth-child(7) { animation-delay: 0.3s; }
+.an-moment:nth-child(8) { animation-delay: 0.35s; }
+
+@keyframes an-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .an-moment {
+    animation: none;
+  }
+}

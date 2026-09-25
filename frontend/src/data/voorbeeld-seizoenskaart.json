@@ -1,0 +1,6 @@
+{
+  "toelichting": "Voorbeeld-seizoenskaart die de bezoeker op Tickets ziet (label 'Voorbeeld'), en het voorbeeldkaartje op /tickets/ticket en /tickets/verkopen. profielId = het databaseprofiel waar de server de voorbeeld-QR voor maakt.",
+  "naam": "Johan de Heer",
+  "profielId": "demo-johan",
+  "seizoenskaart": { "seizoen": "2026-2027", "vak": "314", "rij": "12", "stoel": "8" }
+}

@@ -15,6 +15,9 @@ const stickersRoutes = require("./src/routes/stickers");
 const ticketsRoutes = require("./src/routes/tickets");
 const profilesRoutes = require("./src/routes/profiles");
 const { fanshop: fanshopRoutes } = require("./src/routes/fanshop.routes");
+const { demo: demoRoutes } = require("./src/routes/demo.routes");
+const { demoModus: demoModusRoutes } = require("./src/routes/demoModus.routes");
+const { rossie: rossieRoutes } = require("./src/routes/rossie.routes");
 
 const app = express();
 
@@ -38,5 +41,8 @@ app.use("/api/stickers", stickersRoutes);
 app.use("/api/tickets", ticketsRoutes);
 app.use("/api/profiles", profilesRoutes);
 app.use("/api/fanshop", fanshopRoutes);
+app.use("/api/demo", demoRoutes);
+app.use("/api/demo", demoModusRoutes); // aan/uit naast de regisseur: /api/demo/modus
+app.use("/api/rossie", rossieRoutes);
 
 module.exports = app;

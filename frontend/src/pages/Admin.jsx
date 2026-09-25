@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getMatches, simuleerCheckIn } from '../api'
+import { getMatches, getShopStats, simuleerCheckIn } from '../api'
 import { HUIDIG_PROFIEL_ID } from '../profiel'
 
 const BRON_LABEL = { fanshop: 'Fanshop', motm: 'Man of the Match', plakboek: 'Plakboek' }
@@ -25,8 +25,7 @@ export default function Admin() {
       setMatches(data)
       if (data[0]) setMatchId(data[0].id)
     })
-    fetch('/api/fanshop/stats')
-      .then((r) => r.json())
+    getShopStats()
       .then(setShopStats)
       .catch(() => setShopStats(null))
   }, [])

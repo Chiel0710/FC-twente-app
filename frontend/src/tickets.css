@@ -1,0 +1,564 @@
+/* ==========================================================================
+   Tickets volgens het Canva-ontwerp. Kopbalk, onderbalk, tegels en
+   scrollgedrag komen uit home.css; hier alleen wat Tickets zelf heeft.
+   Alleen transform/opacity worden geanimeerd.
+   ========================================================================== */
+
+:root {
+  /* De serif-kopletter van de tegels (zoals "Ben je erbij?" en de naam op de
+     seizoenskaart), geladen via Google Fonts in index.html */
+  --font-tegel: 'Abril Fatface', Georgia, serif;
+  --kaart-achter-rood: #7a1b1d;
+}
+
+.tickets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+/* ---------- 1. Seizoenskaart (bestaande FlipKaart, aangepast via .sk) ---------- */
+.sk {
+  position: relative;
+  /* in het ontwerp is de kaart ~88% van de tegelbreedte */
+  padding: var(--sp-2) 6% var(--sp-3);
+}
+
+/* FlipKaart staat standaard scheef, smal en met een rode gloed (oude Tickets);
+   hier volle breedte, recht, zoals het ontwerp */
+.sk .flip-scene {
+  max-width: none;
+  margin: 0;
+  transform: none;
+  filter: none;
+}
+
+.sk .flip-kaart {
+  aspect-ratio: var(--verhouding); /* kaartVerhouding uit tegels.json: voor en achter gelijk */
+  transition-duration: 0.6s;
+}
+
+.sk .flip-zij {
+  overflow: visible; /* de voorkant-afbeelding steekt iets uit (schaduw) */
+  border-radius: 14px;
+  box-shadow: none;
+}
+
+.sk .flip-achter {
+  background: none;
+}
+
+.sk .flip-kaart:focus-visible {
+  outline: 3px solid var(--wit);
+  outline-offset: 6px;
+}
+
+.sk .flip-kaart:active {
+  scale: 0.98;
+}
+
+.sk__voorbeeld {
+  top: calc(-1 * var(--sp-1));
+}
+
+/* Voorkant: plaatje geplaatst volgens tegels.json */
+.sk-voor {
+  position: relative;
+  display: block;
+}
+
+.sk-voor img {
+  position: absolute;
+  max-width: none;
+  height: auto;
+  pointer-events: none;
+}
+
+/* Achterkant in code, in de stijl van seizoenskaart-achter.png.
+   Maten in cqw (procent van de kaartbreedte), zodat alles meeschaalt. */
+.sk-achter {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  container-type: inline-size;
+  border-radius: 14px;
+  background: var(--kaart-achter-rood);
+  box-shadow:
+    3px 4px 0 rgba(0, 0, 0, 0.18),
+    8px 12px 22px -8px rgba(0, 0, 0, 0.6); /* zachte schaduw rechtsonder */
+  overflow: hidden;
+  color: var(--wit);
+  text-align: left;
+}
+
+.sk-achter__naam {
+  position: absolute;
+  left: 6.5%;
+  top: 7%;
+  max-width: 56%;
+  font-family: var(--font-tegel);
+  font-size: 7.6cqw;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.sk-achter__seizoen {
+  position: absolute;
+  left: 6%;
+  top: 23%;
+  font-family: var(--font-body);
+  font-size: 2.9cqw;
+  font-weight: 700;
+  color: #0d0d0d;
+}
+
+.sk-achter__plaats {
+  position: absolute;
+  left: 6%;
+  top: 38%;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-body);
+  font-size: 4.6cqw;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+/* QR op een licht roze, afgerond vlak */
+.sk-achter__qr {
+  position: absolute;
+  right: 3.5%;
+  top: 14%;
+  width: 31%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: 3.5%;
+  border-radius: 4.5cqw;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.sk-achter__qr img {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.sk-achter__qr-tekst {
+  font-size: 2.6cqw;
+  color: #2a0a0b;
+  text-align: center;
+}
+
+/* Magneetstrip over de volle breedte */
+.sk-achter__strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 73%;
+  height: 9%;
+  background: #000;
+}
+
+/* ---------- 3. Ben je erbij? ---------- */
+.bje {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+/* Onzichtbare ronde knop precies over een bol (maten uit tegels.json) */
+.bje__bol {
+  position: absolute;
+  z-index: 1;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.2s var(--indruk);
+}
+
+/* zachte ring die bij een tik even uitdijt */
+.bje__bol::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  opacity: 0;
+  transform: scale(1);
+  pointer-events: none;
+}
+
+.bje__bol:active {
+  transform: translate(-50%, -50%) scale(0.95);
+}
+
+.bje__bol:active::after {
+  opacity: 1;
+  transform: scale(1.08);
+  transition: opacity 0.1s ease, transform 0.25s var(--indruk);
+}
+
+.bje__bol:focus-visible {
+  outline: 3px solid var(--wit);
+  outline-offset: 3px;
+}
+
+/* De niet-gekozen bol wordt gedimd (donkere laag over het plaatje) */
+.bje__bol.is-gedimd {
+  background: rgba(20, 8, 8, 0.55);
+}
+
+.bje__bol.is-gekozen::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 3px solid var(--wit);
+  animation: bje-gekozen 0.45s var(--indruk) both;
+}
+
+@keyframes bje-gekozen {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.bje__vink {
+  width: 46%;
+  height: 46%;
+  color: var(--wit);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+  animation: bje-gekozen 0.45s var(--indruk) both;
+}
+
+.bje__melding {
+  font-family: var(--font-kop);
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: var(--wit);
+}
+
+.bje__melding:empty {
+  display: none; /* geen lege regel tussen de tegels zolang er niets te melden is */
+}
+
+.bje__over {
+  font-size: 12px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* "Verkoop je kaart" licht kort op na "nee" (witte gloed-laag, alleen opacity) */
+.plaatjes-tegel.is-oplichtend .plaatjes-tegel__kaart::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 16px;
+  box-shadow:
+    0 0 0 3px var(--wit),
+    0 0 26px 6px rgba(255, 255, 255, 0.55);
+  pointer-events: none;
+  animation: oplichten 2s ease both;
+}
+
+@keyframes oplichten {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  50% { opacity: 0.35; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bje__bol,
+  .bje__bol::after,
+  .bje__bol.is-gekozen::before,
+  .bje__vink {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* ---------- Je kaartje (/tickets/ticket) ---------- */
+.kaartje {
+  position: relative;
+  border-radius: 18px;
+  background: var(--wit);
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.25),
+    0 18px 30px -14px rgba(0, 0, 0, 0.7);
+}
+
+.kaartje__voorbeeld {
+  z-index: 2;
+}
+
+.kaartje__kop {
+  display: grid;
+  grid-template-columns: 56px 1fr 56px;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-6) var(--sp-4) var(--sp-5);
+  border-radius: 18px 18px 0 0;
+  background: var(--kaart-rood);
+  color: var(--wit);
+}
+
+.kaartje__kop img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.4));
+}
+
+.kaartje__wedstrijd {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.kaartje__wedstrijd strong {
+  font-family: var(--font-kop);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.kaartje__competitie {
+  font-family: var(--font-kop);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+/* Scheurlijn met twee halve uitsparingen, zoals bij een papieren kaartje */
+.kaartje__scheur {
+  position: relative;
+  height: 0;
+  border-top: 2px dashed #d9d4cf;
+  margin: 0 var(--sp-4);
+}
+
+.kaartje__scheur::before,
+.kaartje__scheur::after {
+  content: '';
+  position: absolute;
+  top: -13px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--pagina-rood);
+}
+
+.kaartje__scheur::before { left: calc(-1 * var(--sp-4) - 12px); }
+.kaartje__scheur::after { right: calc(-1 * var(--sp-4) - 12px); }
+
+.kaartje__lijf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-5) var(--sp-4) var(--sp-6);
+  color: var(--tekst);
+}
+
+.kaartje__plaats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  margin: 0;
+  text-align: center;
+}
+
+.kaartje__plaats dt {
+  font-family: var(--font-kop);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tekst-zacht);
+}
+
+.kaartje__plaats dd {
+  margin: 0;
+  font-family: var(--font-kop);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.kaartje__qr {
+  width: min(62%, 220px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  color: var(--tekst-zacht);
+}
+
+.kaartje__qr img {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.kaartje__nummer {
+  font-family: var(--font-kop);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+}
+
+.kaartje__naam {
+  font-size: 12px;
+  color: var(--tekst-zacht);
+  text-align: center;
+}
+
+/* ---------- Verkoop je kaart (/tickets/verkopen) ---------- */
+.verkopen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding-top: var(--sp-6);
+}
+
+.verkopen h3 {
+  font-family: var(--font-tegel);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.verkopen__wanneer,
+.verkopen__plaats {
+  font-size: 14px;
+  color: var(--tekst-zacht);
+}
+
+.verkopen__plaats {
+  font-weight: 600;
+  color: var(--tekst);
+}
+
+.verkopen__knop {
+  margin-top: var(--sp-3);
+  min-height: 52px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--rood);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 10px 22px -10px rgba(216, 30, 30, 0.9);
+  transition: transform 0.2s var(--indruk);
+}
+
+.verkopen__knop:hover { background: var(--rood-diep); }
+.verkopen__knop:focus-visible { outline: 3px solid var(--rood); outline-offset: 3px; }
+.verkopen__knop:active { transform: scale(0.97); }
+
+.verkopen__status {
+  margin-top: var(--sp-3);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  background: #e8f5ec;
+  color: #1d6b37;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.5;
+  animation: bje-gekozen 0.4s var(--indruk) both;
+}
+
+.verkopen__status svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+}
+
+.verkopen__demo {
+  margin-top: var(--sp-2);
+  font-size: 12px;
+  color: var(--tekst-zacht);
+}
+
+/* Geen seizoenskaart (fan zonder kaart): kort blok bovenaan Tickets */
+.geen-kaart {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: var(--sp-5);
+  border-radius: 20px;
+  color: var(--wit);
+  background:
+    radial-gradient(80% 70% at 15% 0%, rgba(255, 120, 110, 0.35), transparent 70%),
+    linear-gradient(155deg, var(--rood), var(--rood-diep));
+  box-shadow:
+    0 2px 4px rgba(20, 0, 0, 0.25),
+    0 14px 30px -16px rgba(20, 0, 0, 0.75);
+}
+
+.geen-kaart h2 {
+  font-family: var(--font-tegel, var(--font-kop));
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.geen-kaart p {
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.geen-kaart__knop {
+  margin-top: var(--sp-2);
+  min-height: 46px;
+  padding: 0 var(--sp-5);
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--wit);
+  color: var(--rood-diep);
+  font-family: var(--font-kop);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.15s var(--indruk);
+}
+
+.geen-kaart__knop:hover {
+  transform: translateY(-1px);
+}
+
+.geen-kaart__knop:focus-visible {
+  outline: 3px solid var(--wit);
+  outline-offset: 3px;
+}
+
+.geen-kaart__knop:active {
+  transform: scale(0.96);
+}

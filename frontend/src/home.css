@@ -1,0 +1,1243 @@
+/* ==========================================================================
+   Home volgens het Canva-ontwerp + de gedeelde kopbalk en onderbalk.
+   Kleuren en fonts uit de tokens in index.css (clubrood #d81e1e, Oswald voor
+   koppen, Open Sans voor tekst). Alleen transform/opacity worden geanimeerd.
+   ========================================================================== */
+
+:root {
+  --pagina-rood: #4a1418; /* achtergrond van de hele app */
+  --kaart-rood: #7a1a1d; /* wedstrijdtegel */
+  --kopbalk-hoogte: 58px;
+  --onderbalk-hoogte: 64px;
+  --veilig-boven: env(safe-area-inset-top, 0px);
+  --veilig-onder: env(safe-area-inset-bottom, 0px);
+  --indruk: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---------- Pagina-achtergrond: effen donkerrood i.p.v. de stadionfoto ---------- */
+body {
+  background: var(--pagina-rood);
+}
+
+body::before {
+  display: none;
+}
+
+/* Scrollinhoud: ruimte onder de kopbalk (plus het uitstekende logo) en boven
+   de onderbalk, zodat de eerste tegel niet onder de kop begint en de laatste
+   helemaal boven de onderbalk uit te scrollen is */
+.app-main {
+  padding:
+    calc(var(--veilig-boven) + var(--kopbalk-hoogte) + 28px)
+    var(--sp-4)
+    calc(var(--veilig-onder) + var(--onderbalk-hoogte) + 36px);
+  gap: var(--sp-5);
+}
+
+/* ---------- Kopbalk (vast bovenaan, wit, afgeronde onderhoeken) ---------- */
+.kopbalk {
+  position: fixed;
+  z-index: 40; /* boven de tegels: die schuiven eronder door */
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(520px, 100%);
+  height: calc(var(--veilig-boven) + var(--kopbalk-hoogte));
+  padding: var(--veilig-boven) var(--sp-4) 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--wit);
+  border-radius: 0 0 22px 22px;
+  box-shadow:
+    0 2px 4px rgba(16, 16, 16, 0.12),
+    0 14px 28px -14px rgba(16, 16, 16, 0.55);
+}
+
+.kopbalk__knop {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--rood);
+  cursor: pointer;
+  transition: transform 0.2s var(--indruk);
+}
+
+.kopbalk__knop svg {
+  width: 30px;
+  height: 30px;
+}
+
+.kopbalk__knop:hover {
+  background: rgba(216, 30, 30, 0.08);
+}
+
+.kopbalk__knop:focus-visible,
+.kopbalk__logo:focus-visible {
+  outline: 2px solid var(--rood);
+  outline-offset: 2px;
+}
+
+.kopbalk__knop:active {
+  transform: scale(0.9);
+}
+
+/* Ingelogd als persona: rode cirkel met de eerste letter */
+.kopbalk__knop--profiel.is-ingelogd span {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--rood);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.kopbalk__bolletje {
+  position: absolute;
+  top: 7px;
+  right: 5px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--rood);
+  box-shadow: 0 0 0 2px var(--wit);
+}
+
+/* Clublogo in het midden, steekt iets onder de balk uit */
+.kopbalk__logo {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--veilig-boven) + 4px);
+  transform: translateX(-50%);
+  height: calc(var(--kopbalk-hoogte) + 10px);
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: default; /* voor het publiek geen knop; wel tikbaar voor de demo */
+}
+
+.kopbalk__logo img {
+  height: 100%;
+  width: auto;
+  max-width: none;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(16, 16, 16, 0.35));
+}
+
+/* Toast (pushmelding) onder de kopbalk in plaats van eroverheen */
+.toast {
+  top: calc(var(--veilig-boven) + var(--kopbalk-hoogte) + 22px);
+}
+
+/* ---------- Onderbalk (vast onderaan, wit, afgerond) ---------- */
+.onderbalk {
+  position: fixed;
+  z-index: 40;
+  left: 50%;
+  bottom: calc(var(--veilig-onder) + 10px);
+  transform: translateX(-50%);
+  width: min(496px, calc(100% - 2 * var(--sp-3)));
+  height: var(--onderbalk-hoogte);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+  padding: 0 var(--sp-2);
+  background: var(--wit);
+  border-radius: 22px;
+  box-shadow:
+    0 2px 4px rgba(16, 16, 16, 0.12),
+    0 -10px 30px -12px rgba(16, 16, 16, 0.55);
+}
+
+.onderbalk__knop {
+  position: relative;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--rood);
+  cursor: pointer;
+  transition: transform 0.2s var(--indruk);
+}
+
+.onderbalk__icoon {
+  width: 30px;
+  height: 30px;
+}
+
+.onderbalk__knop:hover {
+  background: rgba(216, 30, 30, 0.07);
+}
+
+.onderbalk__knop:focus-visible {
+  outline: 2px solid var(--rood);
+  outline-offset: 2px;
+}
+
+.onderbalk__knop:active {
+  transform: scale(0.9);
+}
+
+/* Actieve tab: rood stipje onder het icoon */
+.onderbalk__knop.is-actief::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--rood);
+}
+
+/* Grotere voetbal in het midden */
+.onderbalk__knop--bal .onderbalk__icoon {
+  width: 46px;
+  height: 46px;
+}
+
+/* stipje onder de grote bal, niet eroverheen */
+.onderbalk__knop--bal.is-actief::after {
+  bottom: -5px;
+}
+
+.onderbalk__knop--bal:hover {
+  background: transparent;
+  transform: rotate(-12deg);
+}
+
+.onderbalk__knop--bal:active {
+  transform: scale(0.9) rotate(-12deg);
+}
+
+/* ---------- Home-opbouw ---------- */
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+/* ---------- Wedstrijdtegel ---------- */
+.wt {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: var(--sp-4) var(--sp-3) var(--sp-4);
+  border-radius: 18px;
+  background:
+    radial-gradient(90% 70% at 50% 0%, rgba(255, 255, 255, 0.06), transparent 70%),
+    var(--kaart-rood);
+  color: var(--wit);
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.25),
+    0 16px 28px -14px rgba(0, 0, 0, 0.7);
+}
+
+/* Voor de wedstrijd: vaste verhouding zoals het ontwerp; live groeit hij mee */
+.wt:not(.wt--live):not(.wt--klaar) {
+  aspect-ratio: 1.9;
+}
+
+.wt--leeg {
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+}
+
+.wt--leeg p {
+  position: relative;
+  z-index: 1;
+}
+
+.wt__boven,
+.wt__onder {
+  position: relative;
+  z-index: 1; /* boven het gras */
+}
+
+.wt__boven {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.wt__club {
+  justify-self: center;
+  width: 100%;
+  max-width: 92px; /* brede logo's (AZ) blijven zo uit de buurt van de tijd */
+  height: 92px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.45));
+}
+
+.wt__midden {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 96px;
+  text-align: center;
+}
+
+.wt__competitie {
+  height: 30px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 2px;
+}
+
+.wt__competitie img {
+  height: 30px; /* vaste hoogte: een %-hoogte werkt niet in deze grid-cel */
+  width: auto;
+  max-width: 64px;
+  object-fit: contain;
+}
+
+.wt__competitie.is-plaatje img {
+  height: 24px;
+}
+
+/* Doorzichtig logo wit maken, zoals in het ontwerp */
+.wt__competitie.is-wit img {
+  filter: brightness(0) invert(1);
+}
+
+/* Logo met eigen witte achtergrond: op een klein wit plaatje */
+.wt__competitie.is-plaatje {
+  padding: 2px 5px;
+  border-radius: 6px;
+  background: var(--wit);
+}
+
+.wt__groot {
+  font-family: var(--font-kop);
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.wt__stand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.18em;
+}
+
+.wt__stand span {
+  font-size: 0.6em;
+  opacity: 0.7;
+}
+
+.wt__klein {
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.wt__tv {
+  margin-top: 4px;
+  padding: 2px var(--sp-2);
+  border-radius: var(--r-pill);
+  background: rgba(0, 0, 0, 0.3);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.wt__minuut {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-kop);
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Pulserend rood bolletje bij live en rust */
+.wt__stip {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ff3b30;
+}
+
+.wt__stip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #ff3b30;
+  animation: wt-puls 1.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@keyframes wt-puls {
+  from { transform: scale(1); opacity: 0.8; }
+  to { transform: scale(3); opacity: 0; }
+}
+
+.wt__onder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+}
+
+/* Digitale afteller (zeven segmenten, SVG) */
+.segment-tijd {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 46px;
+}
+
+.segment {
+  height: 100%;
+  width: auto;
+  overflow: visible;
+}
+
+.segment polygon {
+  fill: rgba(0, 0, 0, 0.25);
+  stroke: var(--wit);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+}
+
+.segment-dubbelepunt {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 1px;
+}
+
+.segment-dubbelepunt i {
+  width: 5px;
+  height: 5px;
+  background: var(--wit);
+}
+
+/* Tijdlijn tijdens en na de wedstrijd */
+.wt__tijdlijn {
+  list-style: none;
+  width: 100%;
+  margin: 0;
+  padding: var(--sp-2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.wt__tijdlijn li {
+  display: grid;
+  grid-template-columns: 3ch 1fr auto;
+  gap: var(--sp-2);
+  align-items: center;
+  padding: 4px var(--sp-2);
+  border-radius: 8px;
+  font-size: 13px;
+  animation: wt-regel 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes wt-regel {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.wt__tijdlijn b,
+.wt__tijdlijn em {
+  font-family: var(--font-kop);
+  font-style: normal;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.wt__tijdlijn .is-thuis {
+  background: rgba(216, 30, 30, 0.35);
+}
+
+.wt__tijdlijn .is-uit {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Het enige tikbare deel van de tegel */
+.wt__recap {
+  min-height: 46px;
+  padding: 0 var(--sp-6);
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--wit);
+  color: var(--rood);
+  font-family: var(--font-kop);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 8px 18px -8px rgba(0, 0, 0, 0.7);
+  transition: transform 0.2s var(--indruk);
+}
+
+.wt__recap:hover { transform: translateY(-1px); }
+.wt__recap:focus-visible { outline: 3px solid var(--wit); outline-offset: 3px; }
+.wt__recap:active { transform: scale(0.97); }
+
+/* Gras onderaan (SVG), achter de afteller */
+.wt__gras {
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 62%;
+  pointer-events: none;
+}
+
+.wt--live .wt__gras,
+.wt--klaar .wt__gras {
+  height: 42%;
+}
+
+/* ---------- Opstelling ---------- */
+.opstelling-blok {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.opstelling-titel {
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--wit);
+}
+
+.opstelling {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 18px;
+  background:
+    radial-gradient(80% 60% at 50% 35%, #262626, transparent 70%),
+    #0d0d0d;
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.3),
+    0 16px 28px -14px rgba(0, 0, 0, 0.8);
+}
+
+.opstelling__veld {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.opstelling__veld polygon,
+.opstelling__veld polyline,
+.opstelling__veld ellipse {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.8);
+  stroke-width: 1.3px;
+  vector-effect: non-scaling-stroke;
+}
+
+.opstelling__stip {
+  fill: rgba(255, 255, 255, 0.8);
+}
+
+.opstelling__spelers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.opstelling__speler {
+  position: absolute;
+  transform: translate(-50%, -32%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.opstelling__badge {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #2a2a2a, #111 70%);
+  border: 2px solid var(--rood);
+  box-shadow:
+    0 0 0 1px rgba(216, 30, 30, 0.4),
+    0 0 12px 2px rgba(216, 30, 30, 0.75);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.opstelling__naam {
+  font-family: var(--font-kop);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--wit);
+  white-space: nowrap;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+/* ---------- Plaatjes-tegels (maten uit tegels.json) ---------- */
+.tegel-zone {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+/* Twee vierkante tegels naast elkaar; kaarten lijnen onderaan uit, zodat een
+   uitsteeksel (bv. het hoofd bij Player of the match) naar boven gaat */
+.tegel-rij--paar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+  align-items: end;
+}
+
+/* Eén overgebleven vierkante tegel: even breed als in een paar, gecentreerd */
+.tegel-rij--alleen {
+  display: grid;
+  grid-template-columns: 1fr calc(50% - var(--sp-3) / 2) 1fr;
+}
+
+.tegel-rij--alleen > * {
+  grid-column: 2;
+}
+
+.plaatjes-tegel {
+  position: relative; /* latere tegels liggen zo boven eerdere (uitsteeksels vallen erover) */
+  display: block;
+  width: 100%;
+  margin: 0;
+  /* Ruimte voor wat boven/onder de kaart uitsteekt: steektUit is % van de
+     kaarthoogte; padding rekent vanuit de breedte, dus delen door de verhouding */
+  padding: calc(var(--boven) / var(--verhouding) * 1%) 0 calc(var(--onder) / var(--verhouding) * 1%);
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  overflow: visible;
+  cursor: default;
+}
+
+.plaatjes-tegel__kaart {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--verhouding);
+  overflow: visible; /* uitstekende figuren nooit afsnijden */
+}
+
+.plaatjes-tegel__beeld {
+  position: absolute;
+  display: block;
+  height: auto;
+  max-width: none; /* mag breder dan de kaart (tot ~103%) volgens tegels.json */
+  pointer-events: none;
+  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.35));
+}
+
+/* Uitstekend figuur schuift een paar pixels omhoog zodra het in beeld komt */
+.plaatjes-tegel.is-popout .plaatjes-tegel__beeld {
+  transform: translateY(8px);
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.plaatjes-tegel.is-popout.is-in-beeld .plaatjes-tegel__beeld {
+  transform: translateY(0);
+}
+
+/* Klikbaar: lichte indruk-animatie; niet-klikbaar: geen animatie, geen handje */
+.plaatjes-tegel.is-klikbaar {
+  cursor: pointer;
+  transition: transform 0.18s var(--indruk);
+}
+
+.plaatjes-tegel.is-klikbaar:active {
+  transform: scale(0.97);
+}
+
+.plaatjes-tegel.is-klikbaar:focus-visible {
+  outline: 3px solid var(--wit);
+  outline-offset: 4px;
+  border-radius: var(--r-md);
+}
+
+.plaatjes-tegel__label {
+  /* als badge op de linkerbovenhoek, half buiten de kaart: zo blijft de
+     tekst in het plaatje (bv. "Stem noe!") leesbaar */
+  position: absolute;
+  z-index: 2;
+  top: -9px;
+  left: -4px;
+  transform: rotate(-4deg);
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
+  background: var(--rood);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 10px -4px rgba(0, 0, 0, 0.7);
+}
+
+.plaatjes-tegel__binnenkort {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--r-pill);
+  background: rgba(16, 16, 16, 0.85);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plaatjes-tegel.is-popout .plaatjes-tegel__beeld {
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Tegel in code (feature zonder plaatje, bv. recap60) */
+.code-tegel {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2.5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  border: none;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.5)),
+    url('/splash.png') center 80% / cover no-repeat,
+    var(--rood-diep);
+  box-shadow: 0 10px 22px -10px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  transition: transform 0.18s var(--indruk);
+}
+
+.code-tegel:active { transform: scale(0.97); }
+.code-tegel:focus-visible { outline: 3px solid var(--wit); outline-offset: 4px; }
+
+.code-tegel__titel {
+  font-family: var(--font-kop);
+  font-size: clamp(22px, 7vw, 32px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--wit);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.code-tegel__actie {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--r-pill);
+  background: var(--wit);
+  color: var(--rood);
+  font-family: var(--font-kop);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ---------- Pagina's achter tegels (Nieuws, Aanbiedingen, Analyse) ---------- */
+.subpagina {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.binnenkort-kaart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-7) var(--sp-5);
+  text-align: center;
+}
+
+.binnenkort-kaart__icoon {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--lichtgrijs);
+  color: var(--rood);
+}
+
+.binnenkort-kaart h3 {
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+
+.binnenkort-kaart p {
+  color: var(--tekst-zacht);
+  font-size: 14px;
+  max-width: 32ch;
+}
+
+/* ---------- Aanbiedingen (/aanbiedingen) ---------- */
+/* Zelfde achtergrond en tussenruimte als Home; de deals op volle breedte */
+.aanbiedingen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+/* ---------- QR-scherm van een deal (bottom sheet) ---------- */
+.qr-laag {
+  position: fixed;
+  z-index: 60; /* boven kopbalk en onderbalk (40) */
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(20, 4, 6, 0.6);
+  animation: qr-laag-in 0.24s ease both;
+}
+
+.qr-sheet {
+  /* binnen het telefoonvak: nooit breder dan de app */
+  width: min(520px, 100%);
+  max-height: calc(100dvh - var(--veilig-boven) - 24px);
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-5) calc(var(--veilig-onder) + var(--sp-5));
+  border-radius: 28px 28px 0 0;
+  background: var(--wit);
+  color: var(--zwart);
+  text-align: center;
+  box-shadow:
+    0 -2px 6px rgba(40, 0, 0, 0.18),
+    0 -24px 60px -20px rgba(40, 0, 0, 0.6);
+  animation: qr-sheet-in 0.42s cubic-bezier(0.2, 0.9, 0.25, 1.08) both;
+}
+
+.qr-sheet::-webkit-scrollbar {
+  display: none;
+}
+
+.qr-laag.is-sluitend {
+  animation: qr-laag-uit 0.26s ease both;
+}
+
+.qr-laag.is-sluitend .qr-sheet {
+  animation: qr-sheet-uit 0.26s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+@keyframes qr-laag-in {
+  from { opacity: 0; }
+}
+
+@keyframes qr-laag-uit {
+  to { opacity: 0; }
+}
+
+@keyframes qr-sheet-in {
+  from { transform: translateY(100%); }
+}
+
+@keyframes qr-sheet-uit {
+  to { transform: translateY(100%); }
+}
+
+/* greepje bovenaan, zoals bij een echt telefoonscherm */
+.qr-sheet__greep {
+  width: 40px;
+  height: 5px;
+  margin-bottom: var(--sp-2);
+  border-radius: var(--r-pill);
+  background: #e2ded6;
+}
+
+.qr-sheet__geldig {
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  background: var(--rood);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.qr-sheet__geldig.is-verlopen {
+  background: #8c8580;
+}
+
+.qr-sheet__naam {
+  max-width: 24ch;
+  text-wrap: balance;
+  font-family: var(--font-kop);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* Helder wit vlak met ruime witte rand (quiet zone): scant goed, ook op een
+   scherm dat niet feller kan */
+.qr-sheet__vlak {
+  width: min(78vw, 300px);
+  aspect-ratio: 1;
+  margin: var(--sp-2) 0;
+  padding: 22px;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgba(16, 16, 16, 0.08),
+    0 10px 28px -12px rgba(120, 10, 10, 0.35);
+}
+
+.qr-sheet__qr,
+.qr-sheet__qr svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Verlopen: grijs en vaag, zodat hij niet meer bruikbaar lijkt */
+.qr-sheet__vlak.is-verlopen .qr-sheet__qr {
+  filter: grayscale(1);
+  opacity: 0.25;
+}
+
+.qr-sheet__code {
+  font-family: var(--font-kop);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+}
+
+.qr-sheet__tijd {
+  margin-top: -6px;
+  font-size: 12px;
+  color: var(--tekst-zacht);
+}
+
+.qr-sheet__uitleg {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.qr-sheet__sluit {
+  width: 100%;
+  min-height: 50px;
+  margin-top: var(--sp-3);
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--zwart);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.15s var(--indruk);
+}
+
+.qr-sheet__sluit:hover {
+  transform: translateY(-1px);
+}
+
+.qr-sheet__sluit:focus-visible {
+  outline: 3px solid var(--rood);
+  outline-offset: 3px;
+}
+
+.qr-sheet__sluit:active {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qr-laag,
+  .qr-sheet,
+  .qr-laag.is-sluitend,
+  .qr-laag.is-sluitend .qr-sheet {
+    animation: none;
+  }
+}
+
+/* ---------- Wedstrijdtegel met achtergronden uit het ontwerp (WedstrijdPlaatje) ----------
+   Maten uit tegels.json -> wedstrijdtegel. De tekst schaalt mee met de
+   kaartbreedte (cqw), zodat hij op elk scherm binnen zijn vlak blijft. */
+.wp {
+  position: relative;
+  aspect-ratio: var(--verhouding);
+  container-type: inline-size;
+  color: var(--wit);
+}
+
+.wp--laden {
+  aspect-ratio: 1.93;
+}
+
+.wp__laag {
+  position: absolute;
+  inset: 0;
+  animation: wp-in var(--crossfade) ease both;
+}
+
+/* De oude laag blijft eronder staan tot de nieuwe er helemaal is */
+.wp__laag:not(.is-actief) {
+  pointer-events: none;
+}
+
+@keyframes wp-in {
+  from { opacity: 0; }
+}
+
+.wp__beeld {
+  position: absolute;
+  max-width: none;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.wp__vlak {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+/* Stand in de cijferstijl van "16:45": smal, vet, wit */
+.wp__stand {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  font-family: var(--font-kop);
+  font-size: 9.2cqw;
+  font-weight: 700;
+  line-height: 0.82; /* tekstvak zo hoog als de cijfers: past in het vlak */
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0.4cqw 1.2cqw rgba(0, 0, 0, 0.35);
+}
+
+.wp__minuut {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2cqw;
+  font-family: var(--font-kop);
+  font-size: 3.4cqw;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.wp__minuut .wt__stip {
+  width: 1.8cqw;
+  height: 1.8cqw;
+}
+
+/* ---- digitale klok ---- */
+.wp-klok {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8cqw;
+}
+
+.wp-klok__cijfers {
+  display: flex;
+  align-items: center;
+  height: 7cqw;
+}
+
+.wp-klok__blok {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 0.6cqw;
+}
+
+.wp-klok .segment {
+  height: 100%;
+  width: auto;
+  overflow: visible;
+}
+
+/* Wit en vet: gevulde segmenten met een witte rand eromheen */
+.wp-klok .segment polygon {
+  fill: var(--wit);
+  stroke: var(--wit);
+  stroke-width: 3.5;
+}
+
+.wp-klok__dubbelepunt {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8cqw;
+  padding: 0 1cqw;
+}
+
+.wp-klok__dubbelepunt i {
+  width: 1.1cqw;
+  height: 1.1cqw;
+  background: var(--wit);
+}
+
+/* DAGEN · UUR · MIN, elk label onder zijn eigen twee cijfers */
+.wp-klok__labels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  font-family: var(--font-kop);
+  font-size: 2.1cqw;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.wp-klok__onder {
+  font-family: var(--font-body);
+  font-size: 2.4cqw;
+  font-weight: 600;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+/* ---- doelpunten tijdens de wedstrijd: thuis links, uit rechts ---- */
+.wp__doelpunten {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3cqw;
+  align-content: center;
+}
+
+.wp__doelpunten ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2cqw;
+  font-family: var(--font-kop);
+  font-size: 2.5cqw;
+  font-weight: 600;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.wp__doelpunten .is-thuis {
+  text-align: right;
+}
+
+.wp__doelpunten .is-uit {
+  text-align: left;
+}
+
+.wp__doelpunten li {
+  animation: wp-in 0.4s ease both;
+}
+
+.wp__doelpunten b {
+  font-weight: 700;
+  opacity: 0.75;
+}
+
+/* ---- knop na de wedstrijd (het enige tikbare deel van de tegel) ---- */
+.wp__recap {
+  padding: 1.6cqw 3.6cqw;
+  border: 0.4cqw solid rgba(255, 255, 255, 0.85);
+  border-radius: var(--r-pill);
+  background: var(--rood);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 3cqw;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 1cqw 2.4cqw -1cqw rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s var(--indruk);
+}
+
+.wp__recap:hover {
+  transform: translateY(-1px);
+}
+
+.wp__recap:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 2px;
+}
+
+.wp__recap:active {
+  transform: scale(0.95);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp__laag,
+  .wp__doelpunten li {
+    animation: none;
+  }
+}
+
+/* Video-tegel (bv. Webshop): vult de kaart, zelfde schaduw als de plaatjes */
+.plaatjes-tegel__video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.35);
+}

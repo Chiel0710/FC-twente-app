@@ -119,6 +119,15 @@ export function useStickerPlak({ vindSlot, onGeplakt }) {
 
 /** De kaart zelf — zowel in de overlay als in een gevuld vakje bruikbaar. */
 export function StickerKaart({ sticker, groot = false, innerRef }) {
+  // Eigen ontwerp (bv. Twente – PSV 3-2): het plaatje zelf is de sticker
+  if (sticker.beeld) {
+    return (
+      <div ref={innerRef} className={`kaart kaart--beeld${groot ? " onthul" : ""}`}>
+        <img src={sticker.beeld} alt={`Sticker ${sticker.tegenstander} ${sticker.uitslag ?? ""}`} />
+        <div className="glans" />
+      </div>
+    );
+  }
   return (
     <div
       ref={innerRef}

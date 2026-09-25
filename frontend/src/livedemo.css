@@ -1,0 +1,875 @@
+/* ==========================================================================
+   Live-demo: kop-knoppen, livescore, pushmelding (toast), inbox, recap en
+   het regiepaneel /admin/demo. Alle kleuren en fonts komen uit de tokens in
+   index.css (clubrood #d81e1e, Oswald voor koppen, Open Sans voor tekst).
+   ========================================================================== */
+
+/* Veerachtige easing, alleen voor transform/opacity */
+:root {
+  --veer: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --uit: cubic-bezier(0.22, 1, 0.36, 1);
+  --gloed-rood: #ff5b45;
+  --rood-zacht: #ff8a7a;
+  --grafiet: #26262a;
+  --korrel: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+}
+
+.visueel-verborgen {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Kop: briefje links, titel midden, profiel rechts ---------- */
+.app-topbar .app-topbar__title {
+  flex: 1;
+  text-align: center;
+}
+
+.topbar-knop {
+  position: relative;
+  flex: none;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--wit);
+  cursor: pointer;
+  transition: transform 0.2s var(--veer);
+}
+
+.topbar-knop:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.topbar-knop:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 3px;
+}
+
+.topbar-knop:active {
+  transform: scale(0.9);
+}
+
+.topbar-knop--profiel {
+  background: var(--wit);
+  border-color: var(--wit);
+  color: var(--rood);
+  font-family: var(--font-kop);
+  font-size: 17px;
+  font-weight: 600;
+  text-transform: uppercase;
+  box-shadow: 0 6px 16px -8px rgba(16, 16, 16, 0.6);
+}
+
+.topbar-knop--profiel:hover {
+  background: var(--lichtgrijs);
+}
+
+/* Rood bolletje = ongelezen bericht. Witte ring, anders verdwijnt het rood
+   tegen de donkerrode achtergrondfoto. */
+.topbar-bolletje {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--rood);
+  box-shadow: 0 0 0 2px var(--wit);
+  animation: bolletje-in 0.5s var(--veer) both;
+}
+
+@keyframes bolletje-in {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+/* ---------- Livescore ---------- */
+.live-houder {
+  position: relative;
+}
+
+.live {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--r-lg);
+  padding: var(--sp-5);
+  color: var(--wit);
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(216, 30, 30, 0.38), transparent 60%),
+    radial-gradient(80% 70% at 0% 100%, rgba(166, 18, 12, 0.3), transparent 70%),
+    #101010;
+  box-shadow: var(--shadow-glow-rood);
+}
+
+/* Korrel voor diepte, net als het scorebord eronder */
+.live::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--korrel);
+}
+
+/* Minutenbalk: loopt mee met de speelminuut (--voortgang komt uit Home.jsx) */
+.live-bezig::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--gloed-rood);
+  box-shadow: 0 0 12px rgba(255, 91, 69, 0.8);
+  transform-origin: left center;
+  transform: scaleX(var(--voortgang, 0));
+  transition: transform 1s linear;
+}
+
+.live-label {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--font-kop);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--rood-zacht);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Live-stip met een ring die uitdijt */
+.stip {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gloed-rood);
+}
+
+.stip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--gloed-rood);
+  animation: stip-puls 1.6s var(--uit) infinite;
+}
+
+@keyframes stip-puls {
+  from { transform: scale(1); opacity: 0.7; }
+  to { transform: scale(3); opacity: 0; }
+}
+
+/* Voor de wedstrijd: een lichte, zwevende kaart — nog geen scorebord */
+.live-voor {
+  background:
+    radial-gradient(100% 120% at 100% 0%, rgba(216, 30, 30, 0.1), transparent 55%),
+    var(--surface-1);
+  color: var(--tekst);
+  box-shadow: var(--shadow-floating);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.live-voor::before {
+  display: none;
+}
+
+.live-voor .live-label {
+  color: var(--rood);
+}
+
+.live-voor h3 {
+  font-size: 28px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.live-tv {
+  font-size: 14px;
+  color: var(--tekst-zacht);
+}
+
+.live-stand {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
+}
+
+.live-stand span {
+  font-family: var(--font-kop);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.live-stand span:last-child {
+  text-align: right;
+}
+
+.live-stand strong {
+  font-family: var(--font-kop);
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--gloed-rood);
+  text-shadow: 0 0 22px rgba(255, 91, 69, 0.6);
+}
+
+.live-tijdlijn {
+  list-style: none;
+  margin: var(--sp-5) 0 0;
+  padding: var(--sp-4) 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.live-tijdlijn:empty {
+  display: none;
+}
+
+.live-tijdlijn li {
+  display: grid;
+  grid-template-columns: 3.2ch 1fr auto;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-sm);
+  font-size: 14px;
+  animation: regel-in 0.6s var(--veer) both;
+}
+
+@keyframes regel-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.live-tijdlijn b,
+.live-tijdlijn span {
+  font-family: var(--font-kop);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.live-tijdlijn .voor-ons {
+  background: rgba(216, 30, 30, 0.18);
+  box-shadow: inset 3px 0 0 var(--rood);
+}
+
+.live-tijdlijn .voor-ons b {
+  color: var(--rood-zacht);
+}
+
+.live-tijdlijn .tegen {
+  color: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 3px 0 0 rgba(255, 255, 255, 0.22);
+}
+
+.live > button {
+  width: 100%;
+  min-height: 52px;
+  margin-top: var(--sp-5);
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--rood);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  box-shadow: 0 10px 24px -12px rgba(216, 30, 30, 0.9);
+  transition: transform 0.2s var(--veer);
+}
+
+.live > button:hover {
+  background: #e62a2a;
+  transform: translateY(-1px);
+}
+
+.live > button:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 3px;
+}
+
+.live > button:active {
+  transform: scale(0.97);
+}
+
+/* ---------- Toast: pushmelding bovenin het scherm ---------- */
+.toast {
+  position: fixed;
+  z-index: 60;
+  top: calc(env(safe-area-inset-top, 0px) + var(--sp-3));
+  left: 50%;
+  width: min(488px, calc(100% - 2 * var(--sp-3)));
+  transform: translateX(-50%);
+  padding: var(--sp-3) var(--sp-4) var(--sp-4);
+  border-radius: var(--r-lg);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  color: var(--tekst);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 8px 16px -8px rgba(16, 16, 16, 0.25),
+    0 28px 48px -20px rgba(43, 10, 10, 0.55);
+  animation: toast-in 0.6s var(--veer) both;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translate(-50%, -130%); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.toast-kop {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.toast-logo {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: var(--rood);
+  font-size: 12px;
+}
+
+.toast-app {
+  font-family: var(--font-kop);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.toast-nu {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--tekst-zacht);
+}
+
+.toast-x {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(16, 16, 16, 0.06);
+  color: var(--tekst);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.2s var(--veer);
+}
+
+.toast-x:hover {
+  background: rgba(16, 16, 16, 0.12);
+}
+
+.toast-x:active {
+  transform: scale(0.88);
+}
+
+.toast-titel {
+  margin-top: var(--sp-2);
+  font-family: var(--font-kop);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.toast-tekst {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #3a3a3d;
+}
+
+/* De actieknop in de toast en in de inbox zien er hetzelfde uit */
+.toast-knop,
+.inbox li button {
+  margin-top: var(--sp-3);
+  padding: var(--sp-2) var(--sp-5);
+  min-height: 40px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--rood);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  box-shadow: 0 8px 18px -10px rgba(216, 30, 30, 0.9);
+  transition: transform 0.2s var(--veer);
+}
+
+.toast-knop:hover,
+.inbox li button:hover {
+  background: var(--rood-diep);
+  transform: translateY(-1px);
+}
+
+.toast-knop:active,
+.inbox li button:active {
+  transform: scale(0.96);
+}
+
+/* ---------- Inbox (achter het briefje) ---------- */
+.inbox-laag {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(16, 16, 16, 0.5);
+  animation: vervaag-in 0.25s ease both;
+}
+
+@keyframes vervaag-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.inbox-paneel {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + var(--sp-3));
+  /* Uitlijnen op de linkerrand van de app-kolom (max 520px) */
+  left: max(var(--sp-3), calc(50% - 260px + var(--sp-3)));
+  width: min(420px, calc(100% - 2 * var(--sp-3)));
+  max-height: calc(100svh - 2 * var(--sp-6));
+  overflow-y: auto;
+  padding: var(--sp-5);
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-floating);
+  transform-origin: top left;
+  animation: paneel-in 0.45s var(--veer) both;
+}
+
+@keyframes paneel-in {
+  from { opacity: 0; transform: scale(0.92) translateY(-6px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.inbox-paneel__kop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.inbox-paneel__kop h2 {
+  font-size: 24px;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.inbox-paneel__sluit {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--lichtgrijs);
+  color: var(--tekst);
+  cursor: pointer;
+  transition: transform 0.2s var(--veer);
+}
+
+.inbox-paneel__sluit:hover {
+  background: #e0dedb;
+}
+
+.inbox-paneel__sluit:active {
+  transform: scale(0.9);
+}
+
+.inbox {
+  list-style: none;
+  margin: var(--sp-4) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.inbox li {
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--surface-0);
+  box-shadow: inset 3px 0 0 var(--rood);
+}
+
+.inbox-titel {
+  font-family: var(--font-kop);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.inbox-tekst {
+  font-size: 14px;
+  color: #3a3a3d;
+}
+
+.inbox-leeg {
+  margin-top: var(--sp-4);
+  font-size: 14px;
+  color: var(--tekst-zacht);
+}
+
+/* ---------- Recap: Twente in 60 seconden ---------- */
+.recap {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  background: #101010;
+  color: var(--wit);
+  animation: vervaag-in 0.3s ease both;
+}
+
+.recap__balken {
+  position: absolute;
+  z-index: 3;
+  top: calc(env(safe-area-inset-top, 0px) + var(--sp-3));
+  left: var(--sp-3);
+  right: var(--sp-3);
+  display: flex;
+  gap: var(--sp-1);
+}
+
+.recap__balk {
+  flex: 1;
+  height: 3px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.28);
+  overflow: hidden;
+}
+
+.recap__vulling {
+  display: block;
+  height: 100%;
+  background: var(--wit);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.recap__vulling.is-klaar {
+  transform: scaleX(1);
+}
+
+.recap__vulling.is-bezig {
+  animation: balk-vul var(--dia-duur) linear forwards;
+}
+
+@keyframes balk-vul {
+  to { transform: scaleX(1); }
+}
+
+.recap__sluit {
+  position: absolute;
+  z-index: 4;
+  top: calc(env(safe-area-inset-top, 0px) + var(--sp-6));
+  right: var(--sp-3);
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--wit);
+  cursor: pointer;
+  transition: transform 0.2s var(--veer);
+}
+
+.recap__sluit:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.recap__sluit:focus-visible {
+  outline: 2px solid var(--wit);
+  outline-offset: 2px;
+}
+
+.recap__sluit:active {
+  transform: scale(0.9);
+}
+
+.recap__tik {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+.recap__tik button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.recap__tik button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: -6px;
+}
+
+.recap__tik button:active {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.recap__dia {
+  position: relative;
+  isolation: isolate;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  padding: var(--sp-10) var(--sp-6) calc(env(safe-area-inset-bottom, 0px) + var(--sp-10));
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Achtergrond per dia over de volle breedte van het scherm */
+.recap__dia::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--korrel), var(--dia-achtergrond);
+  animation: vervaag-in 0.4s ease both;
+}
+
+.recap__dia--intro {
+  --dia-achtergrond:
+    radial-gradient(90% 60% at 100% 0%, rgba(216, 30, 30, 0.55), transparent 65%),
+    radial-gradient(70% 50% at 0% 100%, rgba(166, 18, 12, 0.45), transparent 70%),
+    linear-gradient(#101010, #101010);
+}
+
+/* Doelpunt voor Twente: het hele scherm kleurt clubrood */
+.recap__dia--doelpunt.is-ons {
+  --dia-achtergrond:
+    radial-gradient(80% 60% at 20% 20%, rgba(255, 91, 69, 0.55), transparent 70%),
+    radial-gradient(90% 70% at 100% 100%, rgba(106, 8, 4, 0.7), transparent 70%),
+    linear-gradient(var(--rood), var(--rood));
+}
+
+/* Doelpunt tegen: gedempt grafiet */
+.recap__dia--doelpunt.is-tegen {
+  --dia-achtergrond:
+    radial-gradient(80% 60% at 80% 10%, rgba(255, 255, 255, 0.08), transparent 70%),
+    linear-gradient(var(--grafiet), #151517);
+}
+
+.recap__dia--eind {
+  --dia-achtergrond:
+    radial-gradient(100% 70% at 50% 0%, rgba(216, 30, 30, 0.85), transparent 70%),
+    linear-gradient(var(--rood-diep), #101010 75%);
+}
+
+/* Inhoud schuift gestaffeld binnen */
+.recap__dia > * {
+  animation: recap-in 0.7s var(--veer) both;
+}
+
+.recap__dia > *:nth-child(2) { animation-delay: 0.08s; }
+.recap__dia > *:nth-child(3) { animation-delay: 0.16s; }
+.recap__dia > *:nth-child(4) { animation-delay: 0.24s; }
+
+@keyframes recap-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.recap__eyebrow {
+  font-family: var(--font-kop);
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.recap__kop {
+  color: var(--wit);
+  font-size: clamp(36px, 11vw, 52px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.recap__kop span {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.recap__sub {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.recap__minuut,
+.recap__eindstand {
+  font-family: var(--font-kop);
+  font-size: clamp(128px, 44vw, 208px);
+  font-weight: 700;
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: var(--sp-4);
+}
+
+.recap__eindstand {
+  display: flex;
+  align-items: center;
+  gap: 0.14em;
+  color: var(--gloed-rood);
+  text-shadow: 0 0 48px rgba(255, 91, 69, 0.55);
+}
+
+.recap__eindstand span {
+  font-size: 0.45em;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: none;
+}
+
+.is-tegen .recap__minuut {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.recap__stand {
+  align-self: flex-start;
+  margin-top: var(--sp-3);
+  padding: var(--sp-1) var(--sp-4);
+  border-radius: var(--r-pill);
+  background: rgba(16, 16, 16, 0.28);
+  font-family: var(--font-kop);
+  font-size: 22px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+}
+
+/* ---------- /admin/demo: regiepaneel voor de pitch ---------- */
+.demo-admin {
+  min-height: 100svh;
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--sp-6) var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--sp-4);
+}
+
+.demo-admin__knop {
+  position: relative;
+  width: 100%;
+  min-height: 80px;
+  padding: var(--sp-4) var(--sp-6);
+  border: none;
+  border-radius: var(--r-lg);
+  background: var(--surface-1);
+  color: var(--tekst);
+  font-family: var(--font-kop);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: var(--shadow-floating);
+  transition:
+    transform 0.2s var(--veer),
+    opacity 0.2s ease;
+}
+
+.demo-admin__knop:hover {
+  transform: translateY(-2px);
+}
+
+.demo-admin__knop:focus-visible {
+  outline: 3px solid var(--wit);
+  outline-offset: 3px;
+}
+
+.demo-admin__knop:active {
+  transform: scale(0.97);
+}
+
+.demo-admin__knop--primair {
+  min-height: 112px;
+  background:
+    radial-gradient(120% 120% at 100% 0%, rgba(255, 91, 69, 0.6), transparent 60%),
+    var(--rood);
+  color: var(--wit);
+  font-size: 26px;
+  box-shadow: var(--shadow-glow-rood);
+}
+
+.demo-admin__knop--reset {
+  margin-top: var(--sp-4);
+  background: transparent;
+  color: var(--wit);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+/* Terugkoppeling na een tik */
+.demo-admin__knop[data-status='bezig'] {
+  opacity: 0.6;
+}
+
+.demo-admin__knop[data-status='ok']::after,
+.demo-admin__knop[data-status='fout']::after {
+  position: absolute;
+  right: var(--sp-5);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 26px;
+  animation: vervaag-in 0.3s ease both;
+}
+
+.demo-admin__knop[data-status='ok']::after {
+  content: '✓';
+}
+
+.demo-admin__knop[data-status='fout']::after {
+  content: '!';
+  color: var(--rood);
+}

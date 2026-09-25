@@ -1,0 +1,91 @@
+{
+  "toelichting": "Welke onderdelen de app heeft en hoe belangrijk ze per fantype zijn (0 = niet tonen in die zone, wel bereikbaar via Meer; 3 = bovenaan). id = zelfde id als in public/home/tegels.json. zones = op welke schermen de tegel staat. Fantype 'standaard' volgt altijd de volgorde uit tegels.json (het ontwerp); bij de andere fantypes gaat de hoogste relevantie eerst. vast='onder' = staat altijd onderaan, telt niet mee in het sorteren. Nieuwe feature = alleen hier een regel toevoegen.",
+  "fantypes": ["standaard", "afstand", "hardekern", "seizoenskaart", "gemiddeld", "losse", "gezin"],
+  "features": [
+    {
+      "id": "player-of-the-match",
+      "titel": "Player of the match",
+      "route": "/stemmen",
+      "zones": ["home"],
+      "relevantie": { "standaard": 3, "afstand": 2, "hardekern": 3, "seizoenskaart": 2, "gemiddeld": 3, "losse": 1, "gezin": 2 }
+    },
+    {
+      "id": "aanbiedingen",
+      "titel": "Aanbiedingen",
+      "route": "/aanbiedingen",
+      "zones": ["home"],
+      "relevantie": { "standaard": 3, "afstand": 0, "hardekern": 2, "seizoenskaart": 3, "gemiddeld": 2, "losse": 3, "gezin": 3 }
+    },
+    {
+      "id": "plakboek",
+      "titel": "Plakboek",
+      "route": "/plakboek",
+      "zones": ["home", "tickets"],
+      "relevantie": { "standaard": 3, "afstand": 1, "hardekern": 3, "seizoenskaart": 2, "gemiddeld": 2, "losse": 1, "gezin": 3 }
+    },
+    {
+      "id": "wedstrijdanalyse",
+      "titel": "Wedstrijdanalyse",
+      "route": "/analyse",
+      "zones": ["home"],
+      "relevantie": { "standaard": 3, "afstand": 3, "hardekern": 3, "seizoenskaart": 2, "gemiddeld": 2, "losse": 1, "gezin": 1 }
+    },
+    {
+      "id": "rossie",
+      "titel": "Vraag het Rossie",
+      "route": "/rossie",
+      "zones": ["home"],
+      "relevantie": { "standaard": 3, "afstand": 2, "hardekern": 1, "seizoenskaart": 1, "gemiddeld": 2, "losse": 2, "gezin": 3 }
+    },
+    {
+      "id": "nieuws",
+      "titel": "Nieuws",
+      "route": "/nieuws",
+      "zones": ["home"],
+      "relevantie": { "standaard": 3, "afstand": 3, "hardekern": 2, "seizoenskaart": 2, "gemiddeld": 3, "losse": 2, "gezin": 1 }
+    },
+    {
+      "id": "recap60",
+      "titel": "Twente in 60 seconden",
+      "route": "/highlights/2026-09-20",
+      "zones": ["home"],
+      "relevantie": { "standaard": 0, "afstand": 3, "hardekern": 1, "seizoenskaart": 1, "gemiddeld": 2, "losse": 2, "gezin": 2 }
+    },
+    {
+      "id": "webshop",
+      "titel": "Webshop",
+      "route": "/webshop",
+      "zones": ["home"],
+      "relevantie": { "standaard": 0, "afstand": 0, "hardekern": 0, "seizoenskaart": 0, "gemiddeld": 0, "losse": 0, "gezin": 0 }
+    },
+    {
+      "id": "waar-te-kijken",
+      "titel": "Waar te kijken",
+      "route": null,
+      "zones": ["home"],
+      "vast": "onder",
+      "relevantie": { "standaard": 3, "afstand": 3, "hardekern": 3, "seizoenskaart": 3, "gemiddeld": 3, "losse": 3, "gezin": 3 }
+    },
+    {
+      "id": "ticket",
+      "titel": "Je kaartje",
+      "route": "/tickets/ticket",
+      "zones": ["tickets"],
+      "relevantie": { "standaard": 3, "afstand": 1, "hardekern": 3, "seizoenskaart": 3, "gemiddeld": 2, "losse": 3, "gezin": 3 }
+    },
+    {
+      "id": "ben-je-erbij",
+      "titel": "Ben je erbij?",
+      "route": null,
+      "zones": ["tickets"],
+      "relevantie": { "standaard": 3, "afstand": 1, "hardekern": 3, "seizoenskaart": 3, "gemiddeld": 2, "losse": 1, "gezin": 2 }
+    },
+    {
+      "id": "verkoop-je-kaart",
+      "titel": "Verkoop je kaart",
+      "route": "/tickets/verkopen",
+      "zones": ["tickets"],
+      "relevantie": { "standaard": 3, "afstand": 1, "hardekern": 1, "seizoenskaart": 3, "gemiddeld": 1, "losse": 0, "gezin": 1 }
+    }
+  ]
+}

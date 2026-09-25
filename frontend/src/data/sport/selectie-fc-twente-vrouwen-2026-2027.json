@@ -1,0 +1,163 @@
+{
+  "club": "FC Twente Vrouwen",
+  "seizoen": "2026-2027",
+  "toelichting": "Alle speelsters hebben een foto.",
+  "selectie": [
+    {
+      "rugnummer": 1,
+      "naam": "Diede Lemey",
+      "positie": "Keeper",
+      "foto": "/spelers-vrouwen/01-diede-lemey.png"
+    },
+    {
+      "rugnummer": 2,
+      "naam": "Imre van der Vegt",
+      "positie": "Middenvelder",
+      "foto": "/spelers-vrouwen/02-imre-van-der-vegt.png"
+    },
+    {
+      "rugnummer": 3,
+      "naam": "Fenna Meijer",
+      "positie": "Verdediger",
+      "foto": "/spelers-vrouwen/03-fenna-meijer.png"
+    },
+    {
+      "rugnummer": 4,
+      "naam": "Karlijn Woons",
+      "positie": "Verdediger",
+      "foto": "/spelers-vrouwen/04-karlijn-woons.png"
+    },
+    {
+      "rugnummer": 5,
+      "naam": "Juul Oudenampsen",
+      "positie": "Verdediger",
+      "foto": "/spelers-vrouwen/05-juul-oudenampsen.png"
+    },
+    {
+      "rugnummer": 6,
+      "naam": "Lynn Groenewegen",
+      "positie": "Middenvelder",
+      "foto": "/spelers-vrouwen/06-lynn-groenewegen.png"
+    },
+    {
+      "rugnummer": 7,
+      "naam": "Katelyn Hendriks",
+      "positie": "Aanvaller",
+      "foto": "/spelers-vrouwen/07-katelyn-hendriks.png"
+    },
+    {
+      "rugnummer": 8,
+      "naam": "Danique van Ginkel",
+      "positie": "Middenvelder",
+      "foto": "/spelers-vrouwen/08-danique-van-ginkel.png"
+    },
+    {
+      "rugnummer": 9,
+      "naam": "Jaimy Ravensbergen",
+      "positie": "Aanvaller",
+      "foto": "/spelers-vrouwen/09-jaimy-ravensbergen.png"
+    },
+    {
+      "rugnummer": 10,
+      "naam": "Jill Roord",
+      "positie": "Middenvelder",
+      "foto": "/spelers-vrouwen/10-jill-roord.png"
+    },
+    {
+      "rugnummer": 11,
+      "naam": "Nikita Tromp",
+      "positie": "Aanvaller",
+      "foto": "/spelers-vrouwen/11-nikita-tromp.png"
+    },
+    {
+      "rugnummer": 12,
+      "naam": "Leonie Carpay",
+      "positie": "Verdediger",
+      "foto": "/spelers-vrouwen/12-leonie-carpay.png"
+    },
+    {
+      "rugnummer": 14,
+      "naam": "Eva Oude Elberink",
+      "positie": "Aanvaller",
+      "foto": "/spelers-vrouwen/14-eva-oude-elberink.png"
+    },
+    {
+      "rugnummer": 15,
+      "naam": "Jette Wiefferink",
+      "positie": "Verdediger",
+      "foto": "/spelers-vrouwen/15-jette-wiefferink.png"
+    },
+    {
+      "rugnummer": 16,
+      "naam": "Fiene Bussman",
+      "positie": "Keeper",
+      "foto": "/spelers-vrouwen/16-fiene-bussman.png"
+    },
+    {
+      "rugnummer": 17,
+      "naam": "Cornelia Los",
+      "positie": "Verdediger",
+      "foto": "/spelers-vrouwen/17-cornelia-los.png"
+    },
+    {
+      "rugnummer": 20,
+      "naam": "Anne Gelevert",
+      "positie": "Middenvelder",
+      "foto": "/spelers-vrouwen/20-anne-gelevert.png"
+    },
+    {
+      "rugnummer": 21,
+      "naam": "Maud Koster",
+      "positie": "Verdediger",
+      "foto": "/spelers-vrouwen/21-maud-koster.png"
+    },
+    {
+      "rugnummer": 22,
+      "naam": "Tess Doeschot",
+      "positie": "Keeper",
+      "foto": "/spelers-vrouwen/22-tess-doeschot.png"
+    },
+    {
+      "rugnummer": 23,
+      "naam": "Inessa Naberman",
+      "positie": "Middenvelder",
+      "foto": "/spelers-vrouwen/23-inessa-naberman.png"
+    },
+    {
+      "rugnummer": 24,
+      "naam": "Marthe Munsterman",
+      "positie": "Middenvelder",
+      "foto": "/spelers-vrouwen/24-marthe-munsterman.png"
+    },
+    {
+      "rugnummer": 25,
+      "naam": "Camie Mol",
+      "positie": "Verdediger",
+      "foto": "/spelers-vrouwen/25-camie-mol.png"
+    },
+    {
+      "rugnummer": 26,
+      "naam": "Moon Biegel-Esteves",
+      "positie": "Keeper",
+      "foto": "/spelers-vrouwen/26-moon-biegel-esteves.png"
+    },
+    {
+      "rugnummer": 29,
+      "naam": "Rose Ivens",
+      "positie": "Aanvaller",
+      "foto": "/spelers-vrouwen/29-rose-ivens.png"
+    },
+    {
+      "rugnummer": 33,
+      "naam": "Ella Van Kerkhoven",
+      "positie": "Aanvaller",
+      "foto": "/spelers-vrouwen/33-ella-van-kerkhoven.png"
+    },
+    {
+      "rugnummer": 40,
+      "naam": "Senna Brand",
+      "positie": "Aanvaller",
+      "foto": "/spelers-vrouwen/40-senna-brand.png"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { claimSticker, getMatches, getStickers } from '../api'
-import { HUIDIG_PROFIEL_ID } from '../profiel'
-import { bouwStickerObject } from '../plakboekUtil'
+import { claimSticker, getMatches, getStickers, simuleerCheckIn } from '../api'
+import { HUIDIG_PROFIEL_ID, leesAanwezigheid } from '../profiel'
+import { bouwStickerObject, stickerSleutel } from '../plakboekUtil'
 import { eigenStickerVoor } from '../eigenStickers'
 import { useStickerPlak, ClaimOverlay } from '../StickerPlak'
 import '../plakboek.css'
@@ -47,6 +47,46 @@ export default function Plakboek() {
     }
   }, [])
 
+  // Scroll naar het vakje van een wedstrijd; oplichten = even laten oplichten
+  function naarVakje(matchId, oplichten = false) {
+    setTimeout(() => {
+      const vakje = gridRef.current?.querySelector(`#s-${matchId}`)
+      if (!vakje) return
+      const minderBeweging = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+      vakje.scrollIntoView({ behavior: minderBeweging ? 'auto' : 'smooth', block: 'center' })
+      if (oplichten) {
+        vakje.classList.add('is-oplichtend')
+        setTimeout(() => vakje.classList.remove('is-oplichtend'), 2200)
+      }
+    }, 60) // eerst de vakjes laten tekenen
+  }
+
+  // /plakboek?claim=2026-09-20-twente-psv — sleutel -> wedstrijd -> sticker van
+  // dit profiel. Nog geen sticker? Dan eerst inchecken (groen bij "Ben je
+  // erbij?" = aanwezig, anders gevolgd). Daarna na ~400 ms de bestaande
+  // claim-animatie. Al geclaimd: alleen ernaartoe en even laten oplichten.
+  async function verwerkClaim(sleutel) {
+    const match = matches.find((m) => stickerSleutel(m) === sleutel)
+    // sleutel uit de adresbalk, zodat herladen niet opnieuw claimt
+    window.history.replaceState(null, '', window.location.pathname)
+    if (!match) return
+
+    if (geplakteStickers[match.id]) {
+      naarVakje(match.id, true)
+      return
+    }
+    let kaart = claimbareKaarten.find((s) => s.matchId === match.id)
+    if (!kaart) {
+      const type = leesAanwezigheid(match.id) === 'ja' ? 'attended' : 'followed'
+      // Verse sticker (zonder wedstrijdgegevens) niet in de claimbalk zetten:
+      // die leest match.thuisTeam. Hij wordt hieronder meteen geclaimd.
+      const { stickerCard } = await simuleerCheckIn(HUIDIG_PROFIEL_ID, match.id, type)
+      kaart = stickerCard
+    }
+    naarVakje(match.id)
+    setTimeout(() => claimEnOpen(kaart), 400)
+  }
+
   function onGeplakt(sticker) {
     setGeplakteStickers((prev) => ({ ...prev, [sticker.matchId]: sticker }))
   }
@@ -69,6 +109,18 @@ export default function Plakboek() {
     if (overlaySticker) onGeplakt(overlaySticker)
     sluit()
   }
+
+  // ?claim=<sleutel> (vanuit een melding of het highlights-scherm): één keer
+  // uitvoeren zodra de wedstrijden en stickers geladen zijn
+  const claimGedaan = useRef(false)
+  useEffect(() => {
+    const sleutel = new URLSearchParams(window.location.search).get('claim')
+    if (!sleutel || claimGedaan.current || matches.length === 0) return
+    claimGedaan.current = true
+    verwerkClaim(sleutel)
+    // alleen afhankelijk van het laden; verwerkClaim leest de state van dat moment
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [matches])
 
   if (fout) {
     return (

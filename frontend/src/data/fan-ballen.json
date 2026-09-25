@@ -1,0 +1,50 @@
+{
+  "toelichting": "Tikvlakken op de Rossie-video in de Fan-tab. x/y = middelpunt in % van de videobreedte/-hoogte, diameter in % van de videobreedte. De ballen staan vanaf het eerste beeld stil, dus ze zijn direct klikbaar.",
+  "video": "/fan/rossie-fan.mp4",
+  "eersteBeeld": "/fan/rossie-fan-eerste.jpg",
+  "laatsteBeeld": "/fan/rossie-fan-laatste.jpg",
+  "verhouding": 0.565,
+  "duurSec": 6.26,
+  "ballen": [
+    {
+      "id": "weetje",
+      "x": 50.5,
+      "y": 17.9,
+      "diameter": 22.6,
+      "titel": "Weetje",
+      "route": "/fan/weetje"
+    },
+    {
+      "id": "quiz",
+      "x": 15.6,
+      "y": 30.4,
+      "diameter": 22.6,
+      "titel": "Weekquiz",
+      "route": "/fan/quiz"
+    },
+    {
+      "id": "man-of-the-match",
+      "x": 81.8,
+      "y": 30.4,
+      "diameter": 22.6,
+      "titel": "Man of the Match",
+      "route": "/fan/man-of-the-match"
+    },
+    {
+      "id": "poll",
+      "x": 16.4,
+      "y": 52.4,
+      "diameter": 22.6,
+      "titel": "Poll van de week",
+      "route": "/fan/poll"
+    },
+    {
+      "id": "voorspel",
+      "x": 81.8,
+      "y": 52.4,
+      "diameter": 22.6,
+      "titel": "Voorspel de match",
+      "route": "/fan/voorspel"
+    }
+  ]
+}

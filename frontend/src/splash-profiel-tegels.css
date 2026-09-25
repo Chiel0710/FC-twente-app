@@ -1,0 +1,333 @@
+/* ==========================================================================
+   Opstartscherm, profielmenu, tegelzone en de kleine labels eromheen.
+   Kleuren, fonts en afstanden komen uit de tokens in index.css
+   (clubrood #d81e1e, Oswald voor koppen, Open Sans voor tekst).
+   ========================================================================== */
+
+:root {
+  --veer-zacht: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---------- Opstartscherm (splash): schermvullend, zacht in- en uitfaden ---------- */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #8c0f10; /* rood onder de afbeelding: geen witte flits tijdens laden */
+  cursor: pointer;
+  transition: opacity 0.5s ease;
+}
+
+.splash.is-weg {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.splash:focus-visible {
+  outline: 3px solid var(--wit);
+  outline-offset: -6px;
+}
+
+.splash__beeld {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  /* het logo zit in de afbeelding: de hele afbeelding faadt licht in */
+  animation: splash-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes splash-in {
+  from { opacity: 0; transform: scale(1.04); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.splash__disclaimer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + var(--sp-4));
+  padding: 0 var(--sp-4);
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash,
+  .splash__beeld {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* ---------- Profielmenu (poppetje rechtsboven) ---------- */
+.profiel-laag {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(16, 16, 16, 0.5);
+  animation: vervaag-in 0.25s ease both;
+}
+
+.profiel-paneel {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + var(--sp-3));
+  /* uitlijnen op de rechterrand van de app-kolom (max 520px) */
+  right: max(var(--sp-3), calc(50% - 260px + var(--sp-3)));
+  width: min(400px, calc(100% - 2 * var(--sp-3)));
+  max-height: calc(100svh - 2 * var(--sp-6));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-5);
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-floating);
+  transform-origin: top right;
+  animation: paneel-in 0.45s var(--veer-zacht) both;
+}
+
+.profiel-paneel__kop {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--lichtgrijs);
+}
+
+.profiel-paneel__avatar,
+.persona-knop__avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--rood);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-weight: 600;
+}
+
+.profiel-paneel__avatar {
+  width: 48px;
+  height: 48px;
+  font-size: 20px;
+}
+
+.profiel-paneel__wie {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.profiel-paneel__label {
+  font-family: var(--font-kop);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rood);
+}
+
+.profiel-paneel__wie h2 {
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.profiel-paneel__sub {
+  font-size: 13px;
+  color: var(--tekst-zacht);
+}
+
+.profiel-paneel__sluit {
+  flex: none;
+  align-self: flex-start;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--lichtgrijs);
+  color: var(--tekst);
+  cursor: pointer;
+  transition: transform 0.2s var(--veer-zacht);
+}
+
+.profiel-paneel__sluit:hover { background: #e0dedb; }
+.profiel-paneel__sluit:active { transform: scale(0.9); }
+
+.profiel-paneel__kopje {
+  margin-top: var(--sp-2);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tekst-zacht);
+}
+
+/* Knoppen in het menu: groot genoeg voor een duim */
+.profiel-knop,
+.persona-knop {
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid #dcd9d5;
+  border-radius: var(--r-md);
+  background: var(--wit);
+  color: var(--tekst);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.2s var(--veer-zacht);
+}
+
+.profiel-knop:hover,
+.persona-knop:hover {
+  background: #f6f5f3;
+}
+
+.profiel-knop:focus-visible,
+.persona-knop:focus-visible {
+  outline: 2px solid var(--rood);
+  outline-offset: 2px;
+}
+
+.profiel-knop:active,
+.persona-knop:active {
+  transform: scale(0.98);
+}
+
+.profiel-knop--uitloggen {
+  background: var(--rood);
+  border-color: var(--rood);
+  color: var(--wit);
+}
+
+.profiel-knop--uitloggen:hover {
+  background: var(--rood-diep);
+}
+
+.profiel-knop[aria-pressed="true"],
+.persona-knop[aria-pressed="true"] {
+  border-color: var(--rood);
+  box-shadow: inset 0 0 0 1px var(--rood);
+}
+
+.profiel-knop__vink,
+.persona-knop__vink {
+  margin-left: auto;
+  color: var(--rood);
+}
+
+.profiel-inloggen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.profiel-knop--inlog {
+  justify-content: center;
+}
+
+.profiel-knop__letter {
+  font-family: var(--font-kop);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* "In deze demo niet actief" — de regel houdt zijn hoogte, zodat niets verspringt */
+.profiel-melding {
+  min-height: 1.4em;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--rood);
+  line-height: 1.4;
+}
+
+.persona-lijst {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.persona-knop__avatar {
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+}
+
+.persona-knop__tekst {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.persona-knop__tekst span {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--tekst-zacht);
+}
+
+/* Tegelzone en plaatjes-tegels: zie home.css */
+
+/* ---------- Tickets: label "Voorbeeld" ---------- */
+.seizoenskaart-hero__kaart {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.voorbeeld-label {
+  position: absolute;
+  z-index: 2;
+  top: calc(-1 * var(--sp-2));
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  padding: var(--sp-1) var(--sp-4);
+  border-radius: var(--r-pill);
+  background: var(--wit);
+  color: var(--rood);
+  font-family: var(--font-kop);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 6px 14px -6px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+/* ---------- Meer: "Alle onderdelen" ---------- */
+.meer-alle {
+  margin-top: var(--sp-4);
+}
+
+.meer-list__item--binnenkort {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.meer-list__badge {
+  margin-left: auto;
+  padding: 2px var(--sp-2);
+  border-radius: var(--r-pill);
+  background: var(--lichtgrijs);
+  color: var(--tekst-zacht);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}

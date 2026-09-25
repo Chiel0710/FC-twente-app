@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import "../../fanshop.css";
+import { getFanshop, stuurShopKlik } from "../../api";
 
 /**
  * Fanshop — toont de echte FC Twente-collectie van Castore in onze eigen huisstijl.
@@ -17,8 +18,7 @@ export default function Fanshop({ profileId }) {
   const [groep, setGroep] = useState("Alles");
 
   useEffect(() => {
-    fetch("/api/fanshop")
-      .then((r) => r.json())
+    getFanshop()
       .then(setData)
       .catch(() => setFout(true));
   }, []);
@@ -33,14 +33,8 @@ export default function Fanshop({ profileId }) {
   }, [data, groep]);
 
   function open(product) {
-    // eerst meten, dan pas openen — maar niet wachten op het antwoord
-    navigator.sendBeacon?.(
-      "/api/fanshop/klik",
-      new Blob(
-        [JSON.stringify({ profileId, productId: product.id, naam: product.naam, bron: "fanshop" })],
-        { type: "application/json" }
-      )
-    );
+    // eerst meten (op dit apparaat), dan pas openen
+    stuurShopKlik(profileId, product.id, product.naam, "fanshop");
     window.open(product.url, "_blank", "noopener,noreferrer");
   }
 

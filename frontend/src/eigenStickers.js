@@ -4,7 +4,7 @@
 // gespeelde wedstrijd van 9 augustus). Daarom hier gekoppeld op de datum die
 // letterlijk op elke sticker staat, niet op het bestandsnummer.
 //
-// Deze 7 wedstrijden staan hierdoor altijd als "geplakt" in het plakboek, met
+// Deze wedstrijden staan hierdoor altijd als "geplakt" in het plakboek, met
 // dit eigen ontwerp i.p.v. de gegenereerde kaart — ongeacht check-in/claim-status.
 export const EIGEN_STICKERS = {
   '2026-08-09': '/eigen-stickers/3.png', // sc Heerenveen 1-0 FC Twente
@@ -13,7 +13,18 @@ export const EIGEN_STICKERS = {
   '2026-09-06': '/eigen-stickers/5.png', // FC Groningen 2-2 FC Twente
   '2026-09-09': '/eigen-stickers/6.png', // FC Twente 1-0 Telstar
   '2026-09-12': '/eigen-stickers/2.png', // FC Twente 2-0 ADO Den Haag
-  '2026-09-20': '/eigen-stickers/7.png', // FC Twente 3-2 PSV
+  // '2026-09-20': '/eigen-stickers/7.png', // FC Twente 3-2 PSV — tijdelijk uit het
+  // boek: deze sticker claim je in de demo (via /plakboek?claim=2026-09-20-twente-psv)
+}
+
+// Eigen ontwerp dat pas verschijnt als je de sticker zelf claimt (demo:
+// FC Twente – PSV). Tot dat moment is het vakje leeg of claimbaar.
+export const CLAIM_STICKERS = {
+  '2026-09-20': '/eigen-stickers/twente-psv-3-2.png', // FC Twente 3-2 PSV
+}
+
+export function claimStickerVoor(kickoffIso) {
+  return CLAIM_STICKERS[kickoffIso.slice(0, 10)] ?? null
 }
 
 export function eigenStickerVoor(kickoffIso) {

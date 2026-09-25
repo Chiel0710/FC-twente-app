@@ -1,0 +1,565 @@
+{
+ "toelichting": "Demo-data: vakposities (x/y in % van plattegrond.png) en de dichtstbijzijnde ingang, afgeleid uit de plattegrond. Geen officiële routes van FC Twente. Posities omgerekend naar plattegrondtwente.png (767x640).",
+ "afbeelding": "/plattegrond/plattegrond.png",
+ "verhouding": 1.1984,
+ "ingangen": {
+  "A": {
+   "x": 47.7,
+   "y": 82.2
+  },
+  "B": {
+   "x": 59.2,
+   "y": 81.4
+  },
+  "C": {
+   "x": 71.2,
+   "y": 82.7
+  },
+  "D": {
+   "x": 83.7,
+   "y": 77.4
+  },
+  "E": {
+   "x": 88.6,
+   "y": 71.8
+  },
+  "F": {
+   "x": 93.2,
+   "y": 55.8
+  },
+  "G": {
+   "x": 93.2,
+   "y": 34.8
+  },
+  "H": {
+   "x": 80.4,
+   "y": 14.9
+  },
+  "I": {
+   "x": 75.5,
+   "y": 12.1
+  },
+  "J": {
+   "x": 50.2,
+   "y": 9.2
+  },
+  "K": {
+   "x": 24.3,
+   "y": 11.4
+  },
+  "L": {
+   "x": 19.9,
+   "y": 14.9
+  },
+  "M": {
+   "x": 6.4,
+   "y": 35.0
+  },
+  "N": {
+   "x": 6.4,
+   "y": 55.8
+  },
+  "O": {
+   "x": 11.1,
+   "y": 70.3
+  },
+  "P": {
+   "x": 16.2,
+   "y": 77.4
+  },
+  "Q": {
+   "x": 27.9,
+   "y": 82.7
+  }
+ },
+ "vakken": [
+  {
+   "vak": "101",
+   "x": 21.2,
+   "y": 21.4,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "L"
+  },
+  {
+   "vak": "102",
+   "x": 20.8,
+   "y": 27.9,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "L"
+  },
+  {
+   "vak": "103",
+   "x": 20.8,
+   "y": 34.6,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "M"
+  },
+  {
+   "vak": "104",
+   "x": 20.8,
+   "y": 40.9,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "M"
+  },
+  {
+   "vak": "105",
+   "x": 20.8,
+   "y": 47.4,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "N"
+  },
+  {
+   "vak": "106",
+   "x": 20.8,
+   "y": 54.0,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "N"
+  },
+  {
+   "vak": "107",
+   "x": 20.8,
+   "y": 59.5,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "O"
+  },
+  {
+   "vak": "108",
+   "x": 21.2,
+   "y": 62.8,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "O"
+  },
+  {
+   "vak": "109",
+   "x": 24.9,
+   "y": 65.1,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "P"
+  },
+  {
+   "vak": "110",
+   "x": 30.4,
+   "y": 65.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "Q"
+  },
+  {
+   "vak": "111",
+   "x": 36.1,
+   "y": 65.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "Q"
+  },
+  {
+   "vak": "112",
+   "x": 41.7,
+   "y": 65.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "A"
+  },
+  {
+   "vak": "113",
+   "x": 47.4,
+   "y": 65.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "A"
+  },
+  {
+   "vak": "114",
+   "x": 53.1,
+   "y": 65.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "B"
+  },
+  {
+   "vak": "115",
+   "x": 58.6,
+   "y": 65.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "B"
+  },
+  {
+   "vak": "116",
+   "x": 64.3,
+   "y": 65.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "B"
+  },
+  {
+   "vak": "117",
+   "x": 69.9,
+   "y": 65.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "C"
+  },
+  {
+   "vak": "118",
+   "x": 75.3,
+   "y": 65.3,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "D"
+  },
+  {
+   "vak": "119",
+   "x": 79.1,
+   "y": 61.0,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "E"
+  },
+  {
+   "vak": "120",
+   "x": 79.1,
+   "y": 54.2,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "F"
+  },
+  {
+   "vak": "121",
+   "x": 79.1,
+   "y": 47.4,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "F"
+  },
+  {
+   "vak": "122",
+   "x": 79.1,
+   "y": 40.7,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "G"
+  },
+  {
+   "vak": "123",
+   "x": 79.1,
+   "y": 34.4,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "G"
+  },
+  {
+   "vak": "124",
+   "x": 79.1,
+   "y": 27.9,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "H"
+  },
+  {
+   "vak": "125",
+   "x": 79.0,
+   "y": 21.4,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "H"
+  },
+  {
+   "vak": "126",
+   "x": 75.2,
+   "y": 17.3,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "I"
+  },
+  {
+   "vak": "127",
+   "x": 69.9,
+   "y": 16.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "I"
+  },
+  {
+   "vak": "128",
+   "x": 64.3,
+   "y": 16.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "I"
+  },
+  {
+   "vak": "129",
+   "x": 58.6,
+   "y": 16.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "J"
+  },
+  {
+   "vak": "130",
+   "x": 52.9,
+   "y": 16.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "J"
+  },
+  {
+   "vak": "131",
+   "x": 47.3,
+   "y": 16.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "J"
+  },
+  {
+   "vak": "132",
+   "x": 41.7,
+   "y": 16.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "J"
+  },
+  {
+   "vak": "133",
+   "x": 36.1,
+   "y": 16.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "K"
+  },
+  {
+   "vak": "134",
+   "x": 30.6,
+   "y": 16.7,
+   "ring": "beneden",
+   "zijde": "lang",
+   "ingang": "K"
+  },
+  {
+   "vak": "135",
+   "x": 25.9,
+   "y": 15.6,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "K"
+  },
+  {
+   "vak": "136",
+   "x": 23.9,
+   "y": 18.2,
+   "ring": "beneden",
+   "zijde": "kort",
+   "ingang": "L"
+  },
+  {
+   "vak": "302",
+   "x": 13.8,
+   "y": 24.4,
+   "ring": "boven",
+   "zijde": "kort",
+   "ingang": "L"
+  },
+  {
+   "vak": "303",
+   "x": 13.8,
+   "y": 31.3,
+   "ring": "boven",
+   "zijde": "kort",
+   "ingang": "M"
+  },
+  {
+   "vak": "304",
+   "x": 13.8,
+   "y": 37.8,
+   "ring": "boven",
+   "zijde": "kort",
+   "ingang": "M"
+  },
+  {
+   "vak": "305",
+   "x": 13.8,
+   "y": 44.5,
+   "ring": "boven",
+   "zijde": "kort",
+   "ingang": "M"
+  },
+  {
+   "vak": "306",
+   "x": 13.8,
+   "y": 51.3,
+   "ring": "boven",
+   "zijde": "kort",
+   "ingang": "N"
+  },
+  {
+   "vak": "307",
+   "x": 13.8,
+   "y": 59.1,
+   "ring": "boven",
+   "zijde": "kort",
+   "ingang": "N"
+  },
+  {
+   "vak": "308",
+   "x": 14.5,
+   "y": 66.2,
+   "ring": "boven",
+   "zijde": "kort",
+   "ingang": "O"
+  },
+  {
+   "vak": "309",
+   "x": 20.2,
+   "y": 70.8,
+   "ring": "boven",
+   "zijde": "lang",
+   "ingang": "P"
+  },
+  {
+   "vak": "310",
+   "x": 26.5,
+   "y": 73.4,
+   "ring": "boven",
+   "zijde": "lang",
+   "ingang": "Q"
+  },
+  {
+   "vak": "311",
+   "x": 32.7,
+   "y": 73.4,
+   "ring": "boven",
+   "zijde": "lang",
+   "ingang": "Q"
+  },
+  {
+   "vak": "312",
+   "x": 38.7,
+   "y": 73.4,
+   "ring": "boven",
+   "zijde": "lang",
+   "ingang": "A"
+  },
+  {
+   "vak": "313",
+   "x": 44.4,
+   "y": 73.4,
+   "ring": "boven",
+   "zijde": "lang",
+   "ingang": "A"
+  },
+  {
+   "vak": "314",
+   "x": 49.9,
+   "y": 73.4,
+   "ring": "boven",
+   "zijde": "lang",
+   "ingang": "A"
+  },
+  {
+   "vak": "315",
+   "x": 55.7,
+   "y": 73.4,
+   "ring": "boven",
+   "zijde": "lang",
+   "ingang": "B"
+  },
+  {
+   "vak": "316",
+   "x": 61.4,
+   "y": 73.4,
+   "ring": "boven",
+   "zijde": "lang",
+   "ingang": "B"
+  },
+  {
+   "vak": "317",
+   "x": 67.3,
+   "y": 73.4,
+   "ring": "boven",
+   "zijde": "lang",
+   "ingang": "C"
+  },
+  {
+   "vak": "318",
+   "x": 73.3,
+   "y": 73.4,
+   "ring": "boven",
+   "zijde": "lang",
+   "ingang": "C"
+  },
+  {
+   "vak": "319",
+   "x": 79.7,
+   "y": 70.8,
+   "ring": "boven",
+   "zijde": "lang",
+   "ingang": "D"
+  },
+  {
+   "vak": "320",
+   "x": 84.4,
+   "y": 67.0,
+   "ring": "boven",
+   "zijde": "kort",
+   "ingang": "E"
+  },
+  {
+   "vak": "321",
+   "x": 85.9,
+   "y": 59.1,
+   "ring": "boven",
+   "zijde": "kort",
+   "ingang": "F"
+  },
+  {
+   "vak": "322",
+   "x": 85.9,
+   "y": 51.1,
+   "ring": "boven",
+   "zijde": "kort",
+   "ingang": "F"
+  },
+  {
+   "vak": "323",
+   "x": 85.9,
+   "y": 44.3,
+   "ring": "boven",
+   "zijde": "kort",
+   "ingang": "G"
+  },
+  {
+   "vak": "324",
+   "x": 85.9,
+   "y": 37.6,
+   "ring": "boven",
+   "zijde": "kort",
+   "ingang": "G"
+  },
+  {
+   "vak": "325",
+   "x": 85.9,
+   "y": 30.9,
+   "ring": "boven",
+   "zijde": "kort",
+   "ingang": "G"
+  },
+  {
+   "vak": "326",
+   "x": 85.9,
+   "y": 24.4,
+   "ring": "boven",
+   "zijde": "kort",
+   "ingang": "H"
+  }
+ ]
+}

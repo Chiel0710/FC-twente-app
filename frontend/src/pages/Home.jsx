@@ -1,140 +1,96 @@
 import { useEffect, useState } from 'react'
-import { getMatches, getNews } from '../api'
-import Countdown from '../components/Countdown'
-import TeamBadge from '../components/TeamBadge'
-import AlbumPromo from '../components/AlbumPromo'
-import JouwSpelerKaart from '../components/JouwSpelerKaart'
-import BenJeErbijTegel from '../components/BenJeErbijTegel'
+import { getMatches, getResults } from '../api'
+import TeamSchakelaar from '../components/TeamSchakelaar'
+import WedstrijdTegel from '../components/WedstrijdTegel'
+import WedstrijdPlaatje from '../components/WedstrijdPlaatje'
+import OpstellingTegel from '../components/OpstellingTegel'
+import TegelZone from '../components/TegelZone'
+import { useTeamKeuze } from '../teamKeuze'
 
-const datumFormat = new Intl.DateTimeFormat('nl-NL', {
-  weekday: 'short',
-  day: 'numeric',
-  month: 'short',
-  hour: '2-digit',
-  minute: '2-digit',
-})
+// Home volgens het Canva-ontwerp, van boven naar onder:
+//   schakelaar Mannen / Vrouwen
+//   a. wedstrijdtegel (in code; volgt het wedstrijdmoment van de demo)
+//   b. opstelling (in code; alleen bij de mannen, want opstelling.json is van de mannen)
+//   c–g. plaatjes-tegels uit tegels.json, in de volgorde van het fantype;
+//        "Waar te kijken" staat altijd onderaan
+//
+// props (uit App.jsx):
+//   demo        — state uit useDemo()
+//   demoActief  — staat de demo aan (zie demoModus.js)
+//   onOpenRecap — "Twente in 60 seconden" bij de eindstand
 
-const datumNieuwsFormat = new Intl.DateTimeFormat('nl-NL', {
-  day: 'numeric',
-  month: 'short',
-})
+// Lokale datum "2026-09-20" van een kickoff
+function datumVan(kickoff) {
+  const d = new Date(kickoff)
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
 
-export default function Home() {
-  const [volgende, setVolgende] = useState(undefined)
-  const [nieuws, setNieuws] = useState([])
-  const [fout, setFout] = useState(null)
+export default function Home({ demo, demoActief, onOpenRecap }) {
+  const { team } = useTeamKeuze()
+  const [volgende, setVolgende] = useState(undefined) // eerstvolgende wedstrijd van het team
+  const [demoMatch, setDemoMatch] = useState(null) // de demowedstrijd uit de database
+  const [fout, setFout] = useState(false)
 
   useEffect(() => {
     let actief = true
-
-    Promise.all([getMatches('gepland'), getNews()])
-      .then(([geplande, nieuwsItems]) => {
-        if (!actief) return
-        setVolgende(geplande[0] ?? null)
-        setNieuws(nieuwsItems)
-      })
-      .catch((err) => {
-        if (!actief) return
-        setFout(err.message)
-      })
-
+    getMatches('gepland', team)
+      .then((geplande) => actief && setVolgende(geplande[0] ?? null))
+      .catch(() => actief && setFout(true))
     return () => {
       actief = false
     }
-  }, [])
+  }, [team])
 
-  if (fout) {
-    return (
-      <div className="card">
-        <p>Kan de gegevens nu niet ophalen. Controleer of de backend draait.</p>
-      </div>
-    )
-  }
+  // De demo speelt een echte, al gespeelde mannenwedstrijd na (datum uit de
+  // demo-state); logo's en competitielogo halen we uit die wedstrijd
+  const demoDatum = demo?.wedstrijd?.datum
+  useEffect(() => {
+    if (!demoDatum) return
+    let actief = true
+    getResults('mannen')
+      .then((uitslagen) => actief && setDemoMatch(uitslagen.find((m) => datumVan(m.kickoff) === demoDatum) ?? null))
+      .catch(() => {})
+    return () => {
+      actief = false
+    }
+  }, [demoDatum])
+
+  // De demo is een mannenwedstrijd: bij Vrouwen altijd de eigen eerstvolgende wedstrijd
+  const toonDemo = team === 'mannen' && demoActief && demoMatch
+  const fase = toonDemo ? demo.fase : null
+
+  // Na de wedstrijd: stemmen open en de analyse staat klaar;
+  // vóór de wedstrijd "Actie!" op Aanbiedingen (de deal "een helft eerder")
+  const labels =
+    fase === 'na' || fase === 'dagerna'
+      ? { 'player-of-the-match': 'Stemmen open', wedstrijdanalyse: 'Nieuw' }
+      : fase === 'voor'
+        ? { aanbiedingen: 'Actie!' }
+        : {}
 
   return (
-    <>
-      <section>
-        <div className="section-heading">
-          <span className="eyebrow">Eerstvolgend</span>
-          <h2>Volgende wedstrijd</h2>
-        </div>
+    <div className="home">
+      <TeamSchakelaar />
 
-        {volgende === undefined && <div className="card">Wedstrijd laden...</div>}
+      {fout && <div className="card">Kan de wedstrijden nu niet ophalen. Controleer of de backend draait.</div>}
 
-        {volgende === null && (
-          <div className="scoreboard">
-            <p className="scoreboard__empty">Er staat momenteel geen wedstrijd gepland.</p>
-          </div>
-        )}
+      {/* Mannen: tegel met de achtergronden uit het ontwerp (pitchverloop);
+          vrouwen: de getekende tegel met hun eigen eerstvolgende wedstrijd */}
+      {team === 'mannen' && (
+        <WedstrijdPlaatje demo={demoActief ? demo : null} onOpenRecap={onOpenRecap} />
+      )}
 
-        {volgende && (
-          <div className="scoreboard">
-            <span className="eyebrow scoreboard__eyebrow">
-              {volgende.competition}
-              {volgende.matchday ? ` · speelronde ${volgende.matchday}` : ''}
-            </span>
-            <div className="scoreboard__teams">
-              <div className="scoreboard__team">
-                <TeamBadge team={volgende.thuisTeam} />
-                <span className="scoreboard__team-name">{volgende.thuisTeam.name}</span>
-              </div>
-              <span className="scoreboard__vs">VS</span>
-              <div className="scoreboard__team">
-                <TeamBadge team={volgende.uitTeam} />
-                <span className="scoreboard__team-name">{volgende.uitTeam.name}</span>
-              </div>
-            </div>
+      {team === 'vrouwen' && !fout && volgende !== undefined && (
+        <WedstrijdTegel
+          match={toonDemo ? demoMatch : volgende}
+          demo={toonDemo ? demo : null}
+          onOpenRecap={onOpenRecap}
+        />
+      )}
 
-            <Countdown kickoff={volgende.kickoff} />
+      {team === 'mannen' && <OpstellingTegel fase={fase} />}
 
-            <div className="scoreboard__meta">
-              <span>
-                {datumFormat.format(new Date(volgende.kickoff))}
-                {!volgende.aftrapBekend && ' (tijd n.n.b.)'}
-              </span>
-              <span>{volgende.venue}</span>
-            </div>
-          </div>
-        )}
-      </section>
-
-      <section>
-        <BenJeErbijTegel />
-      </section>
-
-      <section>
-        <JouwSpelerKaart />
-      </section>
-
-      <section>
-        <AlbumPromo onKlik={() => { window.location.href = '/plakboek' }} />
-      </section>
-
-      <section>
-        <div className="section-heading">
-          <span className="eyebrow">Actueel</span>
-          <h2>Laatste nieuws</h2>
-        </div>
-
-        {nieuws.length === 0 && <div className="card">Nieuws laden...</div>}
-
-        {nieuws.length > 0 && (
-          <div className="news-list">
-            {nieuws.map((item) => (
-              <article className="news-card" key={item.id}>
-                <img className="news-card__image" src={item.imageUrl} alt="" />
-                <div className="news-card__body">
-                  <span className="news-card__meta">
-                    {datumNieuwsFormat.format(new Date(item.publishedAt))}
-                  </span>
-                  <h3 className="news-card__title">{item.title}</h3>
-                  <p className="news-card__summary">{item.summary}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
-      </section>
-    </>
+      <TegelZone zone="home" labels={labels} />
+    </div>
   )
 }

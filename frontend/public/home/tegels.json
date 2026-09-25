@@ -1,0 +1,463 @@
+{
+  "toelichting": "kaartVerhouding = breedte/hoogte van de kaart zonder uitstekende delen. img = positie van het plaatje t.o.v. de kaart in % (breedte en links t.o.v. kaartbreedte, boven t.o.v. kaarthoogte). popOut=true: figuur steekt buiten de kaart, nooit afsnijden. tikvlakken: middelpunt x/y in % van de kaart, diameter in % van de kaartbreedte.",
+  "volgorde": {
+    "home": [
+      "wedstrijdtegel (code)",
+      "opstelling (code, niet klikbaar)",
+      "player-of-the-match + aanbiedingen",
+      "plakboek",
+      "wedstrijdanalyse",
+      "rossie + nieuws",
+      "waar-te-kijken"
+    ],
+    "tickets": [
+      "seizoenskaart (flip: voorkant plaatje, achterkant in code)",
+      "ticket",
+      "ben-je-erbij",
+      "plakboek",
+      "verkoop-je-kaart"
+    ],
+    "aanbiedingen": [
+      "deal-broodje-beenham",
+      "deal-twentsen-halven"
+    ],
+    "home-daan": [
+      "wedstrijdtegel (code)",
+      "opstelling (code, niet klikbaar)",
+      "waar-te-kijken",
+      "player-of-the-match + webshop",
+      "wedstrijdanalyse",
+      "rossie + nieuws"
+    ]
+  },
+  "tegels": [
+    {
+      "id": "player-of-the-match",
+      "afbeelding": "/home/player-of-the-match.png",
+      "schermen": [
+        "home"
+      ],
+      "omschrijving": "Stemmen voor speler van de wedstrijd",
+      "klikbaar": true,
+      "route": "/stemmen",
+      "vorm": "vierkant",
+      "kaartVerhouding": 1.0,
+      "img": {
+        "breedte%": 100.45,
+        "links%": -0.22,
+        "boven%": -4.02
+      },
+      "steektUit": {
+        "boven": 4.02,
+        "onder": 0.22,
+        "links": 0.22,
+        "rechts": 0.22
+      },
+      "popOut": true
+    },
+    {
+      "id": "aanbiedingen",
+      "afbeelding": "/home/aanbiedingen.png",
+      "schermen": [
+        "home"
+      ],
+      "omschrijving": "Deals van de wedstrijd (helft eerder, biertje half geld)",
+      "klikbaar": true,
+      "route": "/aanbiedingen",
+      "vorm": "vierkant",
+      "kaartVerhouding": 1.0,
+      "img": {
+        "breedte%": 100.45,
+        "links%": -0.22,
+        "boven%": -0.22
+      },
+      "steektUit": {
+        "boven": 0.22,
+        "onder": 0.22,
+        "links": 0.22,
+        "rechts": 0.22
+      },
+      "popOut": false
+    },
+    {
+      "id": "plakboek",
+      "afbeelding": "/home/plakboek.png",
+      "schermen": [
+        "home",
+        "tickets"
+      ],
+      "omschrijving": "Plakboek",
+      "klikbaar": true,
+      "route": "/plakboek",
+      "vorm": "breed",
+      "kaartVerhouding": 3.0518,
+      "img": {
+        "breedte%": 103.32,
+        "links%": -1.7,
+        "boven%": -38.06
+      },
+      "steektUit": {
+        "boven": 38.06,
+        "onder": 12.16,
+        "links": 1.7,
+        "rechts": 1.62
+      },
+      "popOut": true
+    },
+    {
+      "id": "wedstrijdanalyse",
+      "afbeelding": "/home/wedstrijdanalyse.png",
+      "schermen": [
+        "home"
+      ],
+      "omschrijving": "Analyse van gespeelde wedstrijden",
+      "klikbaar": true,
+      "route": "/analyse",
+      "vorm": "breed",
+      "kaartVerhouding": 1.9164,
+      "img": {
+        "breedte%": 100.07,
+        "links%": -0.07,
+        "boven%": 0.0
+      },
+      "steektUit": {
+        "boven": 0.0,
+        "onder": 0.0,
+        "links": 0.07,
+        "rechts": 0.0
+      },
+      "popOut": false
+    },
+    {
+      "id": "rossie",
+      "afbeelding": "/home/rossie.png",
+      "schermen": [
+        "home"
+      ],
+      "omschrijving": "Rossie AI-chat",
+      "klikbaar": true,
+      "route": "/rossie",
+      "vorm": "vierkant",
+      "kaartVerhouding": 0.9967,
+      "img": {
+        "breedte%": 100.78,
+        "links%": -0.45,
+        "boven%": -0.33
+      },
+      "steektUit": {
+        "boven": 0.33,
+        "onder": 0.33,
+        "links": 0.45,
+        "rechts": 0.34
+      },
+      "popOut": false
+    },
+    {
+      "id": "nieuws",
+      "afbeelding": "/home/nieuws.png",
+      "schermen": [
+        "home"
+      ],
+      "omschrijving": "Nieuws over FC Twente",
+      "klikbaar": true,
+      "route": "/nieuws",
+      "vorm": "vierkant",
+      "kaartVerhouding": 1.0159,
+      "img": {
+        "breedte%": 100.56,
+        "links%": -0.22,
+        "boven%": -0.34
+      },
+      "steektUit": {
+        "boven": 0.34,
+        "onder": 0.34,
+        "links": 0.22,
+        "rechts": 0.34
+      },
+      "popOut": false
+    },
+    {
+      "id": "waar-te-kijken",
+      "afbeelding": "/home/waar-te-kijken.png",
+      "schermen": [
+        "home"
+      ],
+      "omschrijving": "Waar is de wedstrijd te zien (niet klikbaar, altijd zichtbaar onderaan Home)",
+      "klikbaar": false,
+      "route": null,
+      "vorm": "breed",
+      "kaartVerhouding": 2.4991,
+      "img": {
+        "breedte%": 100.57,
+        "links%": -0.29,
+        "boven%": -7.18
+      },
+      "steektUit": {
+        "boven": 7.18,
+        "onder": 0.9,
+        "links": 0.29,
+        "rechts": 0.29
+      },
+      "popOut": true
+    },
+    {
+      "id": "ticket",
+      "afbeelding": "/home/ticket.png",
+      "schermen": [
+        "tickets"
+      ],
+      "omschrijving": "Je kaartje voor de wedstrijd bekijken",
+      "klikbaar": true,
+      "route": "/tickets/ticket",
+      "vorm": "breed",
+      "kaartVerhouding": 2.4991,
+      "img": {
+        "breedte%": 100.57,
+        "links%": -0.29,
+        "boven%": -0.72
+      },
+      "steektUit": {
+        "boven": 0.72,
+        "onder": 0.72,
+        "links": 0.29,
+        "rechts": 0.29
+      },
+      "popOut": false
+    },
+    {
+      "id": "ben-je-erbij",
+      "afbeelding": "/home/ben-je-erbij.png",
+      "schermen": [
+        "tickets"
+      ],
+      "omschrijving": "Groen = ja, rood = nee (twee tikvlakken)",
+      "klikbaar": true,
+      "route": null,
+      "vorm": "breed",
+      "kaartVerhouding": 1.7139,
+      "img": {
+        "breedte%": 100.72,
+        "links%": -0.36,
+        "boven%": -0.62
+      },
+      "steektUit": {
+        "boven": 0.62,
+        "onder": 0.86,
+        "links": 0.36,
+        "rechts": 0.36
+      },
+      "popOut": false,
+      "tikvlakken": [
+        {
+          "id": "ja",
+          "kleur": "groen",
+          "x": 24.4,
+          "y": 38.2,
+          "diameter": 33.9,
+          "actie": "aanwezigheid bevestigen"
+        },
+        {
+          "id": "nee",
+          "kleur": "rood",
+          "x": 74.3,
+          "y": 38.2,
+          "diameter": 33.9,
+          "actie": "niet aanwezig, bied verkopen aan"
+        }
+      ]
+    },
+    {
+      "id": "verkoop-je-kaart",
+      "afbeelding": "/home/verkoop-je-kaart.png",
+      "schermen": [
+        "tickets"
+      ],
+      "omschrijving": "Kaart aanbieden op de doorverkoopmarkt",
+      "klikbaar": true,
+      "route": "/tickets/verkopen",
+      "vorm": "breed",
+      "kaartVerhouding": 2.4857,
+      "img": {
+        "breedte%": 100.57,
+        "links%": -0.29,
+        "boven%": -0.54
+      },
+      "steektUit": {
+        "boven": 0.54,
+        "onder": 0.71,
+        "links": 0.29,
+        "rechts": 0.29
+      },
+      "popOut": false
+    },
+    {
+      "id": "seizoenskaart-voor",
+      "afbeelding": "/home/seizoenskaart-voor.png",
+      "schermen": [
+        "tickets"
+      ],
+      "omschrijving": "Seizoenskaart voorkant (flip)",
+      "klikbaar": true,
+      "route": null,
+      "vorm": "breed",
+      "kaartVerhouding": 1.536,
+      "img": {
+        "breedte%": 102.64,
+        "links%": -0.44,
+        "boven%": -0.23
+      },
+      "steektUit": {
+        "boven": 0.23,
+        "onder": 3.6,
+        "links": 0.44,
+        "rechts": 2.2
+      },
+      "popOut": false
+    },
+    {
+      "id": "seizoenskaart-achter",
+      "afbeelding": "/home/seizoenskaart-achter.png",
+      "schermen": [
+        "tickets"
+      ],
+      "omschrijving": "Seizoenskaart achterkant: referentie, gegevens in code",
+      "klikbaar": true,
+      "route": null,
+      "vorm": "breed",
+      "kaartVerhouding": 1.5318,
+      "img": {
+        "breedte%": 101.89,
+        "links%": 0.0,
+        "boven%": -0.11
+      },
+      "steektUit": {
+        "boven": 0.11,
+        "onder": 2.23,
+        "links": 0.0,
+        "rechts": 1.89
+      },
+      "popOut": false
+    },
+    {
+      "id": "deal-broodje-beenham",
+      "afbeelding": "/home/deal-broodje-beenham.png",
+      "schermen": [
+        "aanbiedingen"
+      ],
+      "omschrijving": "Deal: 2+1 gratis broodje beenham",
+      "klikbaar": true,
+      "route": null,
+      "actie": "toon-qr",
+      "vorm": "vierkant",
+      "kaartVerhouding": 0.9967,
+      "img": {
+        "breedte%": 100.78,
+        "links%": -0.45,
+        "boven%": -0.33
+      },
+      "steektUit": {
+        "boven": 0.33,
+        "onder": 0.33,
+        "links": 0.45,
+        "rechts": 0.34
+      },
+      "popOut": false
+    },
+    {
+      "id": "deal-twentsen-halven",
+      "afbeelding": "/home/deal-twentsen-halven.png",
+      "schermen": [
+        "aanbiedingen"
+      ],
+      "omschrijving": "Deal: een helft eerder = halve prijs 0,5 L Grolsch",
+      "klikbaar": true,
+      "route": null,
+      "actie": "toon-qr",
+      "vorm": "vierkant",
+      "kaartVerhouding": 0.9966,
+      "img": {
+        "breedte%": 101.01,
+        "links%": -0.56,
+        "boven%": -0.45
+      },
+      "steektUit": {
+        "boven": 0.45,
+        "onder": 0.45,
+        "links": 0.56,
+        "rechts": 0.45
+      },
+      "popOut": false
+    },
+    {
+      "id": "webshop",
+      "type": "video",
+      "video": "/home/webshop.mp4",
+      "poster": "/home/webshop-poster.jpg",
+      "schermen": [
+        "home"
+      ],
+      "personas": [
+        "daan"
+      ],
+      "omschrijving": "Webshop (draaiend shirt, video in een lus, zonder geluid)",
+      "klikbaar": true,
+      "route": "/webshop",
+      "vorm": "vierkant",
+      "kaartVerhouding": 1.0151,
+      "img": {
+        "breedte%": 100,
+        "links%": 0,
+        "boven%": 0
+      },
+      "steektUit": {
+        "boven": 0,
+        "onder": 0,
+        "links": 0,
+        "rechts": 0
+      },
+      "popOut": false,
+      "hoekRadius%": 3
+    }
+  ],
+  "wedstrijdtegel": {
+    "toelichting": "Achtergronden voor de wedstrijdtegel op Home. De tekst in 'vlakken' zet de code eroverheen; posities in % van de kaart. 'leeg' = zonder tijd en datum, voor live/rust/na.",
+    "kaartVerhouding": 1.9318,
+    "img": {
+      "breedte%": 100.94,
+      "links%": -0.07,
+      "boven%": -0.14
+    },
+    "achtergronden": {
+      "twente-psv": {
+        "metTijd": "/home/wedstrijd-twente-psv.png",
+        "leeg": "/home/wedstrijd-twente-psv-leeg.png",
+        "aftrap": "2026-09-20T16:45"
+      },
+      "fortuna-twente": {
+        "metTijd": "/home/wedstrijd-fortuna-twente.png",
+        "leeg": "/home/wedstrijd-fortuna-twente-leeg.png",
+        "aftrap": "2026-10-10T20:00"
+      }
+    },
+    "vlakken": {
+      "midden-groot": {
+        "x%": 39.0,
+        "y%": 26.7,
+        "breedte%": 20.4,
+        "hoogte%": 16.6
+      },
+      "midden-klein": {
+        "x%": 39.0,
+        "y%": 46.4,
+        "breedte%": 20.4,
+        "hoogte%": 6.7
+      },
+      "afteller": {
+        "x%": 27.2,
+        "y%": 67.1,
+        "breedte%": 46.1,
+        "hoogte%": 20.7
+      }
+    }
+  }
+}

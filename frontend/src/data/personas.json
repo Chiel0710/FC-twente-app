@@ -1,0 +1,6 @@
+[
+  { "id": "bezoeker", "naam": "Bezoeker", "fantype": "standaard",
+    "omschrijving": "Niet ingelogd", "seizoenskaart": null },
+  { "id": "daan", "naam": "Daan Oude Luttikhuis", "fantype": "afstand",
+    "woonplaats": "Rotterdam", "omschrijving": "Volger op afstand", "seizoenskaart": null }
+]
