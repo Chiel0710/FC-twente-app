@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { ArrowLeft, Bell, ChevronRight, Map as MapIcoon, MessageCircle, Newspaper, ShoppingBag, Sparkles, Users } from 'lucide-react'
+import { ArrowLeft, Bell, ChevronRight, Map as MapIcoon, MessageCircle, ShoppingBag, Sparkles, Users } from 'lucide-react'
 import SelectieOverzicht from './meer/SelectieOverzicht'
-import MediaOverzicht from './meer/MediaOverzicht'
 import Fanshop from './meer/Fanshop'
 import MeldingenOverzicht from './meer/MeldingenOverzicht'
 import Plattegrond from './meer/Plattegrond'
@@ -14,7 +13,6 @@ const ONDERDELEN = [
   // Bovenaan: hoe kom je bij je plek in De Grolsch Veste (route /plattegrond)
   { id: 'plattegrond', Icon: MapIcoon, label: 'Plattegrond', Component: Plattegrond },
   { id: 'selectie', Icon: Users, label: 'Selectie', Component: SelectieOverzicht },
-  { id: 'media', Icon: Newspaper, label: 'Media & interviews', Component: MediaOverzicht },
   {
     id: 'fanshop',
     Icon: ShoppingBag,
@@ -84,7 +82,9 @@ export default function Meer({ startOnderdeel = null, startSpeler = null, onOpen
         <h2>Alle onderdelen</h2>
       </div>
       <div className="meer-list">
-        {FEATURES.map((f) => {
+        {/* Alleen onderdelen met een eigen scherm; tegels zonder route (Waar te
+            kijken, Ben je erbij?) horen alleen op Home en Tickets */}
+        {FEATURES.filter((f) => f.route).map((f) => {
           const open = kanOpenen(f.route)
           return open ? (
             <button
