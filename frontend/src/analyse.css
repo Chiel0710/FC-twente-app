@@ -215,16 +215,23 @@
   height: 17px;
 }
 
-/* Doelpunt van Twente: rode stip; van de tegenstander: donker */
-.an-moment--doelpunt.is-thuis .an-moment__stip {
+/* Doelpunt van Twente: rode stip; van de tegenstander: donker
+   (Twente kan thuis of uit spelen, dus op club en niet op kant) */
+.an-moment--doelpunt.is-twente .an-moment__stip {
   background: var(--rood);
   color: var(--wit);
 }
 
-.an-moment--doelpunt.is-uit .an-moment__stip {
+.an-moment--doelpunt:not(.is-twente) .an-moment__stip {
   background: var(--zwart);
   color: var(--wit);
   box-shadow: 0 0 0 2px var(--zwart);
+}
+
+/* Geel kaartje: iets groter, het kaartje zelf is het icoon */
+.an-moment--kaart .an-moment__stip svg {
+  width: 19px;
+  height: 19px;
 }
 
 .an-moment__kaart {
@@ -299,7 +306,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-.an-moment--doelpunt.is-thuis .an-moment__stand {
+.an-moment--doelpunt.is-twente .an-moment__stand {
   background: var(--rood);
 }
 
@@ -406,4 +413,124 @@
   .an-moment {
     animation: none;
   }
+}
+
+/* ---- lijstje van alle analyses (/analyse) ---- */
+.an-lijst {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.an-lijst__titel {
+  color: var(--wit);
+  font-family: var(--font-tegel, var(--font-kop));
+  font-size: 27px;
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+
+.an-lijst ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.an-lijst__item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border: none;
+  border-radius: 18px;
+  background: var(--wit);
+  color: var(--zwart);
+  text-align: left;
+  cursor: pointer;
+  box-shadow:
+    0 2px 4px rgba(20, 0, 0, 0.2),
+    0 14px 28px -18px rgba(20, 0, 0, 0.7);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.an-lijst__item:hover {
+  transform: translateY(-2px);
+}
+
+.an-lijst__item:focus-visible {
+  outline: 3px solid var(--wit);
+  outline-offset: 2px;
+}
+
+.an-lijst__item:active {
+  transform: scale(0.98);
+}
+
+.an-lijst__item > svg {
+  flex: none;
+  color: var(--rood);
+}
+
+.an-lijst__logos {
+  flex: none;
+  display: flex;
+}
+
+.an-lijst__logos img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.an-lijst__logos img + img {
+  margin-left: -6px;
+}
+
+.an-lijst__tekst {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.an-lijst__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 12px;
+  color: #6b6262;
+}
+
+.an-lijst__team {
+  padding: 0 8px;
+  border-radius: var(--r-pill);
+  background: var(--zwart);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.an-lijst__team.is-vrouwen {
+  background: var(--rood);
+}
+
+.an-lijst__tekst strong {
+  font-family: var(--font-kop);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.an-lijst__kop {
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: #3d3535;
 }

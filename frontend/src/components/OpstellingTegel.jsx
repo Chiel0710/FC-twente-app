@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getPlayers } from '../api'
 import opstelling from '../data/opstelling.json'
+import opstellingVrouwen from '../data/opstelling-vrouwen.json'
 import { useDemoDb, wijzigingen } from '../lib/demoDb'
 
 // Opstelling op Home, in de stijl van ref-opstelling.png: zwarte kaart, witte
@@ -52,10 +53,51 @@ function achternaam(naam) {
   return delen.length > 1 ? delen.slice(1).join(' ') : naam
 }
 
+// Vrouwen: voorletter + achternaam, tussenvoegsels afgekort:
+// "Imre van der Vegt" -> "I. v.d. Vegt", "Danique van Ginkel" -> "D. v. Ginkel",
+// "Eva Oude Elberink" -> "E. O. Elberink"
+const TUSSENVOEGSELS = new Set(['van', 'der', 'den', 'de', 'het', 'ter', 'ten', 'te', 'in', "'t"])
+function kortenaam(naam) {
+  const delen = naam.split(' ')
+  if (delen.length < 2) return naam
+  const voorletter = `${delen[0][0]}.`
+  const midden = delen.slice(1, -1)
+  // kleine tussenvoegsels aan elkaar ("v.d."), andere delen als losse letter ("O.")
+  const stukken = []
+  for (const d of midden) {
+    const letter = `${d[0]}.`
+    if (TUSSENVOEGSELS.has(d) && stukken.length && TUSSENVOEGSELS.has(stukken.at(-1).bron)) {
+      stukken.at(-1).tekst += letter
+    } else {
+      stukken.push({ bron: d, tekst: letter })
+    }
+  }
+  return [voorletter, ...stukken.map((s) => s.tekst), delen.at(-1)].join(' ')
+}
+
+// "I. v.d. Vegt" -> kleine regel "I. v.d." met daaronder "Vegt"
+function NaamKort({ naam }) {
+  const kort = kortenaam(naam)
+  const i = kort.lastIndexOf(' ')
+  if (i < 0) return kort
+  return (
+    <>
+      <small>{kort.slice(0, i)}</small> {kort.slice(i + 1)}
+    </>
+  )
+}
+
 // De opstelling die de admin publiceerde (Publiceren > Opstelling), anders
-// de standaard uit data/opstelling.json (alleen voor de mannen)
+// de standaard: data/opstelling.json (mannen) of data/opstelling-vrouwen.json
 export function opstellingVan(team, w = wijzigingen()) {
-  return w.admin.opstelling[team] ?? (team === 'mannen' ? opstelling : null)
+  return w.admin.opstelling[team] ?? (team === 'mannen' ? opstelling : opstellingVrouwen)
+}
+
+// "PSV – FC Twente Vrouwen" + "0-4" -> "PSV – FC Twente 0-4" (alleen als het
+// bestand zegt welke wedstrijd het was; een admin-publicatie zegt dat niet)
+function wedstrijdVan(o) {
+  if (!o.wedstrijd || !o.uitslag) return null
+  return `${o.wedstrijd.replace(/ Vrouwen$/, '')} ${o.uitslag}`
 }
 
 /**
@@ -80,11 +122,14 @@ export default function OpstellingTegel({ fase, team = 'mannen' }) {
   if (!huidig) return null
   const vandaag = ['live', 'rust', 'na', 'dagerna'].includes(fase)
   const rijen = huidig.rijen
+  const vrouwen = team === 'vrouwen'
+  const wedstrijd = vrouwen ? wedstrijdVan(huidig) : null
 
   return (
     <section className="opstelling-blok" aria-labelledby="opstelling-titel">
       <h2 className="opstelling-titel" id="opstelling-titel">
         {vandaag ? 'Opstelling vandaag' : 'Laatste opstelling'}
+        {wedstrijd && ` · ${wedstrijd}`}
       </h2>
       <div className="opstelling">
         <Veld />
@@ -103,7 +148,15 @@ export default function OpstellingTegel({ fase, team = 'mannen' }) {
                   style={{ left: `${px}%`, top: `${py}%` }}
                 >
                   <span className="opstelling__badge">{nummer}</span>
-                  <span className="opstelling__naam">{naam ? achternaam(naam) : ''}</span>
+                  {vrouwen ? (
+                    // twee regels, zodat drie namen naast elkaar niet botsen:
+                    // "I. v.d." boven, "Vegt" eronder
+                    <span className="opstelling__naam opstelling__naam--kort">
+                      {naam && <NaamKort naam={naam} />}
+                    </span>
+                  ) : (
+                    <span className="opstelling__naam">{naam ? achternaam(naam) : ''}</span>
+                  )}
                 </li>
               )
             })

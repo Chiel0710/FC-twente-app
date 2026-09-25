@@ -27,6 +27,9 @@ const selectie = require("../../frontend/src/data/sport/selectie-fc-twente-2026-
 const selectieVrouwen = require("../../frontend/src/data/sport/selectie-fc-twente-vrouwen-2026-2027.json");
 const plattegrondData = require("../../frontend/public/plattegrond/vakken.json");
 const nieuwsData = require("../../frontend/public/nieuws/nieuws.json");
+// Wedstrijdanalyses (eigen samenvattingen, zelfde bestanden als /analyse)
+const analyseMannen = require("../../frontend/public/analyse/2026-09-20-twente-psv.json");
+const analyseVrouwen = require("../../frontend/public/analyse/2026-09-19-psv-twente-vrouwen.json");
 
 // De gratis sleutel mag per model maar 5 vragen per minuut stellen; elk model
 // heeft een eigen teller. Zit het eerste vol (429) of is Google overbelast
@@ -80,9 +83,11 @@ function nieuws() {
 }
 
 /** Wedstrijd- en selectiegegevens meegeven, zodat hij niets hoeft te verzinnen. */
-function context() {
-  // Zelfde selectie voor beide teams: laatste 5 gespeeld, eerstvolgende 3
-  const gespeeld = (lijst) => lijst.filter((w) => w.status === "gespeeld").slice(-5);
+function context(mannenAnalyseOpen = true) {
+  // Zelfde selectie voor beide teams: laatste 5 gespeeld, eerstvolgende 3.
+  // Is de pitch (Twente - PSV) nog niet voorbij, dan laten we die uitslag weg.
+  const verborgen = mannenAnalyseOpen ? null : analyseMannen.datum;
+  const gespeeld = (lijst) => lijst.filter((w) => w.status === "gespeeld" && w.datum !== verborgen).slice(-5);
   const komend = (lijst) => lijst.filter((w) => w.status === "gepland").slice(0, 3);
   return {
     vakken: plattegrond(),
@@ -98,9 +103,43 @@ function context() {
   };
 }
 
+/** Een analyse als korte tekst: uitslag, titel, intro, momenten en hoofdstukken. */
+function analyseTekst(a) {
+  const tijd = (m) => (m.minuut != null ? `${m.minuut}'` : m.periode ?? "");
+  const moment = (m) =>
+    `${tijd(m)} ${m.type}${m.speler ? ` ${m.speler}` : ""}${m.assist ? ` (assist ${m.assist})` : ""}${m.stand ? ` ${m.stand}` : ""}${m.tekst ? ` - ${m.tekst}` : ""}`;
+  return `${a.thuis} - ${a.uit} ${a.uitslag} (${a.competitie}, ${a.datum}, ${a.stadion}): ${a.titel}.
+${a.intro}
+Momenten: ${a.sleutelmomenten.map(moment).join("; ")}.
+${a.hoofdstukken.map((h) => `${h.kop}: ${h.tekst}`).join("\n")}
+Uitgelicht: ${a.uitgelicht?.speler ?? "-"} (${a.uitgelicht?.reden ?? ""}).${a.context ? `
+${a.context}` : ""}`;
+}
+
+/**
+ * Wat Rossie over de analyses weet. De vrouwenanalyse altijd; de mannenanalyse
+ * (Twente - PSV, de wedstrijd van de pitch) pas na het eindsignaal, anders
+ * verklapt hij de uitslag. De app stuurt mee of dat al zo is.
+ */
+function analysesTekst(mannenAnalyseOpen) {
+  const delen = [`FC Twente Vrouwen:
+${analyseTekst(analyseVrouwen)}`];
+  if (mannenAnalyseOpen) delen.unshift(`Mannen:
+${analyseTekst(analyseMannen)}`);
+  return `
+
+WEDSTRIJDANALYSES (eigen samenvattingen; de hele analyse staat in de app onder Home, Wedstrijdanalyse)
+${delen.join("\n\n")}
+Vraagt iemand hoe een wedstrijd ging: vertel het kort in je eigen woorden en verwijs naar de analyse in de app.${
+    mannenAnalyseOpen
+      ? ""
+      : "\nDe wedstrijd FC Twente - PSV van de mannen is nog niet gespeeld of nog bezig: verklap daar geen uitslag of doelpunten van."
+  }`;
+}
+
 /** De systeemprompt: wie Rossie is, wat hij nooit doet en wat hij weet. */
-function systeemprompt() {
-  const c = context();
+function systeemprompt(mannenAnalyseOpen = true) {
+  const c = context(mannenAnalyseOpen);
   // "9 Wout Weghorst (Aanvaller)"; zonder positie in de bron geen haakjes
   const speler = (s) => `${s.rugnummer} ${s.naam}${s.positie ? ` (${s.positie})` : ""}`;
   return `Je bent Rossie, de mascotte van FC Twente: een vrolijk wit paard in clubtenue.
@@ -168,7 +207,7 @@ Webshop: ${webshop.join("; ") || "niets"}. Gebruikt het meest: ${kort(h.meestGeb
 Vraagt hij naar tickets of een plek, dan mag je voorstellen om weer in de buurt van zijn vorige vak te zoeken.`;
 }
 
-async function vraagRossie({ bericht, geschiedenis = [], fantype = "standaard", historie = null } = {}) {
+async function vraagRossie({ bericht, geschiedenis = [], fantype = "standaard", historie = null, mannenAnalyseOpen = true } = {}) {
   if (!bericht?.trim()) return { status: 400, body: { fout: "bericht is leeg" } };
 
   // vooraf filteren: verboden onderwerp gaat niet eens naar het model
@@ -188,10 +227,11 @@ async function vraagRossie({ bericht, geschiedenis = [], fantype = "standaard", 
         parts: [
           {
             text:
-              systeemprompt() +
+              systeemprompt(mannenAnalyseOpen !== false) +
               (fantype === "afstand"
                 ? "\n\nDeze fan komt zelden in het stadion en volgt de club van een afstand. Leg dingen kort uit en ga er niet vanuit dat hij de selectie kent."
                 : "") +
+              analysesTekst(mannenAnalyseOpen !== false) +
               historieTekst(historie),
           },
         ],

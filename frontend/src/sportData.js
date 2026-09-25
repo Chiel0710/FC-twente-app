@@ -49,7 +49,7 @@ const SHORT_NAME = {
   'AGF Aarhus': 'AGF', 'Kairat Almaty': 'KAI', 'De Graafschap': 'DGR',
 }
 
-const slugVan = (naam) => LOGO_SLUG[naam] ?? naam.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+export const slugVan = (naam) => LOGO_SLUG[naam] ?? naam.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 
 /* ---------- Teams: standcijfers van de Eredivisie (mannen) erbij ---------- */
 function bouwTeams() {

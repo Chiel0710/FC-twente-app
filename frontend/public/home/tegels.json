@@ -437,6 +437,10 @@
         "metTijd": "/home/wedstrijd-fortuna-twente.png",
         "leeg": "/home/wedstrijd-fortuna-twente-leeg.png",
         "aftrap": "2026-10-10T20:00"
+      },
+      "generiek": {
+        "leeg": "/home/wedstrijd-leeg.png",
+        "toelichting": "Zonder logo's, tijd en datum; voor elke wedstrijd zonder eigen Canva-tegel (o.a. de Vrouwen)."
       }
     },
     "vlakken": {
@@ -457,6 +461,24 @@
         "y%": 67.1,
         "breedte%": 46.1,
         "hoogte%": 20.7
+      },
+      "thuisLogo": {
+        "x%": 8.1,
+        "y%": 8.6,
+        "breedte%": 22.8,
+        "hoogte%": 54.4
+      },
+      "uitLogo": {
+        "x%": 65.0,
+        "y%": 12.2,
+        "breedte%": 28.9,
+        "hoogte%": 45.6
+      },
+      "competitieLogo": {
+        "x%": 44.6,
+        "y%": 3.9,
+        "breedte%": 9.4,
+        "hoogte%": 18.1
       }
     }
   }

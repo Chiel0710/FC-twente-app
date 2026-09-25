@@ -1066,6 +1066,32 @@ body::before {
   text-shadow: 0 0.4cqw 1.2cqw rgba(0, 0, 0, 0.35);
 }
 
+/* Datum onder de tijd, zoals "10-10" op de Fortuna-tegel: dun en wit */
+.wp__datum {
+  font-family: var(--font-body);
+  font-size: 3.2cqw;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Clublogo's op de generieke tegel: harde, donkere schaduw rechtsonder,
+   zoals de logo's op de Canva-tegels */
+.wp__logo {
+  /* absoluut in het vlak: zo begrenst ook de hoogte van het vlak het logo */
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0.9cqw 0.7cqw 0 rgba(0, 0, 0, 0.85));
+}
+
+.wp__logo--competitie {
+  filter: none;
+}
+
 .wp__minuut {
   display: inline-flex;
   align-items: center;
@@ -1317,4 +1343,17 @@ body::before {
 
 .eigen-deal:active {
   transform: scale(0.97);
+}
+
+/* Vrouwen: voorletter(s) klein boven de achternaam */
+.opstelling__naam--kort {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+
+.opstelling__naam--kort small {
+  font-size: 10px;
+  opacity: 0.85;
 }

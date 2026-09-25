@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getMatches, getResults } from '../api'
 import TeamSchakelaar from '../components/TeamSchakelaar'
-import WedstrijdTegel from '../components/WedstrijdTegel'
 import WedstrijdPlaatje from '../components/WedstrijdPlaatje'
 import OpstellingTegel from '../components/OpstellingTegel'
 import TegelZone from '../components/TegelZone'
@@ -9,8 +8,9 @@ import { useTeamKeuze } from '../teamKeuze'
 
 // Home volgens het Canva-ontwerp, van boven naar onder:
 //   schakelaar Mannen / Vrouwen
-//   a. wedstrijdtegel (in code; volgt het wedstrijdmoment van de demo)
-//   b. opstelling (in code; alleen bij de mannen, want opstelling.json is van de mannen)
+//   a. wedstrijdtegel: mannen volgen het wedstrijdmoment van de demo; vrouwen
+//      zien de generieke tegel met hun eerstvolgende wedstrijd (nooit de demo)
+//   b. opstelling (in code; mannen en vrouwen elk hun laatste opstelling)
 //   c–g. plaatjes-tegels uit tegels.json, in de volgorde van het fantype;
 //        "Waar te kijken" staat altijd onderaan
 //
@@ -25,21 +25,37 @@ function datumVan(kickoff) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
+// Een geplande wedstrijd blijft op de tegel tot 2 uur na de aftrap; daarna de volgende
+const NA_AFTRAP_MS = 2 * 60 * 60 * 1000
+
+// Eerstvolgende wedstrijd uit een lijst geplande wedstrijden (op aftrap gesorteerd)
+function eerstvolgende(geplande, nu = Date.now()) {
+  return geplande.find((m) => new Date(m.kickoff).getTime() + NA_AFTRAP_MS > nu) ?? null
+}
+
 export default function Home({ demo, demoActief, onOpenRecap }) {
   const { team } = useTeamKeuze()
-  const [volgende, setVolgende] = useState(undefined) // eerstvolgende wedstrijd van het team
+  const [geplande, setGeplande] = useState(undefined) // geplande wedstrijden van het team
+  const [nu, setNu] = useState(() => Date.now())
   const [demoMatch, setDemoMatch] = useState(null) // de demowedstrijd uit de database
   const [fout, setFout] = useState(false)
 
   useEffect(() => {
     let actief = true
     getMatches('gepland', team)
-      .then((geplande) => actief && setVolgende(geplande[0] ?? null))
+      .then((lijst) => actief && setGeplande(lijst))
       .catch(() => actief && setFout(true))
     return () => {
       actief = false
     }
   }, [team])
+
+  // Elke minuut opnieuw kijken welke wedstrijd de eerstvolgende is
+  useEffect(() => {
+    const t = setInterval(() => setNu(Date.now()), 60 * 1000)
+    return () => clearInterval(t)
+  }, [])
+  const volgende = geplande === undefined ? undefined : eerstvolgende(geplande, nu)
 
   // De demo speelt een echte, al gespeelde mannenwedstrijd na (datum uit de
   // demo-state); logo's en competitielogo halen we uit die wedstrijd
@@ -60,9 +76,12 @@ export default function Home({ demo, demoActief, onOpenRecap }) {
   const fase = toonDemo ? demo.fase : null
 
   // Na de wedstrijd: stemmen open en de analyse staat klaar;
-  // vóór de wedstrijd "Actie!" op Aanbiedingen (de deal "een helft eerder")
+  // vóór de wedstrijd "Actie!" op Aanbiedingen (de deal "een helft eerder").
+  // Vrouwen: hun analyse (PSV – Twente) staat altijd klaar.
   const labels =
-    fase === 'na' || fase === 'dagerna'
+    team === 'vrouwen'
+      ? { wedstrijdanalyse: 'Nieuw' }
+      : fase === 'na' || fase === 'dagerna'
       ? { 'player-of-the-match': 'Stemmen open', wedstrijdanalyse: 'Nieuw' }
       : fase === 'voor'
         ? { aanbiedingen: 'Actie!' }
@@ -75,18 +94,13 @@ export default function Home({ demo, demoActief, onOpenRecap }) {
       {fout && <div className="card">Kan de wedstrijden nu niet ophalen. Controleer of de backend draait.</div>}
 
       {/* Mannen: tegel met de achtergronden uit het ontwerp (pitchverloop);
-          vrouwen: de getekende tegel met hun eigen eerstvolgende wedstrijd */}
+          vrouwen: dezelfde tegel met de generieke achtergrond en hun eigen
+          eerstvolgende wedstrijd; de pitch heeft daar geen invloed op */}
       {team === 'mannen' && (
-        <WedstrijdPlaatje demo={demoActief ? demo : null} onOpenRecap={onOpenRecap} />
+        <WedstrijdPlaatje key="mannen" demo={demoActief ? demo : null} onOpenRecap={onOpenRecap} />
       )}
 
-      {team === 'vrouwen' && !fout && volgende !== undefined && (
-        <WedstrijdTegel
-          match={toonDemo ? demoMatch : volgende}
-          demo={toonDemo ? demo : null}
-          onOpenRecap={onOpenRecap}
-        />
-      )}
+      {team === 'vrouwen' && !fout && volgende && <WedstrijdPlaatje key="vrouwen" wedstrijd={volgende} />}
 
       {/* Mannen altijd; vrouwen zodra de admin een opstelling publiceerde */}
       <OpstellingTegel fase={team === 'mannen' ? fase : null} team={team} />

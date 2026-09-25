@@ -12,6 +12,9 @@ import { SegmentCijfer } from './WedstrijdTegel'
 //   na           twente-psv leeg      eindstand, "Eindstand", knop "Twente in 60 seconden"
 //   dagerna /    fortuna met tijd     afteller naar de aftrap uit tegels.json
 //   geen demo
+//   generiek     wedstrijd-leeg       logo's, competitielogo, tijd, datum en afteller
+//                                     in code (prop `wedstrijd`, bv. de Vrouwen, of
+//                                     later een mannenwedstrijd zonder Canva-tegel)
 //
 // De demodata komt uit useDemo() (zelfde data als <LiveScore />). Tussen de
 // fases een crossfade van 400 ms. Alleen de knop is tikbaar, de tegel niet.
@@ -21,6 +24,25 @@ const twee = (n) => String(n).padStart(2, '0')
 
 // "Younes Taha" -> "Taha", "Guus Til" -> "Til"
 const achternaam = (naam) => naam.split(' ').slice(1).join(' ') || naam
+
+// "2026-09-27T10:15:00.000Z" -> "27-09"
+function ddmm(kickoff) {
+  const d = new Date(kickoff)
+  return `${twee(d.getDate())}-${twee(d.getMonth() + 1)}`
+}
+
+// "2026-09-27T10:15:00.000Z" -> "12:15" (lokale tijd)
+function uumm(kickoff) {
+  const d = new Date(kickoff)
+  return `${twee(d.getHours())}:${twee(d.getMinutes())}`
+}
+
+// Op het donkerrood: clublogo's zonder witte achtergrond, en een witte versie
+// van een competitielogo dat zwart op wit is (zoals het witte Eredivisie-logo
+// op de Canva-tegels)
+const clubLogo = (team) => team.logoUrl.replace('/logos/', '/logos-transparant/')
+const COMPETITIE_OP_ROOD = { '/competities/vrouwen-eredivisie.png': '/competities/vrouwen-eredivisie-wit.png' }
+const competitieLogo = (src) => COMPETITIE_OP_ROOD[src] ?? src
 
 function soortVan(fase) {
   if (fase === 'voor') return 'voor'
@@ -125,10 +147,16 @@ function Vlak({ wt, naam, children, className = '' }) {
 }
 
 // Eén laag van de tegel: achtergrond + tekst in de vlakken voor deze soort
-function Laag({ wt, soort, demo, onOpenRecap, actief }) {
+function Laag({ wt, soort, demo, wedstrijd, onOpenRecap, actief }) {
   const psv = wt.achtergronden['twente-psv']
   const volgende = wt.achtergronden['fortuna-twente']
-  const achtergrond = { voor: psv.metTijd, live: psv.leeg, na: psv.leeg, volgende: volgende.metTijd }[soort]
+  const achtergrond = {
+    voor: psv.metTijd,
+    live: psv.leeg,
+    na: psv.leeg,
+    volgende: volgende.metTijd,
+    generiek: wt.achtergronden.generiek.leeg,
+  }[soort]
 
   return (
     <div className={`wp__laag${actief ? ' is-actief' : ''}`} aria-hidden={!actief}>
@@ -190,6 +218,33 @@ function Laag({ wt, soort, demo, onOpenRecap, actief }) {
         </Vlak>
       )}
 
+      {/* Generiek: alles wat op een Canva-tegel in het plaatje zit, zetten we
+          hier zelf in de vlakken (zelfde plekken als op de Canva-tegels) */}
+      {soort === 'generiek' && wedstrijd && (
+        <>
+          <Vlak wt={wt} naam="thuisLogo">
+            <img className="wp__logo" src={clubLogo(wedstrijd.thuisTeam)} alt="" />
+          </Vlak>
+          <Vlak wt={wt} naam="uitLogo">
+            <img className="wp__logo" src={clubLogo(wedstrijd.uitTeam)} alt="" />
+          </Vlak>
+          {wedstrijd.competitieLogo && (
+            <Vlak wt={wt} naam="competitieLogo">
+              <img className="wp__logo wp__logo--competitie" src={competitieLogo(wedstrijd.competitieLogo)} alt="" />
+            </Vlak>
+          )}
+          <Vlak wt={wt} naam="midden-groot">
+            <strong className="wp__stand">{uumm(wedstrijd.kickoff)}</strong>
+          </Vlak>
+          <Vlak wt={wt} naam="midden-klein">
+            <span className="wp__datum">{ddmm(wedstrijd.kickoff)}</span>
+          </Vlak>
+          <Vlak wt={wt} naam="afteller">
+            <Afteller doel={new Date(wedstrijd.kickoff).getTime()} />
+          </Vlak>
+        </>
+      )}
+
       {soort === 'volgende' && (
         <Vlak wt={wt} naam="afteller">
           <Afteller doel={new Date(volgende.aftrap).getTime()} />
@@ -202,11 +257,13 @@ function Laag({ wt, soort, demo, onOpenRecap, actief }) {
 /**
  * props:
  *  demo        — state uit useDemo(), of null zonder demo (dan: volgende wedstrijd)
+ *  wedstrijd   — optioneel: een wedstrijd uit sportData (getMatches). Dan de
+ *                generieke achtergrond met deze wedstrijd; de demo telt niet mee.
  *  onOpenRecap — knop "Twente in 60 seconden" (→ /highlights/2026-09-20)
  */
-export default function WedstrijdPlaatje({ demo, onOpenRecap }) {
+export default function WedstrijdPlaatje({ demo, wedstrijd, onOpenRecap }) {
   const wt = useTegels()?.wedstrijdtegel
-  const soort = soortVan(demo?.fase ?? null)
+  const soort = wedstrijd ? 'generiek' : soortVan(demo?.fase ?? null)
   // Crossfade: de nieuwe laag komt over de vorige heen; daarna blijft alleen hij
   const [lagen, setLagen] = useState([soort])
 
@@ -220,15 +277,19 @@ export default function WedstrijdPlaatje({ demo, onOpenRecap }) {
   useEffect(() => {
     if (!wt) return
     Object.values(wt.achtergronden).forEach(({ metTijd, leeg }) => {
-      new Image().src = metTijd
-      new Image().src = leeg
+      if (metTijd) new Image().src = metTijd
+      if (leeg) new Image().src = leeg
     })
   }, [wt])
 
   if (!wt) return <div className="wp wp--laden" aria-hidden="true" />
 
   const titel =
-    soort === 'volgende' ? 'Volgende wedstrijd: Fortuna Sittard – FC Twente' : 'FC Twente – PSV'
+    soort === 'generiek'
+      ? `Volgende wedstrijd: ${wedstrijd.thuisTeam.name} – ${wedstrijd.uitTeam.name}, ${ddmm(wedstrijd.kickoff)} om ${uumm(wedstrijd.kickoff)}`
+      : soort === 'volgende'
+        ? 'Volgende wedstrijd: Fortuna Sittard – FC Twente'
+        : 'FC Twente – PSV'
 
   return (
     <article
@@ -238,7 +299,7 @@ export default function WedstrijdPlaatje({ demo, onOpenRecap }) {
       aria-live={soort === 'live' ? 'polite' : undefined}
     >
       {lagen.map((s, i) => (
-        <Laag key={s} wt={wt} soort={s} demo={demo} onOpenRecap={onOpenRecap} actief={i === lagen.length - 1} />
+        <Laag key={s} wt={wt} soort={s} demo={demo} wedstrijd={wedstrijd} onOpenRecap={onOpenRecap} actief={i === lagen.length - 1} />
       ))}
     </article>
   )

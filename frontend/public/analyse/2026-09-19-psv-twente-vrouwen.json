@@ -1,0 +1,46 @@
+{
+  "wedstrijdId": "2026-09-19-psv-twente-vrouwen",
+  "team": "vrouwen",
+  "competitie": "Vrouwen Eredivisie",
+  "datum": "2026-09-19",
+  "stadion": "Eindhoven",
+  "thuis": "PSV",
+  "uit": "FC Twente",
+  "uitslag": "0-4",
+  "beschikbaarVanaf": "altijd",
+  "titel": "Twente Vrouwen overklassen kampioen PSV",
+  "intro": "Bekerwinnaar FC Twente won in Eindhoven met 0-4 van regerend landskampioen PSV, met bondscoach Arjan Veurink op de tribune. Het was de vijfde zege op rij voor de Tukkers, die de koppositie verstevigen.",
+  "hoofdstukken": [
+    {
+      "kop": "Vroege voorsprong",
+      "tekst": "Twente sloeg al na acht minuten toe: Jaimy Ravensbergen werkte een voorzet van Nikita Tromp binnen. PSV kreeg ook mogelijkheden, maar kwam niet tot scoren en raakte gefrustreerd. Gwyneth Hendriks kwam goed weg met geel na een harde overtreding op de knie van Imre van der Vegt."
+    },
+    {
+      "kop": "Knal van Oude Elberink",
+      "tekst": "Direct daarna verdubbelde Eva Oude Elberink de voorsprong. Na een lange uittrap van Diede Lemey schoot zij de bal hoog in het doel: 0-2. Net als tegen Feyenoord was ze vanaf de rechterkant zeer effectief."
+    },
+    {
+      "kop": "Twente maakt het af",
+      "tekst": "Na rust bleef een mogelijke handsbal in het Twentse strafschopgebied onbestraft, tot onvrede van PSV. Twente profiteerde: na een slimme actie van Jill Roord schoot Leonie Carpay de 0-3 binnen. Invalster Lore Jacobs raakte namens PSV nog de paal, waarna Ravensbergen met haar tweede treffer de 0-4 maakte."
+    },
+    {
+      "kop": "Reactie bij PSV",
+      "tekst": "PSV-speelster Janice Cayman erkende na afloop dat de teleurstelling groot was en dat haar ploeg snel de knop moet omzetten."
+    }
+  ],
+  "sleutelmomenten": [
+    { "minuut": 8, "type": "doelpunt", "team": "uit", "speler": "Jaimy Ravensbergen", "assist": "Nikita Tromp", "stand": "0-1" },
+    { "minuut": null, "periode": "voor rust", "type": "kaart", "team": "thuis", "tekst": "Geel voor Gwyneth Hendriks (PSV) na overtreding op Van der Vegt" },
+    { "minuut": null, "periode": "voor rust", "type": "doelpunt", "team": "uit", "speler": "Eva Oude Elberink", "stand": "0-2", "tekst": "Na uittrap van Lemey" },
+    { "minuut": null, "periode": "na rust", "type": "doelpunt", "team": "uit", "speler": "Leonie Carpay", "assist": "Jill Roord", "stand": "0-3" },
+    { "minuut": null, "periode": "na rust", "type": "paal", "team": "thuis", "tekst": "Invalster Lore Jacobs (PSV) raakt de paal" },
+    { "minuut": null, "periode": "na rust", "type": "doelpunt", "team": "uit", "speler": "Jaimy Ravensbergen", "stand": "0-4" }
+  ],
+  "uitgelicht": {
+    "speler": "Jaimy Ravensbergen",
+    "reden": "Twee doelpunten; staat nu op 7 goals in 5 duels."
+  },
+  "context": "Twente won ook de drie duels daarvoor ruim (7-1 bij ADO, 5-1 tegen Heerenveen, 4-0 tegen Feyenoord). Ajax won dezelfde middag met 5-1 van AZ en is nu tweede, drie punten achter Twente.",
+  "bron": "Samengevat op basis van het wedstrijdverslag van de NOS. Eigen samenvatting, geen overgenomen tekst.",
+  "controleer": "Alleen de minuut van de 0-1 (8') is bekend; de andere momenten staan per helft. Leonie Carpay scoorde maar staat niet in de basisopstelling: controleer of zij invalster was of dat de opstelling moet worden aangepast."
+}

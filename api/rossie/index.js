@@ -1,5 +1,5 @@
 // Vercel-function POST /api/rossie — de chat met Rossie (zie api/_lib/rossie.js).
-// body: { bericht, geschiedenis: [{rol, tekst}], fantype }
+// body: { bericht, geschiedenis: [{rol, tekst}], fantype, historie, mannenAnalyseOpen }
 const { vraagRossie } = require("../_lib/rossie");
 
 module.exports = async (req, res) => {

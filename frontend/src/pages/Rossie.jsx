@@ -4,6 +4,7 @@ import { koppelVraag, VIDEO_ANTWOORDEN } from "../components/rossieVideos";
 import "../styles/rossie.css";
 import { START, logRossieVraag } from "../lib/demoDb";
 import { HUIDIGE_PERSONA, HUIDIG_PROFIEL_ID } from "../profiel";
+import { berekenDemo } from "../demoKlok";
 
 // Historie van de ingelogde fan (alleen Daan heeft er een), zodat Rossie hem
 // kan gebruiken: "Je zat bij PEC Zwolle in vak 125..."
@@ -151,7 +152,14 @@ export default function Rossie({ fantype = "standaard" }) {
       const r = await fetch("/api/rossie", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ bericht: vraag, geschiedenis: berichten.slice(-8), fantype, historie: HISTORIE }),
+        body: JSON.stringify({
+          bericht: vraag,
+          geschiedenis: berichten.slice(-8),
+          fantype,
+          historie: HISTORIE,
+          // de mannenanalyse (Twente – PSV) pas na het eindsignaal van de pitch
+          mannenAnalyseOpen: !["voor", "live", "rust"].includes(berekenDemo().fase),
+        }),
       });
       const d = await r.json();
       setBerichten((b) => [...b, { rol: "rossie", tekst: d.antwoord }]);

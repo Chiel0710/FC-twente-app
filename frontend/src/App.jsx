@@ -93,6 +93,8 @@ export default function App() {
   // 'ticket' of 'verkopen'
   // /nieuws/<id> direct geopend (of herladen): meteen de nieuwspagina
   const [subpagina, setSubpagina] = useState(() => (window.location.pathname.startsWith('/nieuws') ? 'nieuws' : null))
+  // Welke analyse: wedstrijdId (/analyse/<id>), { team } (tegel op Home) of null (lijstje)
+  const [analyseKeuze, setAnalyseKeuze] = useState(null)
   const [gelezen, setGelezen] = useState(() => new Set())
   // Welk team de fan volgt (mannen/vrouwen); geldt voor Home, Wedstrijden en Selectie
   const [team, setTeam] = useState(leesLokaleTeamKeuze)
@@ -275,7 +277,11 @@ export default function App() {
     // Pagina's achter een tegel, zonder eigen tab in de onderbalk
     '/nieuws': () => openSubpagina('nieuws'),
     '/aanbiedingen': () => openSubpagina('aanbiedingen'),
-    '/analyse': () => openSubpagina('analyse'),
+    // Tegel op Home: de nieuwste analyse van het team dat de fan nu volgt
+    '/analyse': () => {
+      setAnalyseKeuze({ team })
+      openSubpagina('analyse')
+    },
     '/tickets/ticket': () => openSubpagina('ticket'),
     '/tickets/verkopen': () => openSubpagina('verkopen'),
   }
@@ -290,7 +296,11 @@ export default function App() {
   // /rossie, /highlights/<datum> en /nieuws/<id> regelen zichzelf al.
   useEffect(() => {
     const pad = window.location.pathname.replace(/\/+$/, '')
-    if (pad.startsWith('/analyse')) openSubpagina('analyse')
+    if (pad.startsWith('/analyse')) {
+      // /analyse/<wedstrijdId> -> die analyse; /analyse -> lijstje van alle analyses
+      setAnalyseKeuze(pad.split('/')[2] || null)
+      openSubpagina('analyse')
+    }
     else if (pad.startsWith('/fan')) wissel('fan', { fan: new URLSearchParams(window.location.search).get('open') })
     else if (PAGINAS[pad.slice(1)]) wissel(pad.slice(1))
     else if (FEATURE_ROUTES[pad] && !['/rossie', '/plakboek', '/nieuws'].includes(pad)) FEATURE_ROUTES[pad]()
@@ -372,7 +382,7 @@ export default function App() {
           ) : subpagina === 'verkopen' ? (
             <VerkopenPagina demo={demo} demoActief={demoActief} onTerug={() => wissel('tickets')} />
           ) : subpagina === 'analyse' ? (
-            <AnalysePagina demo={demo} demoActief={demoActief} onTerug={() => wissel('home')} />
+            <AnalysePagina keuze={analyseKeuze} demo={demo} demoActief={demoActief} onTerug={() => wissel('home')} />
           ) : subpagina === 'aanbiedingen' ? (
             <AanbiedingenPagina demo={demo} demoActief={demoActief} />
           ) : subpagina ? (

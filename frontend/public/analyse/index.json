@@ -1,0 +1,7 @@
+{
+  "toelichting": "Overzicht van alle wedstrijdanalyses. Elke analyse staat in <wedstrijdId>.json in deze map. Nieuwe analyse = bestand toevoegen en hier een regel erbij.",
+  "analyses": [
+    { "wedstrijdId": "2026-09-20-twente-psv", "team": "mannen" },
+    { "wedstrijdId": "2026-09-19-psv-twente-vrouwen", "team": "vrouwen" }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "toelichting": "Opstelling FC Twente Vrouwen in de laatst gespeelde wedstrijd. Rijen van keeper naar spits, rugnummers uit de vrouwenselectie. Controleer de posities: volgens het wedstrijdverslag speelde Oude Elberink als rechtsbuiten.",
+  "team": "vrouwen",
+  "wedstrijdId": "2026-09-19-psv-twente-vrouwen",
+  "wedstrijd": "PSV – FC Twente Vrouwen",
+  "uitslag": "0-4",
+  "formatie": "4-3-3",
+  "rijen": [
+    [1],
+    [2, 3, 4, 25],
+    [8, 6, 14],
+    [11, 10, 9]
+  ]
+}
