@@ -61,3 +61,66 @@
 
 .shop-leeg { text-align: center; color: #5d5952; font-size: 14px; padding: 40px 20px; }
 .shop-voet { font-size: 11.5px; color: #8a857e; text-align: center; margin: 4px 0 0; line-height: 1.5; }
+
+/* ---- Bestellen in de app (demo) ---- */
+.bestel {
+  margin: 0 0 24px;
+  padding: 16px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(60, 10, 10, 0.08), 0 12px 28px -18px rgba(60, 10, 10, 0.45);
+}
+.bestel-kop { display: flex; align-items: center; gap: 8px; color: #d81e1e; margin-bottom: 12px; }
+.bestel-kop h2 { font-family: Oswald, sans-serif; font-size: 20px; margin: 0; color: #101010; }
+.bestel-demo {
+  margin-left: auto; font: 600 11px "Open Sans", sans-serif; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 99px; background: #f3efe9; color: #6a655d;
+}
+.bestel-producten { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.bestel-product {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left;
+  padding: 10px 12px; border: 2px solid #e2ded6; border-radius: 12px; background: #fff; cursor: pointer;
+  font: 400 13px "Open Sans", sans-serif; color: #3b3833;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.bestel-product strong { font: 600 14px Oswald, sans-serif; color: #101010; }
+.bestel-product.aan { border-color: #d81e1e; background: #fff5f4; }
+.bestel-product:hover { transform: translateY(-1px); }
+.bestel-product:active { transform: scale(0.97); }
+.bestel-product:focus-visible, .bestel-maat:focus-visible, .bestel-knop:focus-visible, .bestel-aantal button:focus-visible {
+  outline: 3px solid #101010; outline-offset: 2px;
+}
+.bestel-maten { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.bestel-maat {
+  min-width: 46px; padding: 8px 10px; border: 2px solid #e2ded6; border-radius: 10px; background: #fff;
+  font: 600 13px "Open Sans", sans-serif; color: #3b3833; cursor: pointer;
+}
+.bestel-maat.aan { border-color: #101010; background: #101010; color: #fff; }
+.bestel-maat:disabled { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
+.bestel-maat:hover:not(:disabled) { border-color: #d81e1e; }
+.bestel-maat:active:not(:disabled) { transform: scale(0.95); }
+.bestel-rij { display: flex; gap: 10px; align-items: center; }
+.bestel-aantal { display: flex; align-items: center; border: 2px solid #e2ded6; border-radius: 99px; }
+.bestel-aantal button {
+  width: 38px; height: 38px; display: grid; place-items: center; border: none; background: none;
+  border-radius: 50%; cursor: pointer; color: #101010;
+}
+.bestel-aantal button:hover:not(:disabled) { background: #f3efe9; }
+.bestel-aantal button:active:not(:disabled) { transform: scale(0.9); }
+.bestel-aantal button:disabled { opacity: 0.3; cursor: default; }
+.bestel-aantal output { min-width: 22px; text-align: center; font: 700 16px Oswald, sans-serif; }
+.bestel-knop {
+  flex: 1; min-height: 44px; border: none; border-radius: 99px; background: #d81e1e; color: #fff; cursor: pointer;
+  font: 600 15px Oswald, sans-serif; letter-spacing: 0.03em;
+  box-shadow: 0 8px 18px -10px rgba(216, 30, 30, 0.9);
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.bestel-knop:hover:not(:disabled) { transform: translateY(-1px); }
+.bestel-knop:active:not(:disabled) { transform: scale(0.97); }
+.bestel-knop:disabled { opacity: 0.45; cursor: not-allowed; }
+.bestel-voorraad { margin: 10px 0 0; font-size: 12.5px; color: #5d5952; }
+.bestel-voorraad.laag { color: #b3120d; font-weight: 600; }
+.bestel-bevestiging {
+  margin: 10px 0 0; padding: 10px 12px; border-radius: 10px; background: #eef7ee; color: #1f5f2a;
+  font-size: 13px; font-weight: 600;
+}

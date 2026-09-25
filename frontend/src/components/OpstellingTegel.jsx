@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getPlayers } from '../api'
 import opstelling from '../data/opstelling.json'
+import { useDemoDb, wijzigingen } from '../lib/demoDb'
 
 // Opstelling op Home, in de stijl van ref-opstelling.png: zwarte kaart, witte
 // veldlijnen in perspectief, spelers als zwarte badges met rode gloedrand.
@@ -51,22 +52,34 @@ function achternaam(naam) {
   return delen.length > 1 ? delen.slice(1).join(' ') : naam
 }
 
-/** fase: demofase ("live", "rust", "na", "dagerna" = vandaag gespeeld) of null */
-export default function OpstellingTegel({ fase }) {
+// De opstelling die de admin publiceerde (Publiceren > Opstelling), anders
+// de standaard uit data/opstelling.json (alleen voor de mannen)
+export function opstellingVan(team, w = wijzigingen()) {
+  return w.admin.opstelling[team] ?? (team === 'mannen' ? opstelling : null)
+}
+
+/**
+ * fase: demofase ("live", "rust", "na", "dagerna" = vandaag gespeeld) of null
+ * team: 'mannen' | 'vrouwen'
+ */
+export default function OpstellingTegel({ fase, team = 'mannen' }) {
+  const w = useDemoDb() // een nieuwe publicatie is meteen zichtbaar
+  const huidig = opstellingVan(team, w)
   const [perNummer, setPerNummer] = useState(null)
 
   useEffect(() => {
     let actief = true
-    getPlayers(opstelling.team)
+    getPlayers(team)
       .then((spelers) => actief && setPerNummer(new Map(spelers.map((s) => [s.rugnummer, s.naam]))))
       .catch(() => actief && setPerNummer(new Map()))
     return () => {
       actief = false
     }
-  }, [])
+  }, [team])
 
+  if (!huidig) return null
   const vandaag = ['live', 'rust', 'na', 'dagerna'].includes(fase)
-  const rijen = opstelling.rijen
+  const rijen = huidig.rijen
 
   return (
     <section className="opstelling-blok" aria-labelledby="opstelling-titel">
@@ -75,7 +88,7 @@ export default function OpstellingTegel({ fase }) {
       </h2>
       <div className="opstelling">
         <Veld />
-        <ol className="opstelling__spelers" aria-label={`Opstelling ${opstelling.formatie}`}>
+        <ol className="opstelling__spelers" aria-label={`Opstelling ${huidig.formatie}`}>
           {rijen.map((rij, r) => {
             // Rij 0 (keeper) onderaan, laatste rij (spits) bovenaan
             const y = 0.06 + (r / (rijen.length - 1)) * 0.86

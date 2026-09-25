@@ -1,13 +1,26 @@
 import { useEffect, useState } from 'react'
 import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 import { getPlayers } from '../api'
+import { useDemoDb } from '../lib/demoDb'
 import '../nieuws.css'
 
 // /nieuws en /nieuws/<id> — nieuws uit public/nieuws/nieuws.json. De teksten
 // zijn eigen samenvattingen; het hele artikel staat bij de bron (knop onderaan
 // een bericht). Er wordt niets van de bronsite opgehaald of overgenomen: geen
 // artikeltekst, geen foto's. Beelden komen uit de app zelf (spelersfoto of
-// clublogo). Nieuw bericht = alleen nieuws.json uitbreiden.
+// clublogo). Nieuw bericht = alleen nieuws.json uitbreiden, of publiceren in
+// de admin. Berichten met status "concept" verschijnen pas als de admin ze
+// publiceert; wat de admin publiceert staat bovenaan.
+//
+// Gepubliceerde berichten, nieuwste publicatie eerst
+export function zichtbareBerichten(data, w) {
+  const gepubliceerd = w.admin.nieuws.gepubliceerd
+  const lijst = [...(data?.berichten ?? []), ...w.admin.nieuws.eigen].filter(
+    (b) => b.status !== 'concept' || gepubliceerd[b.id],
+  )
+  const sleutel = (b) => gepubliceerd[b.id] ?? b.datum
+  return lijst.sort((a, b) => sleutel(b).localeCompare(sleutel(a)))
+}
 const NIEUWS = '/nieuws/nieuws.json'
 
 // Volgorde van de filterchips; een categorie die hier niet staat komt achteraan
@@ -112,11 +125,16 @@ function Bericht({ bericht, spelers, onTerug, onOpenSpeler }) {
           </section>
         )}
 
-        <a className="nw-bron" href={bericht.url} target="_blank" rel="noopener noreferrer">
-          Lees het hele artikel bij {bericht.bron}
-          <ArrowUpRight size={18} strokeWidth={2.4} aria-hidden="true" />
-        </a>
-        <p className="nw-bron__noot">Bron: {bericht.bron}</p>
+        {/* Zonder bronlink (eigen bericht van de club) geen bronknop */}
+        {bericht.url && (
+          <>
+            <a className="nw-bron" href={bericht.url} target="_blank" rel="noopener noreferrer">
+              Lees het hele artikel bij {bericht.bron}
+              <ArrowUpRight size={18} strokeWidth={2.4} aria-hidden="true" />
+            </a>
+            <p className="nw-bron__noot">Bron: {bericht.bron}</p>
+          </>
+        )}
       </div>
     </article>
   )
@@ -131,6 +149,7 @@ export default function NieuwsPagina({ onTerug, onOpenSpeler }) {
   const [openId, setOpenId] = useState(idUitPad)
   // Hier (niet in Overzicht): terug uit een bericht houdt het filter vast
   const [filter, setFilter] = useState('Alles')
+  const w = useDemoDb() // publicaties uit de admin meteen zichtbaar
 
   useEffect(() => {
     let actief = true
@@ -171,8 +190,8 @@ export default function NieuwsPagina({ onTerug, onOpenSpeler }) {
     }
   }
 
-  // Nieuwste eerst
-  const berichten = [...(data?.berichten ?? [])].sort((a, b) => b.datum.localeCompare(a.datum))
+  // Gepubliceerd, nieuwste eerst (ook wat de admin net publiceerde)
+  const berichten = zichtbareBerichten(data, w)
   const bericht = openId ? berichten.find((b) => b.id === openId) : null
 
   return (

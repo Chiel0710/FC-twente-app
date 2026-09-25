@@ -1,0 +1,949 @@
+{
+  "toelichting": "NEP-DATABASE voor de pitch. Alle cijfers en gebruikers zijn verzonnen om te laten zien hoe de app eruitziet als hij door veel fans gebruikt wordt. Wedstrijden en uitslagen zijn echt. Wat gebruikers in de app doen (stemmen, quiz, stickers, tickets) telt live op bovenop deze startwaarden.",
+  "gegenereerd": "2026-09-24",
+  "overzicht": {
+    "gebruikers": 1847,
+    "actiefDezeWeek": 1123,
+    "actiefVandaag": 412,
+    "gemiddeldeSessieMin": 6.4,
+    "pushOptIn%": 71,
+    "fantypes": {
+      "hardekern": 259,
+      "seizoenskaart": 499,
+      "gemiddeld": 406,
+      "losse": 296,
+      "gezin": 166,
+      "afstand": 222
+    }
+  },
+  "gebruikers": [
+    {
+      "id": "u1000",
+      "naam": "Koen Lansink",
+      "woonplaats": "Borne",
+      "fantype": "losse",
+      "lidSinds": "2021-10",
+      "laatstActief": "2026-09-24",
+      "stemmenGegeven": 1,
+      "quizGespeeld": 8,
+      "ticketsGekocht": 5,
+      "seizoenskaart": false,
+      "stickers": 1
+    },
+    {
+      "id": "u1001",
+      "naam": "Anouk Bosch",
+      "woonplaats": "Hengelo",
+      "fantype": "gemiddeld",
+      "lidSinds": "2023-12",
+      "laatstActief": "2026-09-19",
+      "stemmenGegeven": 8,
+      "quizGespeeld": 12,
+      "ticketsGekocht": 4,
+      "seizoenskaart": false,
+      "stickers": 0
+    },
+    {
+      "id": "u1002",
+      "naam": "Bas ter Horst",
+      "woonplaats": "Hengelo",
+      "fantype": "hardekern",
+      "lidSinds": "2019-10",
+      "laatstActief": "2026-09-22",
+      "stemmenGegeven": 6,
+      "quizGespeeld": 3,
+      "ticketsGekocht": 0,
+      "seizoenskaart": false,
+      "stickers": 1
+    },
+    {
+      "id": "u1003",
+      "naam": "Sophie ter Horst",
+      "woonplaats": "Den Haag",
+      "fantype": "afstand",
+      "lidSinds": "2023-12",
+      "laatstActief": "2026-09-24",
+      "stemmenGegeven": 1,
+      "quizGespeeld": 0,
+      "ticketsGekocht": 7,
+      "seizoenskaart": false,
+      "stickers": 0
+    },
+    {
+      "id": "u1004",
+      "naam": "Merel Haverkate",
+      "woonplaats": "Rotterdam",
+      "fantype": "losse",
+      "lidSinds": "2021-05",
+      "laatstActief": "2026-09-20",
+      "stemmenGegeven": 14,
+      "quizGespeeld": 6,
+      "ticketsGekocht": 8,
+      "seizoenskaart": false,
+      "stickers": 5
+    },
+    {
+      "id": "u1005",
+      "naam": "Bas Bosch",
+      "woonplaats": "Hengelo",
+      "fantype": "gemiddeld",
+      "lidSinds": "2024-08",
+      "laatstActief": "2026-09-19",
+      "stemmenGegeven": 6,
+      "quizGespeeld": 11,
+      "ticketsGekocht": 5,
+      "seizoenskaart": false,
+      "stickers": 1
+    },
+    {
+      "id": "u1006",
+      "naam": "Daan Rouwhorst",
+      "woonplaats": "Enschede",
+      "fantype": "seizoenskaart",
+      "lidSinds": "2023-01",
+      "laatstActief": "2026-09-22",
+      "stemmenGegeven": 1,
+      "quizGespeeld": 4,
+      "ticketsGekocht": 0,
+      "seizoenskaart": true,
+      "stickers": 3
+    },
+    {
+      "id": "u1007",
+      "naam": "Bas Leferink",
+      "woonplaats": "Hengelo",
+      "fantype": "gemiddeld",
+      "lidSinds": "2023-01",
+      "laatstActief": "2026-09-23",
+      "stemmenGegeven": 13,
+      "quizGespeeld": 4,
+      "ticketsGekocht": 2,
+      "seizoenskaart": false,
+      "stickers": 6
+    },
+    {
+      "id": "u1008",
+      "naam": "Nina Morsink",
+      "woonplaats": "Utrecht",
+      "fantype": "seizoenskaart",
+      "lidSinds": "2025-08",
+      "laatstActief": "2026-09-21",
+      "stemmenGegeven": 14,
+      "quizGespeeld": 0,
+      "ticketsGekocht": 0,
+      "seizoenskaart": true,
+      "stickers": 3
+    },
+    {
+      "id": "u1009",
+      "naam": "Femke Nijhuis",
+      "woonplaats": "Groningen",
+      "fantype": "losse",
+      "lidSinds": "2019-11",
+      "laatstActief": "2026-09-24",
+      "stemmenGegeven": 4,
+      "quizGespeeld": 10,
+      "ticketsGekocht": 0,
+      "seizoenskaart": false,
+      "stickers": 4
+    },
+    {
+      "id": "u1010",
+      "naam": "Lotte Brinkman",
+      "woonplaats": "Groningen",
+      "fantype": "hardekern",
+      "lidSinds": "2026-12",
+      "laatstActief": "2026-09-20",
+      "stemmenGegeven": 9,
+      "quizGespeeld": 5,
+      "ticketsGekocht": 8,
+      "seizoenskaart": false,
+      "stickers": 6
+    },
+    {
+      "id": "u1011",
+      "naam": "Mark Oosterhof",
+      "woonplaats": "Enschede",
+      "fantype": "gemiddeld",
+      "lidSinds": "2019-01",
+      "laatstActief": "2026-09-23",
+      "stemmenGegeven": 13,
+      "quizGespeeld": 3,
+      "ticketsGekocht": 9,
+      "seizoenskaart": false,
+      "stickers": 5
+    },
+    {
+      "id": "u1012",
+      "naam": "Bas Leferink",
+      "woonplaats": "Enschede",
+      "fantype": "seizoenskaart",
+      "lidSinds": "2023-01",
+      "laatstActief": "2026-09-23",
+      "stemmenGegeven": 10,
+      "quizGespeeld": 2,
+      "ticketsGekocht": 0,
+      "seizoenskaart": true,
+      "stickers": 0
+    },
+    {
+      "id": "u1013",
+      "naam": "Ruben Scholten",
+      "woonplaats": "Enschede",
+      "fantype": "gezin",
+      "lidSinds": "2024-12",
+      "laatstActief": "2026-09-22",
+      "stemmenGegeven": 8,
+      "quizGespeeld": 7,
+      "ticketsGekocht": 7,
+      "seizoenskaart": false,
+      "stickers": 4
+    },
+    {
+      "id": "u1014",
+      "naam": "Bas ten Brinke",
+      "woonplaats": "Enschede",
+      "fantype": "gezin",
+      "lidSinds": "2019-03",
+      "laatstActief": "2026-09-18",
+      "stemmenGegeven": 14,
+      "quizGespeeld": 5,
+      "ticketsGekocht": 4,
+      "seizoenskaart": false,
+      "stickers": 1
+    },
+    {
+      "id": "u1015",
+      "naam": "Esmee Rouwhorst",
+      "woonplaats": "Amsterdam",
+      "fantype": "afstand",
+      "lidSinds": "2021-12",
+      "laatstActief": "2026-09-20",
+      "stemmenGegeven": 13,
+      "quizGespeeld": 2,
+      "ticketsGekocht": 4,
+      "seizoenskaart": false,
+      "stickers": 0
+    },
+    {
+      "id": "u1016",
+      "naam": "Joost Bruggink",
+      "woonplaats": "Haaksbergen",
+      "fantype": "seizoenskaart",
+      "lidSinds": "2025-09",
+      "laatstActief": "2026-09-21",
+      "stemmenGegeven": 5,
+      "quizGespeeld": 6,
+      "ticketsGekocht": 0,
+      "seizoenskaart": true,
+      "stickers": 6
+    },
+    {
+      "id": "u1017",
+      "naam": "Maud Bosch",
+      "woonplaats": "Rotterdam",
+      "fantype": "seizoenskaart",
+      "lidSinds": "2024-10",
+      "laatstActief": "2026-09-19",
+      "stemmenGegeven": 7,
+      "quizGespeeld": 4,
+      "ticketsGekocht": 0,
+      "seizoenskaart": true,
+      "stickers": 0
+    },
+    {
+      "id": "u1018",
+      "naam": "Nina Kamphuis",
+      "woonplaats": "Hengelo",
+      "fantype": "gezin",
+      "lidSinds": "2021-01",
+      "laatstActief": "2026-09-20",
+      "stemmenGegeven": 6,
+      "quizGespeeld": 0,
+      "ticketsGekocht": 8,
+      "seizoenskaart": false,
+      "stickers": 4
+    },
+    {
+      "id": "u1019",
+      "naam": "Femke Rouwhorst",
+      "woonplaats": "Almelo",
+      "fantype": "losse",
+      "lidSinds": "2020-04",
+      "laatstActief": "2026-09-19",
+      "stemmenGegeven": 5,
+      "quizGespeeld": 10,
+      "ticketsGekocht": 6,
+      "seizoenskaart": false,
+      "stickers": 0
+    },
+    {
+      "id": "u1020",
+      "naam": "Bas Kamphuis",
+      "woonplaats": "Hengelo",
+      "fantype": "seizoenskaart",
+      "lidSinds": "2020-08",
+      "laatstActief": "2026-09-21",
+      "stemmenGegeven": 4,
+      "quizGespeeld": 10,
+      "ticketsGekocht": 0,
+      "seizoenskaart": true,
+      "stickers": 2
+    },
+    {
+      "id": "u1021",
+      "naam": "Esmee Nijhuis",
+      "woonplaats": "Enschede",
+      "fantype": "losse",
+      "lidSinds": "2020-07",
+      "laatstActief": "2026-09-24",
+      "stemmenGegeven": 5,
+      "quizGespeeld": 12,
+      "ticketsGekocht": 7,
+      "seizoenskaart": false,
+      "stickers": 0
+    },
+    {
+      "id": "u1022",
+      "naam": "Romy Oosterhof",
+      "woonplaats": "Enschede",
+      "fantype": "losse",
+      "lidSinds": "2023-10",
+      "laatstActief": "2026-09-21",
+      "stemmenGegeven": 13,
+      "quizGespeeld": 8,
+      "ticketsGekocht": 7,
+      "seizoenskaart": false,
+      "stickers": 4
+    },
+    {
+      "id": "u1023",
+      "naam": "Joost Oosterhof",
+      "woonplaats": "Hengelo",
+      "fantype": "hardekern",
+      "lidSinds": "2021-01",
+      "laatstActief": "2026-09-24",
+      "stemmenGegeven": 1,
+      "quizGespeeld": 1,
+      "ticketsGekocht": 2,
+      "seizoenskaart": false,
+      "stickers": 6
+    },
+    {
+      "id": "u1024",
+      "naam": "Jeroen Brinkman",
+      "woonplaats": "Hengelo",
+      "fantype": "hardekern",
+      "lidSinds": "2025-08",
+      "laatstActief": "2026-09-22",
+      "stemmenGegeven": 7,
+      "quizGespeeld": 5,
+      "ticketsGekocht": 6,
+      "seizoenskaart": false,
+      "stickers": 3
+    },
+    {
+      "id": "u1025",
+      "naam": "Isa Kuipers",
+      "woonplaats": "Oldenzaal",
+      "fantype": "losse",
+      "lidSinds": "2026-07",
+      "laatstActief": "2026-09-23",
+      "stemmenGegeven": 11,
+      "quizGespeeld": 12,
+      "ticketsGekocht": 5,
+      "seizoenskaart": false,
+      "stickers": 4
+    },
+    {
+      "id": "u1026",
+      "naam": "Ruben Oude Luttikhuis",
+      "woonplaats": "Rotterdam",
+      "fantype": "losse",
+      "lidSinds": "2024-01",
+      "laatstActief": "2026-09-21",
+      "stemmenGegeven": 6,
+      "quizGespeeld": 1,
+      "ticketsGekocht": 0,
+      "seizoenskaart": false,
+      "stickers": 1
+    },
+    {
+      "id": "u1027",
+      "naam": "Eva Hulshof",
+      "woonplaats": "Almelo",
+      "fantype": "losse",
+      "lidSinds": "2021-06",
+      "laatstActief": "2026-09-18",
+      "stemmenGegeven": 10,
+      "quizGespeeld": 2,
+      "ticketsGekocht": 7,
+      "seizoenskaart": false,
+      "stickers": 0
+    },
+    {
+      "id": "u1028",
+      "naam": "Anouk Oosterhof",
+      "woonplaats": "Almelo",
+      "fantype": "gemiddeld",
+      "lidSinds": "2025-05",
+      "laatstActief": "2026-09-24",
+      "stemmenGegeven": 12,
+      "quizGespeeld": 4,
+      "ticketsGekocht": 1,
+      "seizoenskaart": false,
+      "stickers": 2
+    },
+    {
+      "id": "u1029",
+      "naam": "Lisa Wessels",
+      "woonplaats": "Enschede",
+      "fantype": "hardekern",
+      "lidSinds": "2021-04",
+      "laatstActief": "2026-09-22",
+      "stemmenGegeven": 6,
+      "quizGespeeld": 0,
+      "ticketsGekocht": 3,
+      "seizoenskaart": false,
+      "stickers": 4
+    },
+    {
+      "id": "u1030",
+      "naam": "Daan Meijer",
+      "woonplaats": "Enschede",
+      "fantype": "gemiddeld",
+      "lidSinds": "2022-06",
+      "laatstActief": "2026-09-24",
+      "stemmenGegeven": 3,
+      "quizGespeeld": 2,
+      "ticketsGekocht": 9,
+      "seizoenskaart": false,
+      "stickers": 4
+    },
+    {
+      "id": "u1031",
+      "naam": "Lotte Wolters",
+      "woonplaats": "Nijmegen",
+      "fantype": "hardekern",
+      "lidSinds": "2024-05",
+      "laatstActief": "2026-09-22",
+      "stemmenGegeven": 10,
+      "quizGespeeld": 1,
+      "ticketsGekocht": 1,
+      "seizoenskaart": false,
+      "stickers": 1
+    },
+    {
+      "id": "u1032",
+      "naam": "Sanne Meijer",
+      "woonplaats": "Nijmegen",
+      "fantype": "gemiddeld",
+      "lidSinds": "2024-11",
+      "laatstActief": "2026-09-20",
+      "stemmenGegeven": 11,
+      "quizGespeeld": 8,
+      "ticketsGekocht": 8,
+      "seizoenskaart": false,
+      "stickers": 1
+    },
+    {
+      "id": "u1033",
+      "naam": "Anouk Kuipers",
+      "woonplaats": "Groningen",
+      "fantype": "afstand",
+      "lidSinds": "2022-02",
+      "laatstActief": "2026-09-18",
+      "stemmenGegeven": 3,
+      "quizGespeeld": 10,
+      "ticketsGekocht": 8,
+      "seizoenskaart": false,
+      "stickers": 4
+    },
+    {
+      "id": "u1034",
+      "naam": "Bas Tijhuis",
+      "woonplaats": "Hengelo",
+      "fantype": "losse",
+      "lidSinds": "2024-07",
+      "laatstActief": "2026-09-23",
+      "stemmenGegeven": 10,
+      "quizGespeeld": 11,
+      "ticketsGekocht": 4,
+      "seizoenskaart": false,
+      "stickers": 6
+    },
+    {
+      "id": "u1035",
+      "naam": "Lotte ter Horst",
+      "woonplaats": "Enschede",
+      "fantype": "gemiddeld",
+      "lidSinds": "2022-10",
+      "laatstActief": "2026-09-19",
+      "stemmenGegeven": 9,
+      "quizGespeeld": 10,
+      "ticketsGekocht": 0,
+      "seizoenskaart": false,
+      "stickers": 4
+    },
+    {
+      "id": "u1036",
+      "naam": "Gijs Leferink",
+      "woonplaats": "Almelo",
+      "fantype": "seizoenskaart",
+      "lidSinds": "2019-12",
+      "laatstActief": "2026-09-19",
+      "stemmenGegeven": 13,
+      "quizGespeeld": 8,
+      "ticketsGekocht": 0,
+      "seizoenskaart": true,
+      "stickers": 3
+    },
+    {
+      "id": "u1037",
+      "naam": "Wouter Leferink",
+      "woonplaats": "Den Haag",
+      "fantype": "hardekern",
+      "lidSinds": "2019-09",
+      "laatstActief": "2026-09-18",
+      "stemmenGegeven": 14,
+      "quizGespeeld": 4,
+      "ticketsGekocht": 2,
+      "seizoenskaart": false,
+      "stickers": 1
+    },
+    {
+      "id": "u1038",
+      "naam": "Femke Bosch",
+      "woonplaats": "Enschede",
+      "fantype": "gemiddeld",
+      "lidSinds": "2023-05",
+      "laatstActief": "2026-09-19",
+      "stemmenGegeven": 10,
+      "quizGespeeld": 2,
+      "ticketsGekocht": 3,
+      "seizoenskaart": false,
+      "stickers": 6
+    },
+    {
+      "id": "u1039",
+      "naam": "Hugo Oude Nijhuis",
+      "woonplaats": "Enschede",
+      "fantype": "gemiddeld",
+      "lidSinds": "2023-08",
+      "laatstActief": "2026-09-19",
+      "stemmenGegeven": 11,
+      "quizGespeeld": 9,
+      "ticketsGekocht": 8,
+      "seizoenskaart": false,
+      "stickers": 5
+    }
+  ],
+  "daan": {
+    "id": "daan",
+    "naam": "Daan Oude Luttikhuis",
+    "woonplaats": "Rotterdam",
+    "fantype": "afstand",
+    "lidSinds": "2023-08",
+    "laatstActief": "2026-09-24",
+    "seizoenskaart": false,
+    "ticketHistorie": [
+      {
+        "wedstrijdId": "2026-08-16-twente-pec-zwolle",
+        "team": "mannen",
+        "wedstrijd": "FC Twente – PEC Zwolle",
+        "datum": "2026-08-16",
+        "uitslag": "3-1",
+        "vak": "125",
+        "rij": "8",
+        "stoel": "14",
+        "prijs": 32.5,
+        "gekochtVia": "app",
+        "gekochtOp": "2026-08-02"
+      },
+      {
+        "wedstrijdId": "2026-09-13-twente-feyenoord-vrouwen",
+        "team": "vrouwen",
+        "wedstrijd": "FC Twente Vrouwen – Feyenoord",
+        "datum": "2026-09-13",
+        "uitslag": "4-0",
+        "vak": "113",
+        "rij": "4",
+        "stoel": "6",
+        "prijs": 8.0,
+        "gekochtVia": "app",
+        "gekochtOp": "2026-09-10"
+      }
+    ],
+    "gedrag": {
+      "wedstrijdenGevolgdInApp": 11,
+      "gemiddeldeMinutenPerWedstrijd": 74,
+      "highlightsBekeken": 9,
+      "meestGebruikteFeature": "Twente in 60 seconden",
+      "stemmenGegeven": 6,
+      "quizGespeeld": 5,
+      "quizScoreGemiddeld": "3,8/5",
+      "voorspellingenGedaan": 6,
+      "voorspellingenGoed": 1,
+      "stickersGeclaimd": [
+        "2026-08-16-twente-pec-zwolle",
+        "2026-09-13-twente-feyenoord-vrouwen"
+      ],
+      "rossieVragen": [
+        "Waar kan ik Fortuna – Twente kijken?",
+        "Hoe laat vertrekt de trein na de wedstrijd?",
+        "Wie is de topscorer van de vrouwen?"
+      ],
+      "webshop": [
+        {
+          "product": "Thuisshirt 26/27",
+          "maat": "L",
+          "datum": "2026-07-28",
+          "bedrag": 94.95
+        }
+      ],
+      "notificaties": "doelpunten, eindstand, highlights"
+    },
+    "inzicht": "Volgt Twente vooral via de app vanuit Rotterdam; komt 1-2 keer per seizoen naar Enschede en koopt dan zelf een los ticket, ook voor de vrouwen. Kijkt highlights meestal binnen een uur na afloop."
+  },
+  "manOfTheMatch": {
+    "wedstrijdId": "2026-09-20-twente-psv",
+    "totaal": 1382,
+    "stemmen": [
+      {
+        "speler": "Wout Weghorst",
+        "rugnummer": 9,
+        "stemmen": 500,
+        "procent": 36.2
+      },
+      {
+        "speler": "Daouda Weidmann",
+        "rugnummer": 8,
+        "stemmen": 431,
+        "procent": 31.2
+      },
+      {
+        "speler": "Younes Taha",
+        "rugnummer": 10,
+        "stemmen": 212,
+        "procent": 15.3
+      },
+      {
+        "speler": "Lars Unnerstall",
+        "rugnummer": 1,
+        "stemmen": 97,
+        "procent": 7.0
+      },
+      {
+        "speler": "Daan Rots",
+        "rugnummer": 11,
+        "stemmen": 64,
+        "procent": 4.6
+      },
+      {
+        "speler": "Ramiz Zerrouki",
+        "rugnummer": 6,
+        "stemmen": 38,
+        "procent": 2.7
+      },
+      {
+        "speler": "Bart van Rooij",
+        "rugnummer": 28,
+        "stemmen": 21,
+        "procent": 1.5
+      },
+      {
+        "speler": "Overig",
+        "rugnummer": null,
+        "stemmen": 19,
+        "procent": 1.4
+      }
+    ]
+  },
+  "quiz": {
+    "week": 38,
+    "titel": "Weekquiz: Twente – PSV",
+    "deelnemers": 1312,
+    "allesGoed": 236,
+    "allesGoed%": 18.0,
+    "gemiddeldeScore": "3,4/5",
+    "vragen": [
+      {
+        "vraag": "Wie maakte de 1-0 tegen PSV?",
+        "goed%": 88
+      },
+      {
+        "vraag": "In welke minuut viel de winnende goal?",
+        "goed%": 54
+      },
+      {
+        "vraag": "Wie gaf de assist bij de 2-2?",
+        "goed%": 41
+      },
+      {
+        "vraag": "Hoeveel goals maakten de Twente Vrouwen in de eerste 5 duels?",
+        "goed%": 29
+      },
+      {
+        "vraag": "Welk rugnummer draagt Ruud Nijstad?",
+        "goed%": 63
+      }
+    ]
+  },
+  "voorspellingen": {
+    "wedstrijdId": "2026-10-10-fortuna-twente",
+    "wedstrijd": "Fortuna Sittard – FC Twente",
+    "voorspellers": 846,
+    "top": [
+      {
+        "uitslag": "1-2",
+        "aantal": 187
+      },
+      {
+        "uitslag": "0-2",
+        "aantal": 141
+      },
+      {
+        "uitslag": "1-3",
+        "aantal": 118
+      },
+      {
+        "uitslag": "1-1",
+        "aantal": 96
+      },
+      {
+        "uitslag": "0-1",
+        "aantal": 74
+      },
+      {
+        "uitslag": "2-2",
+        "aantal": 52
+      }
+    ],
+    "uitslagTwentePsvGoedVoorspeld": {
+      "voorspellers": 1004,
+      "exactGoed(3-2)": 38,
+      "winnaarGoed": 301
+    }
+  },
+  "polls": [
+    {
+      "vraag": "Wie moet er starten naast Weghorst tegen Fortuna?",
+      "stemmen": [
+        {
+          "optie": "Vennegoor of Hesselink",
+          "aantal": 402
+        },
+        {
+          "optie": "Taha",
+          "aantal": 377
+        },
+        {
+          "optie": "Rots",
+          "aantal": 219
+        }
+      ]
+    },
+    {
+      "vraag": "Beste Twente-goal van september?",
+      "stemmen": [
+        {
+          "optie": "Weidmann vs PSV (rush)",
+          "aantal": 688
+        },
+        {
+          "optie": "Weghorst vs PSV",
+          "aantal": 301
+        },
+        {
+          "optie": "Ravensbergen vs ADO (Vrouwen)",
+          "aantal": 145
+        }
+      ]
+    }
+  ],
+  "tickets": {
+    "losseTicketsVerkochtViaApp": {
+      "mannen": 2317,
+      "vrouwen": 486
+    },
+    "doorverkoop": {
+      "aangeboden": 64,
+      "verkocht": 51,
+      "gemiddeldBinnenUur": 3.2
+    },
+    "benJeErbij": {
+      "wedstrijd": "Fortuna – Twente",
+      "ja": 612,
+      "nee": 88,
+      "nogNiet": 1147
+    }
+  },
+  "stickers": {
+    "2026-09-20-twente-psv": {
+      "geclaimd": 1406,
+      "waarvanOpAfstand": 211
+    },
+    "2026-08-16-twente-pec-zwolle": {
+      "geclaimd": 1190,
+      "waarvanOpAfstand": 142
+    }
+  },
+  "webshop": {
+    "producten": [
+      {
+        "id": "thuisshirt",
+        "naam": "Thuisshirt 26/27",
+        "prijs": 94.95,
+        "besteld": 1284,
+        "voorraad": {
+          "S": 46,
+          "M": 12,
+          "L": 27,
+          "XL": 9,
+          "XXL": 31
+        },
+        "drempel": 15
+      },
+      {
+        "id": "uitshirt",
+        "naam": "Uitshirt 26/27",
+        "prijs": 94.95,
+        "besteld": 562,
+        "voorraad": {
+          "S": 38,
+          "M": 44,
+          "L": 40,
+          "XL": 22,
+          "XXL": 19
+        },
+        "drempel": 15
+      },
+      {
+        "id": "sjaal",
+        "naam": "Sjaal Tukkers",
+        "prijs": 19.95,
+        "besteld": 941,
+        "voorraad": {
+          "one size": 7
+        },
+        "drempel": 25
+      },
+      {
+        "id": "vrouwen-shirt",
+        "naam": "Thuisshirt Vrouwen 26/27",
+        "prijs": 79.95,
+        "besteld": 318,
+        "voorraad": {
+          "S": 21,
+          "M": 18,
+          "L": 14
+        },
+        "drempel": 10
+      }
+    ],
+    "omzetDezeMaand": 187340
+  },
+  "deals": [
+    {
+      "id": "deal-broodje-beenham",
+      "titel": "2+1 gratis broodje beenham",
+      "codesAangemaakt": 733,
+      "ingewisseld": 519
+    },
+    {
+      "id": "deal-twentsen-halven",
+      "titel": "Een helft eerder = halve prijs Twentsen halven",
+      "codesAangemaakt": 1082,
+      "ingewisseld": 806
+    }
+  ],
+  "rossie": {
+    "gesprekken": 5213,
+    "topVragen": [
+      {
+        "vraag": "Hoe laat begint Twente vandaag?",
+        "aantal": 612
+      },
+      {
+        "vraag": "Waar kan ik de wedstrijd kijken?",
+        "aantal": 534
+      },
+      {
+        "vraag": "Wie scoorde er tegen PSV?",
+        "aantal": 478
+      },
+      {
+        "vraag": "Hoe kom ik bij mijn vak?",
+        "aantal": 351
+      },
+      {
+        "vraag": "Waar staat Twente in de stand?",
+        "aantal": 329
+      },
+      {
+        "vraag": "Hoe verkoop ik mijn kaart?",
+        "aantal": 266
+      },
+      {
+        "vraag": "Wie is de topscorer van de Vrouwen?",
+        "aantal": 198
+      },
+      {
+        "vraag": "Wanneer speelt Twente weer thuis?",
+        "aantal": 187
+      },
+      {
+        "vraag": "Hoe claim ik mijn sticker?",
+        "aantal": 143
+      },
+      {
+        "vraag": "Is er een deal bij de catering?",
+        "aantal": 121
+      }
+    ]
+  },
+  "agents": [
+    {
+      "agent": "Voorraad-agent",
+      "tijd": "2026-09-24T09:12",
+      "niveau": "waarschuwing",
+      "bericht": "Thuisshirt 26/27 maat M bijna op (12 over, drempel 15). Na PSV-winst +38% bestellingen.",
+      "actie": "Bijbestellen"
+    },
+    {
+      "agent": "Voorraad-agent",
+      "tijd": "2026-09-24T09:12",
+      "niveau": "waarschuwing",
+      "bericht": "Sjaal Tukkers bijna op (7 over, drempel 25).",
+      "actie": "Bijbestellen"
+    },
+    {
+      "agent": "Nieuws-agent",
+      "tijd": "2026-09-24T08:30",
+      "niveau": "info",
+      "bericht": "3 nieuwe berichten gevonden over FC Twente. Samenvattingen staan klaar als concept.",
+      "actie": "Bekijk concepten"
+    },
+    {
+      "agent": "Weetjes-agent",
+      "tijd": "2026-09-24T07:00",
+      "niveau": "info",
+      "bericht": "Nieuw weetje gemaakt uit de data: 'De Vrouwen scoorden 22 keer in 5 duels en kregen er maar 3 tegen.'",
+      "actie": "Publiceren"
+    },
+    {
+      "agent": "Rossie-agent",
+      "tijd": "2026-09-23T22:40",
+      "niveau": "info",
+      "bericht": "'Waar kan ik Fortuna – Twente kijken?' is deze week 3x vaker gevraagd. Voorstel: tegel Waar te kijken bovenaan voor volgers op afstand.",
+      "actie": "Toepassen"
+    },
+    {
+      "agent": "Ticket-agent",
+      "tijd": "2026-09-23T18:05",
+      "niveau": "succes",
+      "bericht": "51 van 64 doorverkochte kaarten verkocht, gemiddeld binnen 3,2 uur.",
+      "actie": null
+    }
+  ]
+}

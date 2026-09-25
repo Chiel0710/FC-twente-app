@@ -88,7 +88,8 @@ export default function Home({ demo, demoActief, onOpenRecap }) {
         />
       )}
 
-      {team === 'mannen' && <OpstellingTegel fase={fase} />}
+      {/* Mannen altijd; vrouwen zodra de admin een opstelling publiceerde */}
+      <OpstellingTegel fase={team === 'mannen' ? fase : null} team={team} />
 
       <TegelZone zone="home" labels={labels} />
     </div>

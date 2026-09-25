@@ -3,11 +3,32 @@ import PlaatjesTegel from '../components/PlaatjesTegel'
 import QrSheet from '../components/QrSheet'
 import { useTegels } from '../featureVolgorde'
 import { dealCodeVoor } from '../profiel'
+import { useDemoDb } from '../lib/demoDb'
 
 // /aanbiedingen — de deals van de wedstrijd als plaatjes-tegels, in de volgorde
 // van volgorde.aanbiedingen in public/home/tegels.json (ontwerp/aanbiedingen.png).
 // Tegels met actie "toon-qr" openen onderin een QR-code om te laten scannen.
 // Geen terugknop, zoals in het ontwerp: terug naar Home gaat via de onderbalk.
+// Deals die de admin publiceert (Publiceren > Deals) komen erbij; deals die
+// de admin uitzet, verdwijnen.
+
+// Eigen deal uit de admin: het plaatje van een bestaande deal, of een effen tegel met de titel
+function EigenDeal({ deal, afbeelding, onTik }) {
+  return (
+    <button type="button" className={`eigen-deal${afbeelding ? ' met-beeld' : ''}`} onClick={onTik} aria-label={deal.titel}>
+      {afbeelding ? (
+        <img src={afbeelding} alt="" />
+      ) : (
+        <span className="eigen-deal__tekst">
+          <span className="eigen-deal__label">Deal</span>
+          <strong>{deal.titel}</strong>
+          {deal.omschrijving && <span>{deal.omschrijving}</span>}
+          {deal.geldigTot && <small>Geldig t/m {new Date(deal.geldigTot).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' })}</small>}
+        </span>
+      )}
+    </button>
+  )
+}
 
 // Naam van de deal zoals op het QR-scherm; totAftrap = "een helft eerder"-deal
 const DEALS = {
@@ -17,9 +38,13 @@ const DEALS = {
 
 export default function AanbiedingenPagina({ demo, demoActief }) {
   const tegels = useTegels()
-  const [open, setOpen] = useState(null) // { id, code } van de deal met open QR-scherm
+  const w = useDemoDb()
+  const [open, setOpen] = useState(null) // { id, naam, code } van de deal met open QR-scherm
 
-  const volgorde = tegels?.volgorde?.aanbiedingen ?? []
+  const uit = w.admin.deals.uit
+  const volgorde = (tegels?.volgorde?.aanbiedingen ?? []).filter((id) => !uit.includes(id))
+  const eigen = w.admin.deals.eigen.filter((d) => !uit.includes(d.id))
+  const naamVan = (id) => DEALS[id]?.naam ?? eigen.find((d) => d.id === id)?.titel ?? id
   const fase = demoActief ? demo?.fase : null
 
   return (
@@ -38,10 +63,20 @@ export default function AanbiedingenPagina({ demo, demoActief }) {
         )
       })}
 
+      {tegels &&
+        eigen.map((deal) => (
+          <EigenDeal
+            key={deal.id}
+            deal={deal}
+            afbeelding={tegels.tegels.find((t) => t.id === deal.afbeelding)?.afbeelding}
+            onTik={() => setOpen({ id: deal.id, code: dealCodeVoor(deal.id) })}
+          />
+        ))}
+
       {open && (
         <QrSheet
           code={open.code}
-          naam={DEALS[open.id]?.naam ?? open.id}
+          naam={naamVan(open.id)}
           // "een helft eerder": geldig tot de aftrap, daarna verlopen
           geldigheid={DEALS[open.id]?.totAftrap ? (fase && fase !== 'voor' ? 'verlopen' : 'tot-aftrap') : null}
           onSluit={() => setOpen(null)}

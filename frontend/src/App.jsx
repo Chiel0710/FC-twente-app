@@ -21,6 +21,7 @@ import VerkopenPagina from './pages/VerkopenPagina'
 import { isDemoActief, useDemoModus } from './demoModus'
 import { IS_PITCH, PITCH_START, startPitch } from './pitchModus'
 import { startNu } from './demoKlok'
+import { leesTeamKeuze } from './lib/demoDb'
 import { getProfiles, setTeamKeuze } from './api'
 import { HUIDIGE_PERSONA, HUIDIG_PROFIEL_ID, leesAanwezigheid } from './profiel'
 import { useKaartWedstrijd } from './kaartWedstrijd'
@@ -45,15 +46,9 @@ const PAGINAS = {
 // de parameter uit de URL, zodat herladen de wedstrijd niet opnieuw begint.
 let demoUrlAfgehandeld = false
 
-// Laatste teamkeuze ook lokaal, zodat de app niet eerst "mannen" laat zien
-// terwijl het profiel nog laadt. Het profiel blijft de bron.
-const TEAM_SLEUTEL = 'fctwente_team'
+// Laatste teamkeuze (bewaard in de demoDb)
 function leesLokaleTeamKeuze() {
-  try {
-    return localStorage.getItem(TEAM_SLEUTEL) === 'vrouwen' ? 'vrouwen' : 'mannen'
-  } catch {
-    return 'mannen'
-  }
+  return leesTeamKeuze() === 'vrouwen' ? 'vrouwen' : 'mannen'
 }
 // Opstartscherm alleen bij het eerste bezoek per sessie
 const SPLASH_SLEUTEL = 'fctwente_splash_gezien'
@@ -155,11 +150,6 @@ export default function App() {
   // Nieuwe teamkeuze: meteen tonen, lokaal onthouden en in het profiel opslaan
   function kiesTeam(nieuwTeam) {
     setTeam(nieuwTeam)
-    try {
-      localStorage.setItem(TEAM_SLEUTEL, nieuwTeam)
-    } catch {
-      // localStorage niet beschikbaar (bv. privénavigatie) — het profiel onthoudt hem wel
-    }
     setTeamKeuze(HUIDIG_PROFIEL_ID, nieuwTeam).catch(() => {})
   }
 
@@ -425,7 +415,15 @@ export default function App() {
 
         {rossieOpen && <RossiePagina fantype={fantype} onTerug={sluitRossie} />}
 
-        {profielMenuOpen && <ProfielMenu onSluit={() => setProfielMenuOpen(false)} />}
+        {profielMenuOpen && (
+          <ProfielMenu
+            onSluit={() => setProfielMenuOpen(false)}
+            onMijnTwente={() => {
+              setProfielMenuOpen(false)
+              wissel('meer', { meer: 'mijntwente' })
+            }}
+          />
+        )}
 
         {highlightsDatum && <HighlightsScherm datum={highlightsDatum} onSluit={sluitHighlights} />}
 

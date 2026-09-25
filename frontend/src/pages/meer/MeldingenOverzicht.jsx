@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
+import { leesMeldingInstellingen, zetMeldingInstellingen } from '../../lib/demoDb'
 
-// Instelbaar per categorie, zoals de briefing vraagt — gesimuleerd (alleen
-// lokaal opgeslagen), geen echte pushmeldingen.
-const OPSLAGSLEUTEL = 'fctwente_meldingen'
+// Instelbaar per categorie, zoals de briefing vraagt — gesimuleerd (bewaard
+// in de demoDb op dit apparaat), geen echte pushmeldingen.
 
 const CATEGORIEEN = [
   { id: 'wedstrijddag', label: 'Wedstrijddag', uitleg: 'Opstelling, aftrap en de uitslag' },
@@ -12,23 +12,14 @@ const CATEGORIEEN = [
 ]
 
 function leesInstellingen() {
-  try {
-    const opgeslagen = JSON.parse(localStorage.getItem(OPSLAGSLEUTEL) ?? '{}')
-    return { wedstrijddag: true, nieuws: true, fan: false, tickets: true, ...opgeslagen }
-  } catch {
-    return { wedstrijddag: true, nieuws: true, fan: false, tickets: true }
-  }
+  return { wedstrijddag: true, nieuws: true, fan: false, tickets: true, ...leesMeldingInstellingen() }
 }
 
 export default function MeldingenOverzicht() {
   const [instellingen, setInstellingen] = useState(leesInstellingen)
 
   useEffect(() => {
-    try {
-      localStorage.setItem(OPSLAGSLEUTEL, JSON.stringify(instellingen))
-    } catch {
-      // localStorage niet beschikbaar — instelling blijft dan alleen in deze sessie staan
-    }
+    zetMeldingInstellingen(instellingen)
   }, [instellingen])
 
   function wissel(id) {

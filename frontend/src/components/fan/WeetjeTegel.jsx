@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getMatches, getPlayers, getResults, getStandings } from '../../api'
 import { maakWeetjes } from '../../weetjes'
+import { useDemoDb } from '../../lib/demoDb'
 
 // Weetje (bal met de gloeilamp): één weetje per keer, in dezelfde rode
 // kaartstijl als de Weekquiz. De weetjes bouwt maakWeetjes() uit de data van
@@ -26,21 +27,34 @@ function schud(lijst) {
   return kopie
 }
 
+// Alle weetjes die de fan ziet: eerst wat de admin publiceerde (bv. van de
+// Weetjes-agent), dan de weetjes uit de data; verborgen weetjes niet.
+export function zichtbareWeetjes(uitData, w) {
+  const { gepubliceerd, verborgen } = w.admin.weetjes
+  const extra = gepubliceerd.filter((t) => !uitData.includes(t))
+  return [...extra, ...uitData].filter((t) => !verborgen.includes(t))
+}
+
+// Weetjes uit de data (voor de fan en de admin)
+export function laadDataWeetjes() {
+  return Promise.all([haalTeam('mannen'), haalTeam('vrouwen')]).then(([mannen, vrouwen]) => maakWeetjes({ mannen, vrouwen }))
+}
+
 export default function WeetjeTegel() {
-  const [weetjes, setWeetjes] = useState(undefined)
+  const [uitData, setUitData] = useState(undefined)
   const [index, setIndex] = useState(0)
+  const w = useDemoDb()
 
   useEffect(() => {
     let actief = true
-    Promise.all([haalTeam('mannen'), haalTeam('vrouwen')]).then(([mannen, vrouwen]) => {
-      if (actief) setWeetjes(schud(maakWeetjes({ mannen, vrouwen })))
-    })
+    laadDataWeetjes().then((lijst) => actief && setUitData(schud(lijst)))
     return () => {
       actief = false
     }
   }, [])
 
-  if (weetjes === undefined) return <div className="card">Laden...</div>
+  if (uitData === undefined) return <div className="card">Laden...</div>
+  const weetjes = zichtbareWeetjes(uitData, w)
 
   return (
     <div className="quiz-kaart weetje-kaart">

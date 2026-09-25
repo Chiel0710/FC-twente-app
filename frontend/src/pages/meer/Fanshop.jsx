@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import "../../fanshop.css";
 import { getFanshop, stuurShopKlik } from "../../api";
+import WebshopBestellen from "../../components/WebshopBestellen";
 
 /**
  * Fanshop — toont de echte FC Twente-collectie van Castore in onze eigen huisstijl.
@@ -51,6 +52,9 @@ export default function Fanshop({ profileId }) {
           {data.bron === "snapshot" && ` Prijzen van ${data.bijgewerkt}.`}
         </p>
       </header>
+
+      {/* Bestellen in de app (demo), met voorraad; de Castore-collectie staat eronder */}
+      <WebshopBestellen profileId={profileId} />
 
       <div className="shop-filters" role="tablist" aria-label="Filter op groep">
         {GROEPEN.map((g) => (

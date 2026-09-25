@@ -1,5 +1,5 @@
 {
-  "toelichting": "Nieuwsberichten voor de Nieuws-pagina. Titels en samenvattingen zijn in eigen woorden geschreven op basis van de koppen en intro's op twenteinsite.nl (24 sep 2026). Het volledige artikel staat bij de bron; de app linkt daarheen en neemt geen artikeltekst of foto's over.",
+  "toelichting": "Nieuwsberichten voor de Nieuws-pagina. Titels en samenvattingen zijn in eigen woorden geschreven op basis van de koppen en intro's op twenteinsite.nl (24 sep 2026). Het volledige artikel staat bij de bron; de app linkt daarheen en neemt geen artikeltekst of foto's over. status 'concept' = gevonden door de Nieuws-agent, nog niet gepubliceerd (publiceren via /admin).",
   "bijgewerkt": "2026-09-24",
   "berichten": [
     {
@@ -8,7 +8,9 @@
       "categorie": "Selectie",
       "titel": "Lemkin traint weer mee",
       "samenvatting": "Stav Lemkin staat weer op het trainingsveld. De verdediger liep begin augustus, in het thuisduel met FC DAC 1904, een blessure aan zijn buikwand op en was sindsdien uitgeschakeld.",
-      "spelers": [23],
+      "spelers": [
+        23
+      ],
       "bron": "Twente Insite",
       "url": "https://www.twenteinsite.nl/fc-twente-nieuws/lemkin-terug-op-trainingsveld-fc-twente-na-lange-afwezigheid"
     },
@@ -18,7 +20,9 @@
       "categorie": "Selectie",
       "titel": "Weidmann voorspeld: toptransfer ligt in het verschiet",
       "samenvatting": "Daouda Weidmann, vorig seizoen nog vaak invaller, is dit seizoen definitief doorgebroken bij FC Twente. Volgens kenners kan de middenvelder op termijn een grote stap maken.",
-      "spelers": [8],
+      "spelers": [
+        8
+      ],
       "bron": "Twente Insite",
       "url": "https://www.twenteinsite.nl/fc-twente-nieuws/toptransfer-voorspelt-voor-weidmann-bij-die-clubs-komt-hij-een-heel-eind"
     },
@@ -30,7 +34,8 @@
       "samenvatting": "Conference League-tegenstander Pafos FC komt op donderdag 5 november naar De Grolsch Veste. De Cypriotische club doet haar supporters een aantrekkelijk reisaanbod om de ploeg te volgen.",
       "spelers": [],
       "bron": "Twente Insite",
-      "url": "https://www.twenteinsite.nl/fc-twente-nieuws/fc-twente-opponent-pafos-pakt-uit-met-royaal-reisaanbod-voor-conference-league-duel-in-enschede"
+      "url": "https://www.twenteinsite.nl/fc-twente-nieuws/fc-twente-opponent-pafos-pakt-uit-met-royaal-reisaanbod-voor-conference-league-duel-in-enschede",
+      "status": "concept"
     },
     {
       "id": "meilink-contract",
@@ -40,7 +45,8 @@
       "samenvatting": "FC Twente wil de 18-jarige centrale verdediger Jip Meilink definitief aan zich binden. Hij heeft nu nog een contract bij de Academie.",
       "spelers": [],
       "bron": "Twente Insite",
-      "url": "https://www.twenteinsite.nl/fc-twente-nieuws/fc-twente-gaat-18-jarige-verdediger-meilink-vastleggen"
+      "url": "https://www.twenteinsite.nl/fc-twente-nieuws/fc-twente-gaat-18-jarige-verdediger-meilink-vastleggen",
+      "status": "concept"
     },
     {
       "id": "uitbreiding-grolsch-veste",
@@ -50,7 +56,8 @@
       "samenvatting": "FC Twente onderzoekt hoe De Grolsch Veste uitgebreid kan worden. Een uitbreiding richting de gracht lijkt toch mogelijk, al zou dat flinke concessies vragen.",
       "spelers": [],
       "bron": "Twente Insite",
-      "url": "https://www.twenteinsite.nl/fc-twente-nieuws/uitbreiding-grolsch-veste-via-gracht-toch-mogelijk-dan-ga-je-veel-concessies-doen"
+      "url": "https://www.twenteinsite.nl/fc-twente-nieuws/uitbreiding-grolsch-veste-via-gracht-toch-mogelijk-dan-ga-je-veel-concessies-doen",
+      "status": "concept"
     },
     {
       "id": "nijstad-jong-oranje",
@@ -58,7 +65,9 @@
       "categorie": "Selectie",
       "titel": "Nijstad in beeld bij Jong Oranje",
       "samenvatting": "Oud-Tukker Mats Rots ziet Ruud Nijstad opeens als concurrent bij Jong Oranje en is lovend over hoe de jonge verdediger het doet.",
-      "spelers": [4],
+      "spelers": [
+        4
+      ],
       "bron": "Twente Insite",
       "url": "https://www.twenteinsite.nl/fc-twente-nieuws/mats-rots-ziet-nijstad-plots-als-concurrenten-bij-jong-oranje-hij-doet-het-hartstikke-goed"
     }

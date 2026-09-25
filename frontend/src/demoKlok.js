@@ -6,6 +6,7 @@
 // klopt alles ook na herladen. Elk apparaat speelt zijn eigen pitch.
 // De doelpunten komen uit data/sport/wedstrijd-details-2026-2027.json.
 import details from './data/sport/wedstrijd-details-2026-2027.json'
+import { leesDemo, zetDemo } from './lib/demoDb'
 
 // ---- Snelheid van de pitch (instelbaar) ----
 export const PITCH_AFTELLEN_SEC = 20 // afteller op Home tot de aftrap
@@ -20,24 +21,9 @@ export const WACHT_STICKER = 18 // plakboek-sticker claimen
 export const DEMO_DATUM = '2026-09-20' // FC Twente – PSV
 const WEDSTRIJD = details.wedstrijden.find((w) => w.id === DEMO_DATUM)
 
-/* ---------- Opslag: { aftrapOp, dagernaOp } (ms), per apparaat ---------- */
-const SLEUTEL = 'fctwente_demo'
-
-function lees() {
-  try {
-    return JSON.parse(localStorage.getItem(SLEUTEL)) ?? {}
-  } catch {
-    return {}
-  }
-}
-
-function bewaar(staat) {
-  try {
-    localStorage.setItem(SLEUTEL, JSON.stringify(staat))
-  } catch {
-    // niet op te slaan: dan geldt het alleen tot herladen
-  }
-}
+/* ---------- Opslag: { aftrapOp, dagernaOp } (ms), in de demoDb ---------- */
+const lees = () => leesDemo()
+const bewaar = (staat) => zetDemo(staat)
 
 // Pitch (opnieuw): fase "voor" met de afteller; vertraging = de splash eerst
 export function startPitch(vertragingMs = 0) {
@@ -47,6 +33,11 @@ export function startPitch(vertragingMs = 0) {
 // Wedstrijd meteen laten beginnen (bv. ?demo=wedstrijd)
 export function startNu() {
   bewaar({ aftrapOp: Date.now(), dagernaOp: null })
+}
+
+// Admin: meteen naar de eindstand (meldingen na het eindsignaal volgen vanzelf)
+export function naarEindstand() {
+  bewaar({ aftrapOp: Date.now() - secVoorMinuut(90) * 1000, dagernaOp: null })
 }
 
 // Tik op het logo: de dag erna (gewone dag, geen nieuwe meldingen meer)

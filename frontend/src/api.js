@@ -3,62 +3,24 @@
 //  - alles wat alleen gelezen wordt (wedstrijden, standen, selecties,
 //    fanshop) komt rechtstreeks uit de JSON-bestanden (zie sportData.js)
 //  - alles wat een fan opslaat (stemmen, voorspelling, poll, quiz, stickers,
-//    teamkeuze, fanshop-kliks) staat in localStorage, per apparaat
+//    teamkeuze, fanshop-kliks) gaat via lib/demoDb.js (startwaarden uit
+//    data/demo-database.json + wijzigingen in localStorage)
 // De functienamen en de vorm van de antwoorden zijn gelijk gebleven, zodat
 // de pagina's niets hoeven te weten. Alles geeft nog steeds een Promise terug.
 // Alleen Rossie praat nog met een server: /api/rossie (serverless function).
 import QRCode from 'qrcode'
-import { WEDSTRIJDEN, spelerMetId, spelersVan, standVan, wedstrijdMetId, wedstrijdenVan } from './sportData'
-import demoStemmen from './data/demo-stemmen.json'
+import { WEDSTRIJDEN, spelersVan, standVan, wedstrijdMetId, wedstrijdenVan } from './sportData'
+import * as db from './lib/demoDb'
+import { motmStats, pollStats, voorspelStats } from './lib/demoStats'
 import fanshopSnapshot from './data/sport/fanshop-snapshot.json'
 import personas from './data/personas.json'
 import voorbeeld from './data/voorbeeld-seizoenskaart.json'
 
 const klaar = (waarde) => Promise.resolve(waarde)
 
-/* ---------- Opslag per apparaat ----------
-   localStorage "fctwente_opslag" = {
-     profielen: { "<profielId>": { motm: {matchId: playerId}, voorspelling: {matchId: keuze},
-                                   poll: {pollId: index}, teamKeuze, quiz: [...] } },
-     stickers: [{ id, profileId, matchId, type, seed, claimedAt, serialNumber }],
-     shopKliks: [{ profileId, productId, naam, bron, tijd }]
-   } */
-const OPSLAG = 'fctwente_opslag'
-
-function lees() {
-  try {
-    return JSON.parse(localStorage.getItem(OPSLAG)) ?? {}
-  } catch {
-    return {}
-  }
-}
-
-function bewaar(data) {
-  try {
-    localStorage.setItem(OPSLAG, JSON.stringify(data))
-  } catch {
-    // vol of geblokkeerd: dan geldt het alleen voor deze sessie niet
-  }
-}
-
-function profiel(data, profielId) {
-  data.profielen ??= {}
-  data.profielen[profielId] ??= {}
-  return data.profielen[profielId]
-}
-
-// Pitch opnieuw (herladen in pitchmodus): stemmen, voorspellingen, poll,
-// quiz en de stickers van de demowedstrijd weer leeg, zodat je opnieuw kunt kiezen
-export function wisDemoStemmen(demoDatum) {
-  const data = lees()
-  for (const p of Object.values(data.profielen ?? {})) {
-    delete p.motm
-    delete p.voorspelling
-    delete p.poll
-    delete p.quiz
-  }
-  data.stickers = (data.stickers ?? []).filter((s) => !s.matchId.endsWith(demoDatum))
-  bewaar(data)
+// Pitch opnieuw (herladen in pitchmodus): wat je als fan deed weer leeg
+export function wisDemoStemmen() {
+  db.resetFan()
 }
 
 /* ---------- Sportdata (alleen lezen) ---------- */
@@ -89,104 +51,62 @@ export function getNews() {
 
 /* ---------- Profielen en teamkeuze ---------- */
 
-// Profielen: de persona's, met hun teamkeuze van dit apparaat
 export function getProfiles() {
-  const data = lees()
+  const team = db.leesTeamKeuze()
+  return klaar(personas.map((p) => ({ id: `demo-${p.id}`, naam: p.naam, fantype: p.fantype, teamKeuze: team })))
+}
+
+export function setTeamKeuze(profileId, teamKeuze) {
+  db.zetTeamKeuze(teamKeuze)
+  return klaar({ id: profileId, teamKeuze })
+}
+
+/* ---------- Stemmen: startwaarden + wat er in de app gestemd wordt ---------- */
+
+// Voorspellen: exacte uitslag (zie VoorspelKaart)
+export function getVoorspelling(matchId, profileId) {
+  return klaar({ ...voorspelStats(matchId), eigenKeuze: db.leesFan(profileId, 'voorspelling')[matchId] ?? null })
+}
+
+export function stemVoorspelling(matchId, profileId, uitslag) {
+  db.bewaarVoorspelling(profileId, matchId, uitslag)
+  return klaar({ matchId, profileId, uitslag })
+}
+
+// Man of the Match
+export function getMotm(matchId, profileId) {
+  const { totaal, rijen } = motmStats(matchId)
+  return klaar({
+    totaal,
+    resultaten: rijen.map((r) => ({ player: r.speler, aantal: r.aantal, percentage: Math.round(r.procent) })),
+    eigenKeuze: db.leesFan(profileId, 'motm')[matchId] ?? null,
+  })
+}
+
+export function stemMotm(matchId, profileId, playerId) {
+  db.stem(profileId, matchId, playerId)
+  return klaar({ matchId, profileId, playerId })
+}
+
+// Polls van de week (twee, uit de startwaarden)
+export function getActievePolls(profileId) {
+  const eigen = db.leesFan(profileId, 'poll')
   return klaar(
-    personas.map((p) => ({
-      id: `demo-${p.id}`,
-      naam: p.naam,
-      fantype: p.fantype,
-      teamKeuze: data.profielen?.[`demo-${p.id}`]?.teamKeuze ?? null,
+    pollStats().map((p) => ({
+      id: p.id,
+      question: p.vraag,
+      opties: p.opties,
+      totaal: p.totaal,
+      tellingPerOptie: p.telling,
+      percentages: p.procent.map(Math.round),
+      eigenKeuze: eigen[p.id] ?? null,
     })),
   )
 }
 
-export function setTeamKeuze(profileId, teamKeuze) {
-  const data = lees()
-  profiel(data, profileId).teamKeuze = teamKeuze
-  bewaar(data)
-  return klaar({ id: profileId, teamKeuze })
-}
-
-/* ---------- Stemmen: demo-startaantallen + de stem van dit apparaat ---------- */
-
-const datumVanId = (matchId) => matchId.slice(-10)
-
-// Fan-interactie: voorspellen
-export function getVoorspelling(matchId, profileId) {
-  const eigen = lees().profielen?.[profileId]?.voorspelling?.[matchId] ?? null
-  const telling = { ...demoStemmen.voorspelling.standaard }
-  if (eigen) telling[eigen] += 1
-  const totaal = telling.thuis + telling.gelijk + telling.uit
-  const percentages = Object.fromEntries(Object.entries(telling).map(([k, n]) => [k, Math.round((n / totaal) * 100)]))
-  return klaar({ totaal, telling, percentages, eigenKeuze: eigen })
-}
-
-export function stemVoorspelling(matchId, profileId, keuze) {
-  const data = lees()
-  const p = profiel(data, profileId)
-  p.voorspelling = { ...p.voorspelling, [matchId]: keuze }
-  bewaar(data)
-  return klaar({ matchId, profileId, keuze })
-}
-
-// Fan-interactie: Man of the Match
-export function getMotm(matchId, profileId) {
-  const basis = demoStemmen.motm[datumVanId(matchId)] ?? {}
-  const eigen = lees().profielen?.[profileId]?.motm?.[matchId] ?? null
-  const perSpeler = new Map(Object.entries(basis).map(([nr, aantal]) => [`mannen-${nr}`, aantal]))
-  if (eigen) perSpeler.set(eigen, (perSpeler.get(eigen) ?? 0) + 1)
-  const totaal = [...perSpeler.values()].reduce((a, b) => a + b, 0)
-  const resultaten = [...perSpeler]
-    .map(([id, aantal]) => ({ player: spelerMetId(id), aantal, percentage: totaal ? Math.round((aantal / totaal) * 100) : 0 }))
-    .filter((r) => r.player)
-    .sort((a, b) => b.aantal - a.aantal)
-  return klaar({ totaal, resultaten, eigenKeuze: eigen })
-}
-
-export function stemMotm(matchId, profileId, playerId) {
-  const data = lees()
-  const p = profiel(data, profileId)
-  p.motm = { ...p.motm, [matchId]: playerId }
-  bewaar(data)
-  return klaar({ matchId, profileId, playerId })
-}
-
-// Fan-interactie: poll van de week
-export function getActievePolls(profileId) {
-  const poll = demoStemmen.poll
-  const eigen = lees().profielen?.[profileId]?.poll?.[poll.id] ?? null
-  const tellingPerOptie = poll.basis.map((n, i) => n + (eigen === i ? 1 : 0))
-  const totaal = tellingPerOptie.reduce((a, b) => a + b, 0)
-  return klaar([
-    {
-      id: poll.id,
-      question: poll.question,
-      opties: poll.opties,
-      totaal,
-      tellingPerOptie,
-      percentages: tellingPerOptie.map((n) => Math.round((n / totaal) * 100)),
-      eigenKeuze: eigen,
-    },
-  ])
-}
-
 export function stemPoll(pollId, profileId, optionIndex) {
-  const data = lees()
-  const p = profiel(data, profileId)
-  p.poll = { ...p.poll, [pollId]: optionIndex }
-  bewaar(data)
+  db.bewaarPoll(profileId, pollId, optionIndex)
   return klaar({ pollId, profileId, optionIndex })
-}
-
-// Fan-interactie: weekquiz (logt alleen het gedrag, geen score/ranglijst)
-export function stuurQuizAntwoord(profileId, vraagId, gekozenIndex, correct) {
-  const data = lees()
-  const p = profiel(data, profileId)
-  p.quiz = [...(p.quiz ?? []), { vraagId, gekozenIndex, correct: Boolean(correct), tijd: Date.now() }]
-  bewaar(data)
-  return klaar({ ok: true })
 }
 
 /* ---------- Digitaal plakboek ---------- */
@@ -196,48 +116,23 @@ const metWedstrijd = (s) => ({ ...s, match: wedstrijdMetId(s.matchId) })
 
 // Inchecken maakt een ongeclaimde sticker (idempotent per profiel en wedstrijd)
 export function simuleerCheckIn(profileId, matchId, type = 'attended') {
-  const data = lees()
-  data.stickers ??= []
-  let sticker = data.stickers.find((s) => s.profileId === profileId && s.matchId === matchId)
-  if (!sticker) {
-    sticker = {
-      id: `sticker-${profileId}-${matchId}`,
-      profileId,
-      matchId,
-      type,
-      seed: Math.random().toString(16).slice(2, 14),
-      claimedAt: null,
-      serialNumber: null,
-    }
-    data.stickers.push(sticker)
-    bewaar(data)
-  }
-  return klaar({ checkIn: { profileId, matchId }, stickerCard: metWedstrijd(sticker) })
+  return klaar({ checkIn: { profileId, matchId }, stickerCard: metWedstrijd(db.checkIn(profileId, matchId, type)) })
 }
 
 const opAftrap = (a, b) => (a.match?.kickoff ?? '').localeCompare(b.match?.kickoff ?? '')
 
 export function getStickers(profileId) {
-  return klaar((lees().stickers ?? []).filter((s) => s.profileId === profileId).map(metWedstrijd).sort(opAftrap))
+  return klaar(db.leesStickers().filter((s) => s.profileId === profileId).map(metWedstrijd).filter((s) => s.match).sort(opAftrap))
 }
 
 export function getClaimbareStickers(profileId) {
   return getStickers(profileId).then((lijst) => lijst.filter((s) => s.claimedAt === null))
 }
 
-// Claimen: claimedAt en een volgnummer (volgorde van claimen binnen de
-// wedstrijd, op dit apparaat). Al geclaimd: gewoon teruggeven.
+// Claimen: tijd en volgnummer (na de startwaarden van die wedstrijd)
 export function claimSticker(stickerId) {
-  const data = lees()
-  const sticker = (data.stickers ?? []).find((s) => s.id === stickerId)
-  if (!sticker) return Promise.reject(new Error('Sticker niet gevonden'))
-  if (!sticker.claimedAt) {
-    const al = data.stickers.filter((s) => s.matchId === sticker.matchId && s.claimedAt).length
-    sticker.claimedAt = new Date().toISOString()
-    sticker.serialNumber = al + 1
-    bewaar(data)
-  }
-  return klaar(metWedstrijd(sticker))
+  const sticker = db.claimSticker(stickerId)
+  return sticker ? klaar(metWedstrijd(sticker)) : Promise.reject(new Error('Sticker niet gevonden'))
 }
 
 /* ---------- Tickets: QR in de browser, met tijdstempel ---------- */
@@ -305,15 +200,13 @@ export function getFanshop() {
 
 // Doorklikmeting (fanshop, MOTM, plakboek), bewaard op dit apparaat
 export function stuurShopKlik(profileId, productId, naam, bron) {
-  const data = lees()
-  data.shopKliks = [...(data.shopKliks ?? []), { profileId, productId, naam, bron, tijd: Date.now() }]
-  bewaar(data)
+  db.klikNaarShop(profileId, productId, naam, bron)
   return klaar({ ok: true })
 }
 
 // Voor de adminkant: doorklikken per bron en de top 10 producten
 export function getShopStats() {
-  const kliks = lees().shopKliks ?? []
+  const kliks = db.wijzigingen().shopKliks.map((k) => ({ ...k, profileId: k.profielId }))
   const tel = (sleutel) => {
     const m = new Map()
     for (const k of kliks) m.set(k[sleutel], (m.get(k[sleutel]) ?? 0) + 1)

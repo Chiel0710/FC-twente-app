@@ -2,6 +2,20 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import RossieVideo from "../components/RossieVideo";
 import { koppelVraag, VIDEO_ANTWOORDEN } from "../components/rossieVideos";
 import "../styles/rossie.css";
+import { START, logRossieVraag } from "../lib/demoDb";
+import { HUIDIGE_PERSONA, HUIDIG_PROFIEL_ID } from "../profiel";
+
+// Historie van de ingelogde fan (alleen Daan heeft er een), zodat Rossie hem
+// kan gebruiken: "Je zat bij PEC Zwolle in vak 125..."
+const HISTORIE = HUIDIGE_PERSONA.id === "daan"
+  ? {
+      naam: START.daan.naam,
+      woonplaats: START.daan.woonplaats,
+      tickets: START.daan.ticketHistorie,
+      webshop: START.daan.gedrag.webshop,
+      meestGebruikt: START.daan.gedrag.meestGebruikteFeature,
+    }
+  : null;
 
 /**
  * Rossie — chatten met de mascotte.
@@ -120,6 +134,8 @@ export default function Rossie({ fantype = "standaard" }) {
     setBezig(true);
 
     // 1. vaste vraag: video met eigen geluid, geen call naar de server
+    // Elke vraag telt mee in de top 10 van de admin (Data > Rossie)
+    logRossieVraag(HUIDIG_PROFIEL_ID, vraag);
     const sleutel = koppelVraag(vraag);
     if (sleutel) {
       setBerichten((b) => [...b, { rol: "rossie", tekst: VIDEO_ANTWOORDEN[sleutel].tekst }]);
@@ -135,7 +151,7 @@ export default function Rossie({ fantype = "standaard" }) {
       const r = await fetch("/api/rossie", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ bericht: vraag, geschiedenis: berichten.slice(-8), fantype }),
+        body: JSON.stringify({ bericht: vraag, geschiedenis: berichten.slice(-8), fantype, historie: HISTORIE }),
       });
       const d = await r.json();
       setBerichten((b) => [...b, { rol: "rossie", tekst: d.antwoord }]);

@@ -1,14 +1,20 @@
 import { useState } from 'react'
-import { stuurQuizAntwoord } from '../api'
+import { bewaarQuiz, leesFan, useDemoDb } from '../lib/demoDb'
+import { quizStats } from '../lib/demoStats'
 import { HUIDIG_PROFIEL_ID } from '../profiel'
-import { QUIZVRAGEN } from '../quizData'
+import { QUIZVRAGEN, QUIZ_WEEK } from '../quizData'
+
+const getal = (n) => n.toLocaleString('nl-NL')
 
 // Weekquiz — één vraag tegelijk in een rood vlak. Direct na een antwoord zie
-// je of het goed was, daarna ga je zelf door naar de volgende vraag. Geen
-// score of ranglijst (Fan-tab is voor de lol).
+// je of het goed was, daarna ga je zelf door. Aan het eind je score en hoe
+// iedereen het deed (startwaarden + wie er in de app meespeelde).
 export default function QuizKaart() {
-  const [index, setIndex] = useState(0)
+  useDemoDb() // opnieuw tekenen als de cijfers veranderen
+  const alGespeeld = leesFan(HUIDIG_PROFIEL_ID, 'quiz')[String(QUIZ_WEEK)]
+  const [index, setIndex] = useState(alGespeeld ? QUIZVRAGEN.length : 0)
   const [gekozenIndex, setGekozenIndex] = useState(null)
+  const [antwoorden, setAntwoorden] = useState(alGespeeld?.antwoorden ?? [])
 
   const vraag = QUIZVRAGEN[index]
   const klaar = index >= QUIZVRAGEN.length
@@ -16,13 +22,18 @@ export default function QuizKaart() {
   function kies(i) {
     if (gekozenIndex !== null) return
     setGekozenIndex(i)
-    stuurQuizAntwoord(HUIDIG_PROFIEL_ID, vraag.id, i, i === vraag.correcteIndex)
+    setAntwoorden((a) => [...a, i === vraag.correcteIndex])
   }
 
   function volgende() {
     setGekozenIndex(null)
+    // Laatste vraag: het resultaat bewaren (telt mee in de cijfers)
+    if (index + 1 >= QUIZVRAGEN.length) bewaarQuiz(HUIDIG_PROFIEL_ID, QUIZ_WEEK, antwoorden)
     setIndex((i) => i + 1)
   }
+
+  const stats = klaar ? quizStats() : null
+  const goed = antwoorden.filter(Boolean).length
 
   return (
     <div className="quiz-kaart">
@@ -67,7 +78,18 @@ export default function QuizKaart() {
         </>
       )}
 
-      {klaar && <p className="quiz-kaart__klaar">Dat was 'm — bedankt voor het meespelen!</p>}
+      {klaar && (
+        <div className="quiz-kaart__uitslag" aria-live="polite">
+          <p className="quiz-kaart__score">
+            {goed}
+            <span>/{QUIZVRAGEN.length}</span>
+          </p>
+          <p className="quiz-kaart__klaar">
+            Je had {goed} van de {QUIZVRAGEN.length} goed.{' '}
+            {getal(Math.round(stats.procentAllesGoed))}% van de {getal(stats.deelnemers)} spelers had alles goed.
+          </p>
+        </div>
+      )}
     </div>
   )
 }

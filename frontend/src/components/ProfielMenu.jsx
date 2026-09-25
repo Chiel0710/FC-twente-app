@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Apple, Check, LogOut, Mail, UserRound, X } from 'lucide-react'
+import { Apple, Check, LayoutDashboard, LogOut, Mail, Star, UserRound, X } from 'lucide-react'
+import { probeerAdmin } from '../lib/adminSlot'
 import { HUIDIGE_PERSONA, IS_BEZOEKER, PERSONAS, kiesPersona } from '../profiel'
 
 // Profielmenu achter het poppetje rechtsboven. Er is bewust geen echte inlog:
@@ -12,8 +13,19 @@ const INLOGGEN = [
   { id: 'apple', label: 'Inloggen met Apple', Icon: Apple },
 ]
 
-export default function ProfielMenu({ onSluit }) {
+// onMijnTwente: opent "Mijn Twente" (historie en wat je in deze sessie deed)
+export default function ProfielMenu({ onSluit, onMijnTwente }) {
   const [melding, setMelding] = useState('')
+  const [admin, setAdmin] = useState(false)
+  const [code, setCode] = useState('')
+  const [codeFout, setCodeFout] = useState('')
+
+  // Demo-slot (zie lib/adminSlot.js): code 0000 → /admin. Geen echte beveiliging.
+  function naarAdmin(e) {
+    e.preventDefault()
+    if (probeerAdmin(code)) window.location.href = '/admin'
+    else setCodeFout('Onjuiste code')
+  }
   const fans = PERSONAS.filter((p) => p.id !== 'bezoeker')
 
   function kies(id) {
@@ -54,6 +66,11 @@ export default function ProfielMenu({ onSluit }) {
           </button>
         )}
 
+        <button type="button" className="profiel-knop profiel-knop--mijn" onClick={onMijnTwente}>
+          <Star size={18} strokeWidth={2} />
+          Mijn Twente
+        </button>
+
         <button
           type="button"
           className="profiel-knop profiel-knop--bezoeker"
@@ -80,6 +97,45 @@ export default function ProfielMenu({ onSluit }) {
           <p className="profiel-melding" role="status">
             {melding}
           </p>
+
+          {/* Inloggen als admin (demo): vinkje, dan de code */}
+          <label className="profiel-admin">
+            <input
+              type="checkbox"
+              checked={admin}
+              onChange={(e) => {
+                setAdmin(e.target.checked)
+                setCodeFout('')
+              }}
+            />
+            Admin
+          </label>
+          {admin && (
+            <form className="profiel-admin__form" onSubmit={naarAdmin}>
+              <input
+                type="password"
+                inputMode="numeric"
+                autoComplete="off"
+                placeholder="Code"
+                aria-label="Admin-code"
+                value={code}
+                onChange={(e) => {
+                  setCode(e.target.value)
+                  setCodeFout('')
+                }}
+                autoFocus
+              />
+              <button type="submit" className="profiel-admin__knop">
+                <LayoutDashboard size={16} strokeWidth={2.2} />
+                Naar admin
+              </button>
+              {codeFout && (
+                <p className="profiel-admin__fout" role="alert">
+                  {codeFout}
+                </p>
+              )}
+            </form>
+          )}
         </div>
 
         <h3 className="profiel-paneel__kopje">Log in als fan (demo)</h3>

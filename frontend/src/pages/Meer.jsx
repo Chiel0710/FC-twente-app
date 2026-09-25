@@ -4,6 +4,7 @@ import SelectieOverzicht from './meer/SelectieOverzicht'
 import Fanshop from './meer/Fanshop'
 import MeldingenOverzicht from './meer/MeldingenOverzicht'
 import Plattegrond from './meer/Plattegrond'
+import MijnTwente from './meer/MijnTwente'
 import { HUIDIG_PROFIEL_ID } from '../profiel'
 import { laadRossieVooraf } from '../rossieVooraf'
 import { FEATURES } from '../featureVolgorde'
@@ -30,6 +31,8 @@ const ONDERDELEN = [
   { id: 'rossie', Icon: MessageCircle, label: 'Vraag aan Rossie!' },
   { id: 'meldingen', Icon: Bell, label: 'Meldingen', Component: MeldingenOverzicht },
   // "Jij / profiel" is vervallen: het profielmenu achter het poppetje rechtsboven neemt het over
+  // Mijn Twente opent vanuit het profielmenu (niet in de lijst)
+  { id: 'mijntwente', label: 'Mijn Twente', Component: MijnTwente, verborgen: true },
 ]
 
 // startOnderdeel: opent meteen een onderdeel (deeplink vanuit de app)
@@ -66,7 +69,7 @@ export default function Meer({ startOnderdeel = null, startSpeler = null, onOpen
       </div>
 
       <div className="meer-list">
-        {ONDERDELEN.map(({ id, Icon, label }) => (
+        {ONDERDELEN.filter((o) => !o.verborgen).map(({ id, Icon, label }) => (
           <button type="button" className="meer-list__item meer-list__item--klikbaar" key={id} onClick={() => (id === 'rossie' ? onOpenRossie?.() : setActiefId(id))}>
             <Icon strokeWidth={2} />
             <span>{label}</span>

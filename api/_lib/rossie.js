@@ -72,6 +72,7 @@ function plattegrond() {
  */
 function nieuws() {
   return nieuwsData.berichten
+    .filter((b) => b.status !== "concept") // concepten zijn nog niet gepubliceerd
     .filter((b) => !VERBODEN.some((r) => r.test(`${b.titel} ${b.samenvatting}`)))
     .sort((a, b) => b.datum.localeCompare(a.datum))
     .map((b) => `${b.datum} | ${b.titel} | ${b.samenvatting} (bron: ${b.bron})`)
@@ -149,7 +150,25 @@ Dit is een studentproject van Fontys, geen officiële app van FC Twente.`;
  * Een vraag aan Rossie. Geeft { status, body } terug; body = { antwoord, ... }.
  * invoer: { bericht, geschiedenis: [{rol, tekst}], fantype }
  */
-async function vraagRossie({ bericht, geschiedenis = [], fantype = "standaard" } = {}) {
+// Historie van de fan (van de app meegestuurd, bv. Daan) als korte tekst.
+// Alleen bekende velden en korte strings: de app is geen vertrouwde bron.
+function historieTekst(h) {
+  if (!h || typeof h !== "object") return "";
+  const kort = (v) => String(v ?? "").slice(0, 80);
+  const tickets = (Array.isArray(h.tickets) ? h.tickets : []).slice(0, 5).map(
+    (t) => `${kort(t.wedstrijd)} op ${kort(t.datum)} (${kort(t.team)}), vak ${kort(t.vak)}, rij ${kort(t.rij)}, stoel ${kort(t.stoel)}`,
+  );
+  const webshop = (Array.isArray(h.webshop) ? h.webshop : []).slice(0, 5).map((b) => `${kort(b.product)} maat ${kort(b.maat)}`);
+  return `
+
+OVER DEZE FAN (uit zijn profiel in de app; gebruik het als het past, verzin er niets bij)
+Naam: ${kort(h.naam)}${h.woonplaats ? `, woont in ${kort(h.woonplaats)}` : ""}.
+Eerder gekochte tickets: ${tickets.join("; ") || "geen"}.
+Webshop: ${webshop.join("; ") || "niets"}. Gebruikt het meest: ${kort(h.meestGebruikt)}.
+Vraagt hij naar tickets of een plek, dan mag je voorstellen om weer in de buurt van zijn vorige vak te zoeken.`;
+}
+
+async function vraagRossie({ bericht, geschiedenis = [], fantype = "standaard", historie = null } = {}) {
   if (!bericht?.trim()) return { status: 400, body: { fout: "bericht is leeg" } };
 
   // vooraf filteren: verboden onderwerp gaat niet eens naar het model
@@ -172,7 +191,8 @@ async function vraagRossie({ bericht, geschiedenis = [], fantype = "standaard" }
               systeemprompt() +
               (fantype === "afstand"
                 ? "\n\nDeze fan komt zelden in het stadion en volgt de club van een afstand. Leg dingen kort uit en ga er niet vanuit dat hij de selectie kent."
-                : ""),
+                : "") +
+              historieTekst(historie),
           },
         ],
       },

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { berekenDemo, naarDagErna } from "../demoKlok";
+import { wijzigingen } from "../lib/demoDb";
 
 /**
  * useDemo — rekent elke seconde de stand van de demo uit (demoKlok.js).
@@ -25,6 +26,9 @@ export function useDemo() {
     const haal = () => {
       try {
         const d = berekenDemo();
+        // Meldingen van publicaties in de admin (opstelling, nieuws, deal) erbij
+        const publicaties = wijzigingen().fan.inbox;
+        d.meldingen = [...d.meldingen, ...publicaties].sort((a, b) => a.tijd.localeCompare(b.tijd));
         if (!leeft) return;
         // Afteller van de pitch: server geeft "nog zoveel ms", wij maken er een
         // vast tijdstip van (zo loopt de klok ook tussen twee polls door)
@@ -42,8 +46,10 @@ export function useDemo() {
         for (const m of meldingen) {
           if (gezien.current.has(m.id)) continue;
           gezien.current.add(m.id);
-          // Wat er bij het openen van de app al lag, staat in de inbox; geen toast
-          if (!eerste.current && !dagErna) wachtrij.current.push(m);
+          // Wat er bij het openen van de app al lag, staat in de inbox; geen toast.
+          // De dag erna geen pitch-toasts meer, wel die van nieuwe publicaties.
+          const publicatie = m.id.startsWith("pub-");
+          if (!eerste.current && (!dagErna || publicatie)) wachtrij.current.push(m);
         }
         eerste.current = false;
       } catch {

@@ -1,0 +1,138 @@
+/* Mijn Twente (profielmenu → Mijn Twente). Lichte kaarten op de donkerrode pagina. */
+.mijn-twente {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.mt-kerncijfers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-2);
+}
+
+.mt-kerncijfers div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--sp-3);
+  border-radius: 16px;
+  color: var(--wit);
+  background: linear-gradient(155deg, var(--rood), var(--rood-diep));
+  box-shadow: 0 10px 22px -14px rgba(20, 0, 0, 0.8);
+}
+
+.mt-kerncijfers strong {
+  font-family: var(--font-kop);
+  font-size: 26px;
+  line-height: 1;
+}
+
+.mt-kerncijfers span {
+  font-size: 12px;
+  line-height: 1.35;
+  opacity: 0.9;
+}
+
+.mt-blok {
+  padding: var(--sp-4);
+  border-radius: 18px;
+  background: var(--wit);
+  color: var(--zwart);
+  box-shadow: 0 2px 4px rgba(20, 0, 0, 0.18), 0 12px 26px -16px rgba(20, 0, 0, 0.7);
+}
+
+.mt-blok h3 {
+  margin-bottom: var(--sp-2);
+  font-family: var(--font-kop);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.mt-lijst,
+.mt-tickets {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.mt-lijst li {
+  padding-left: var(--sp-3);
+  border-left: 3px solid #e7e2dc;
+}
+
+.mt-lijst li.mt-nieuw {
+  border-left-color: var(--rood);
+}
+
+.mt-lijst em {
+  color: var(--rood);
+  font-style: normal;
+  font-weight: 600;
+}
+
+.mt-tickets li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px var(--sp-2);
+  padding: var(--sp-3);
+  border-radius: 12px;
+  background: #f6f1ee;
+}
+
+.mt-tickets strong {
+  grid-column: 1;
+  font-family: var(--font-kop);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.mt-team {
+  grid-column: 1 / -1;
+  justify-self: start;
+  padding: 1px 8px;
+  border-radius: var(--r-pill);
+  background: var(--rood);
+  color: var(--wit);
+  font-family: var(--font-kop);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.mt-team--vrouwen {
+  background: #101010;
+}
+
+.mt-sub {
+  grid-column: 1;
+  font-size: 13px;
+  color: #5d5952;
+}
+
+.mt-prijs {
+  grid-column: 2;
+  grid-row: 2 / span 2;
+  align-self: center;
+  font-family: var(--font-kop);
+  font-size: 16px;
+}
+
+.mt-leeg,
+.mt-uitleg {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.mt-uitleg {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.mt-leeg {
+  color: #6b6262;
+}

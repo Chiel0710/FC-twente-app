@@ -1241,3 +1241,80 @@ body::before {
   pointer-events: none;
   box-shadow: 0 10px 16px rgba(0, 0, 0, 0.35);
 }
+
+/* Eigen deal uit de admin: plaatje van een bestaande deal, of een effen tegel */
+.eigen-deal {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: none;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  background:
+    radial-gradient(80% 70% at 20% 10%, rgba(255, 120, 110, 0.45), transparent 70%),
+    linear-gradient(155deg, var(--rood), var(--rood-diep));
+  color: var(--wit);
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.35);
+  transition: transform 0.18s var(--indruk);
+}
+
+.eigen-deal img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.eigen-deal__tekst {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--sp-2);
+  height: 100%;
+  padding: var(--sp-6);
+  text-align: center;
+}
+
+.eigen-deal__label {
+  align-self: center;
+  padding: 3px 12px;
+  border-radius: var(--r-pill);
+  background: var(--wit);
+  color: var(--rood);
+  font-family: var(--font-kop);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.eigen-deal__tekst strong {
+  font-family: var(--font-tegel, var(--font-kop));
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.eigen-deal__tekst span:not(.eigen-deal__label) {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.eigen-deal__tekst small {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.eigen-deal:hover {
+  transform: translateY(-2px);
+}
+
+.eigen-deal:focus-visible {
+  outline: 3px solid var(--wit);
+  outline-offset: 4px;
+}
+
+.eigen-deal:active {
+  transform: scale(0.97);
+}

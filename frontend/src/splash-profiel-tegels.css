@@ -331,3 +331,84 @@
   font-weight: 600;
   white-space: nowrap;
 }
+
+/* Mijn Twente-knop in het profielmenu */
+.profiel-knop--mijn {
+  border-color: var(--rood);
+  color: var(--rood);
+  font-weight: 700;
+}
+
+/* Inloggen als admin (demo-slot): vinkje + code */
+.profiel-admin {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+  font-size: 14px;
+  font-weight: 600;
+  color: #3b3833;
+  cursor: pointer;
+}
+
+.profiel-admin input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--rood);
+}
+
+.profiel-admin__form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.profiel-admin__form input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 14px;
+  border: 1px solid #dcd9d5;
+  border-radius: 12px;
+  font: 600 15px var(--font-body);
+  letter-spacing: 0.3em;
+}
+
+.profiel-admin__form input:focus-visible {
+  outline: 2px solid var(--rood);
+  outline-offset: 1px;
+}
+
+.profiel-admin__knop {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 var(--sp-4);
+  border: none;
+  border-radius: 12px;
+  background: #101010;
+  color: var(--wit);
+  font: 600 14px var(--font-body);
+  cursor: pointer;
+  transition: transform 0.15s var(--indruk);
+}
+
+.profiel-admin__knop:hover {
+  background: #2a2a2a;
+}
+
+.profiel-admin__knop:focus-visible {
+  outline: 2px solid var(--rood);
+  outline-offset: 2px;
+}
+
+.profiel-admin__knop:active {
+  transform: scale(0.96);
+}
+
+.profiel-admin__fout {
+  width: 100%;
+  margin: 0;
+  color: var(--rood);
+  font-size: 13px;
+  font-weight: 700;
+}
